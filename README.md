@@ -10,30 +10,30 @@
 ![GitHub branch check runs](https://img.shields.io/github/check-runs/LCSOGthb/Tools/main)
 
 CodeClimate:
-[![Maintainability](https://api.codeclimate.com/v1/badges/747d7f776d92873d7308/maintainability)](https://codeclimate.com/github/LCSOGthb/Games/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/747d7f776d92873d7308/test_coverage)](https://codeclimate.com/github/LCSOGthb/Games/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/99604814974f48ebd7ae/maintainability)](https://codeclimate.com/github/LCSOGthb/Tools/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/99604814974f48ebd7ae/test_coverage)](https://codeclimate.com/github/LCSOGthb/Tools/test_coverage)
 
 Codacy:
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7453b54fbc364247a59fe455001de0cf)](https://app.codacy.com?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/25ad5a464bbe44f482075089cc12e767)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 CircleCI:
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RHrNWGk2MzsmewtzbbFmPY/GC5Vyt4aQ2N6LRPksKEQG2/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RHrNWGk2MzsmewtzbbFmPY/GC5Vyt4aQ2N6LRPksKEQG2/tree/main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main)
 
 Snyk:
-[![Known Vulnerabilities](https://snyk.io/test/github/LCSOGthb/Games/badge.svg)](https://snyk.io/test/github/LCSOGthb/Games)
+[![Known Vulnerabilities](https://snyk.io/test/github/LCSOGthb/Tools/badge.svg)](https://snyk.io/test/github/LCSOGthb/Tools)
 
 SonarQube Cloud:
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=bugs)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=coverage)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=bugs)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=coverage)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 
 For the Badge:
 [![forthebadge](https://forthebadge.com/images/badges/uses-html.svg)](https://forthebadge.com)
