@@ -10,6 +10,7 @@
 ![GitHub branch check runs](https://img.shields.io/github/check-runs/LCSOGthb/Tools/main)
 
 CodeClimate:
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bbce7b47c38d441db9c6d52d47b6a822)](https://app.codacy.com/gh/LCSOGthb/Tools?utm_source=github.com&utm_medium=referral&utm_content=LCSOGthb/Tools&utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/747d7f776d92873d7308/maintainability)](https://codeclimate.com/github/LCSOGthb/Games/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/747d7f776d92873d7308/test_coverage)](https://codeclimate.com/github/LCSOGthb/Games/test_coverage)
 
