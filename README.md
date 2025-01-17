@@ -16,6 +16,9 @@ CodeClimate:
 Codacy:
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/25ad5a464bbe44f482075089cc12e767)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
+Codecov:
+[![codecov](https://codecov.io/github/LCSOGthb/Tools/graph/badge.svg?token=Sb7NqvuWyJ)](https://codecov.io/github/LCSOGthb/Tools)
+
 CircleCI:
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main)
 
