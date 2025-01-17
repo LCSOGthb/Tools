@@ -19,6 +19,11 @@ Codacy:
 CircleCI:
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main)
 
+DeepSource:
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=code+coverage&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=active+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
+[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=resolved+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
+
 Snyk:
 [![Known Vulnerabilities](https://snyk.io/test/github/LCSOGthb/Tools/badge.svg)](https://snyk.io/test/github/LCSOGthb/Tools)
 
