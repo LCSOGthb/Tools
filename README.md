@@ -6,8 +6,8 @@
 ![Open Issues](https://img.shields.io/github/issues/LCSOGthb/Tools)
 ![Closed Issues](https://img.shields.io/github/issues-closed/LCSOGthb/Tools)
 ![Pull Requests](https://img.shields.io/github/issues-pr/LCSOGthb/Tools)
-![GitHub branch status](https://img.shields.io/github/checks-status/LCSOGthb/Tools/main)
-![GitHub branch check runs](https://img.shields.io/github/check-runs/LCSOGthb/Tools/main)
+![GitHub branch status](https://img.shields.io/github/checks-status/LCSOGthb/Tools)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/LCSOGthb/Tools)
 
 CodeClimate:
 [![Maintainability](https://api.codeclimate.com/v1/badges/99604814974f48ebd7ae/maintainability)](https://codeclimate.com/github/LCSOGthb/Tools/maintainability)
