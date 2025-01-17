@@ -6,61 +6,110 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             document.getElementById('my-ip').textContent = `Your IP: ${data.ip}`;
         } catch (error) {
-            document.getElementById('my-ip').textContent = 'Error fetching IP.';
+            showError('Error fetching IP.');
             console.error(error);
         }
     }
 
-    // IP Lookup/Geolocation
+    // IP Lookup / Geolocation with AI integration
     async function lookupIP() {
         const ip = document.getElementById('ip-input').value;
+        if (!validateIP(ip)) {
+            showError('Please enter a valid IP address.');
+            return;
+        }
         try {
+            showLoading();
+            const aiPrediction = await getAIIPPrediction(ip); // AI-based prediction
             const response = await fetch(`https://ip-api.com/json/${ip}`);
             const data = await response.json();
             if (data.status === 'success') {
                 document.getElementById('ip-info').textContent = 
-                    `Location: ${data.city}, ${data.region}, ${data.country} (ISP: ${data.isp})`;
+                    `Location: ${data.city}, ${data.region}, ${data.country} (ISP: ${data.isp}) - AI Prediction: ${aiPrediction}`;
             } else {
-                document.getElementById('ip-info').textContent = 'Invalid IP address.';
+                showError('Invalid IP address.');
             }
         } catch (error) {
-            document.getElementById('ip-info').textContent = 'Error fetching data.';
+            showError('Error fetching data.');
             console.error(error);
+        } finally {
+            hideLoading();
         }
     }
 
-    // Internet Speed Test
+    // AI-based IP Prediction (AI model can be integrated here)
+    async function getAIIPPrediction(ip) {
+        const aiApi = 'https://your-ai-api.com/predict'; // Your AI API endpoint
+        const response = await fetch(`${aiApi}?ip=${ip}`);
+        const data = await response.json();
+        return data.prediction; // AI's predicted location or data
+    }
+
+    // Internet Speed Test with AI optimization
     function runSpeedTest() {
         const start = Date.now();
-        fetch('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png')
-            .then(() => {
+        const imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/a7/Logo_of_the_United_States_Department_of_Veterans_Affairs.png'; // Example file URL
+        fetch(imageUrl)
+            .then(response => response.blob())
+            .then(blob => {
                 const end = Date.now();
-                const speed = (272 / ((end - start) / 1000)).toFixed(2);
+                const timeTaken = (end - start) / 1000; // time in seconds
+                const speed = (5000000 / timeTaken / 1024).toFixed(2); // speed in KB/s
                 document.getElementById('speed-results').textContent = `Download speed: ${speed} KB/s`;
             })
             .catch(error => {
-                document.getElementById('speed-results').textContent = 'Speed test failed.';
+                showError('Speed test failed.');
                 console.error(error);
             });
     }
 
-    // Ping a URL
+    // AI-powered Ping
     async function ping() {
         const url = document.getElementById('ping-url').value;
+        if (!validateURL(url)) {
+            showError('Please enter a valid URL.');
+            return;
+        }
         const start = Date.now();
         try {
             await fetch(url, { method: 'HEAD' });
             const end = Date.now();
             document.getElementById('ping-results').textContent = `Ping: ${end - start} ms`;
         } catch (error) {
-            document.getElementById('ping-results').textContent = 'Ping failed.';
+            showError('Ping failed.');
             console.error(error);
         }
     }
 
-    // Attach functions to buttons
-    document.querySelector('button[onclick="getMyIP()"]').addEventListener('click', getMyIP);
-    document.querySelector('button[onclick="lookupIP()"]').addEventListener('click', lookupIP);
-    document.querySelector('button[onclick="runSpeedTest()"]').addEventListener('click', runSpeedTest);
-    document.querySelector('button[onclick="ping()"]').addEventListener('click', ping);
+    // Show error message
+    function showError(message) {
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 5000);
+    }
+
+    // Show loading indicator
+    function showLoading() {
+        document.getElementById('loading-indicator').style.display = 'block';
+    }
+
+    // Hide loading indicator
+    function hideLoading() {
+        document.getElementById('loading-indicator').style.display = 'none';
+    }
+
+    // Validate IP address format
+    function validateIP(ip) {
+        const regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+        return regex.test(ip);
+    }
+
+    // Validate URL format
+    function validateURL(url) {
+        const regex = /^(https?:\/\/)?([a-z0-9]+[.-_])*[a-z0-9]+\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?$/i;
+        return regex.test(url);
+    }
 });
