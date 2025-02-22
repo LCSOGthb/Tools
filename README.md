@@ -47,3 +47,64 @@ For the Badge:
 [![forthebadge](https://forthebadge.com/images/badges/uses-html.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/uses-js.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/uses-css.svg)](https://forthebadge.com)
+
+# AI-Powered Online Toolbox
+
+This toolbox provides various tools enhanced by Artificial Intelligence for networking, IP-related tasks, and password management.
+
+## Tools
+
+### What's My IP Address
+Displays your current IP address.
+
+- **Usage:** Click the "Check" button to fetch and display your IP address.
+
+### IP Lookup / Geolocation
+Looks up the geolocation of a given IP address.
+
+- **Usage:** Enter an IP address in the input field and click the "Lookup" button to fetch and display the geolocation information.
+
+### Internet Speed Test
+Tests your internet speed.
+
+- **Usage:** Click the "Run Test" button to measure and display your download speed.
+
+### Ping
+Pings a given URL to measure the response time.
+
+- **Usage:** Enter a URL in the input field and click the "Ping" button to measure and display the ping time.
+
+### Password Generator
+Generates a random secure password.
+
+- **Usage:** Click the "Generate" button to create and display a random password.
+
+### Password Strength Checker
+Checks the strength of a given password.
+
+- **Usage:** Enter a password in the input field and click the "Check" button to evaluate and display the password strength.
+
+### Password Breach Checker
+Checks if a given password has been breached using the HaveIBeenPwned API.
+
+- **Usage:** Enter a password in the input field and click the "Check" button to check and display if the password has been breached.
+
+## Debug Logging
+
+A new debug logging function `logDebug` has been added to log debug messages to the console.
+
+- **Usage:** Import the `logDebug` function from `utils.js` and call it with a message to log.
+
+```javascript
+import { logDebug } from './utils.js';
+logDebug('This is a debug message');
+```
+
+## Error Handling
+If an error occurs during any operation, an error message will be displayed.
+
+## Styling
+The tools are styled using the `styles.css` file.
+
+## Scripts
+The functionality of the tools is implemented in the `main.js` file.

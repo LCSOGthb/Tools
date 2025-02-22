@@ -3,6 +3,8 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    background-color: #f4f4f4;
+    text-align: center;
 }
 
 header {
@@ -17,11 +19,48 @@ main {
 }
 
 section#tools div {
-    margin: 1rem 0;
+    margin: 1rem auto;
     padding: 1rem;
+    width: 80%;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background: #f9f9f9;
+    background: #fff;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#tools div {
+    margin-bottom: 20px;
+}
+
+#tools h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#tools button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#tools input {
+    padding: 10px;
+    font-size: 1em;
+    margin-right: 10px;
+}
+
+#tools p {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #333;
+}
+
+input {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    width: 80%;
 }
 
 button {
