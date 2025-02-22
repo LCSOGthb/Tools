@@ -21,7 +21,7 @@ export function validateIP(ip) {
 }
 
 export function validateURL(url) {
-    const regex = /^(https?:\/\/)?([a-z0-9]+[.-_])*[a-z0-9]+\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?$/i;
+    const regex = /^(https?:\/\/)?([a-z0-9]+[.\-_])*[a-z0-9]+\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?$/i;
     return regex.test(url);
 }
 
