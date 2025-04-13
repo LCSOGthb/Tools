@@ -10,4 +10,5 @@
 | < 4.0   | :x:                |
 
 ## Reporting a Vulnerability
+
 Go to Issues Report a Vulnerability
