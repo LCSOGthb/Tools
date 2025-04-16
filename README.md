@@ -35,6 +35,9 @@ DeepSource:
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=active+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=resolved+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
 
+OSSF:
+![OSSF-Scorecard Score](https://img.shields.io/ossf-scorecard/github.com/LCSOGthb/Tools)
+
 Scrutinizer:
 ![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/LCSOGthb/Tools)
 
