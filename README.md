@@ -33,6 +33,9 @@ DeepSource:
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=active+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=resolved+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
 
+Scrutinizer:
+![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/LCSOGthb/Tools)
+
 Snyk:
 [![Known Vulnerabilities](https://snyk.io/test/github/LCSOGthb/Tools/badge.svg)](https://snyk.io/test/github/LCSOGthb/Tools)
 
