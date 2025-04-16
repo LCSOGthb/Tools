@@ -8,6 +8,8 @@
 ![Pull Requests](https://img.shields.io/github/issues-pr/LCSOGthb/Tools)
 ![GitHub branch status](https://img.shields.io/github/checks-status/LCSOGthb/Tools/main)
 ![GitHub branch check runs](https://img.shields.io/github/check-runs/LCSOGthb/Tools/main)
+![GitHub language count](https://img.shields.io/github/languages/count/LCSOGthb/Tools)
+![GitHub top language](https://img.shields.io/github/languages/top/LCSOGthb/Tools)
 
 CodeRabbit:
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/Tools?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FTools&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
