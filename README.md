@@ -38,6 +38,10 @@ DeepSource:
 OSSF:
 ![OSSF-Scorecard Score](https://img.shields.io/ossf-scorecard/github.com/LCSOGthb/Tools)
 
+Qlty:
+[![Maintainability](https://qlty.sh/badges/e3c02970-6a80-4e74-b130-8cca7af27d06/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
+[![Maintainability](https://qlty.sh/badges/e3c02970-6a80-4e74-b130-8cca7af27d06/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
+
 Scrutinizer:
 ![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/LCSOGthb/Tools)
 
