@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function getMyIP() {
     try {
       const response = await fetch("https://api.ipify.org?format=json");
+      if (!response.ok) throw new Error("Failed to fetch");
       const data = await response.json();
       document.getElementById("my-ip").textContent = `Your IP: ${data.ip}`;
     } catch (error) {
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showLoading();
       const aiPrediction = await getAIIPPrediction(ip); // AI-based prediction
       const response = await fetch(`https://ip-api.com/json/${ip}`);
+      if (!response.ok) throw new Error("Failed to fetch");
       const data = await response.json();
       if (data.status === "success") {
         document.getElementById("ip-info").textContent =
@@ -39,10 +41,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // AI-based IP Prediction (AI model can be integrated here)
   async function getAIIPPrediction(ip) {
-    const aiApi = "https://your-ai-api.com/predict"; // Your AI API endpoint
-    const response = await fetch(`${aiApi}?ip=${ip}`);
-    const data = await response.json();
-    return data.prediction; // AI's predicted location or data
+    try {
+      const aiApi = "https://your-ai-api.com/predict"; // Your AI API endpoint
+      const response = await fetch(`${aiApi}?ip=${ip}`);
+      if (!response.ok) throw new Error("Failed to fetch AI prediction");
+      const data = await response.json();
+      return data.prediction; // AI's predicted location or data
+    } catch (error) {
+      console.error("Error in AI Prediction:", error);
+      return "Unavailable";
+    }
   }
 
   // Internet Speed Test with AI optimization
@@ -74,7 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const start = Date.now();
     try {
-      await fetch(url, { method: "HEAD" });
+      const response = await fetch(url, { method: "HEAD" });
+      if (!response.ok) throw new Error("Ping failed");
       const end = Date.now();
       document.getElementById("ping-results").textContent =
         `Ping: ${end - start} ms`;
