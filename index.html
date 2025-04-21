@@ -16,24 +16,25 @@
     </header>
     <main>
       <section id="tools">
-        <div>
-          <h2>What's My IP Address</h2>
+        <!-- Add ARIA roles for better accessibility -->
+        <div role="region" aria-labelledby="ip-title">
+          <h2 id="ip-title">What's My IP Address</h2>
           <button onclick="getMyIP()">Check</button>
           <p id="my-ip">Your IP will appear here.</p>
         </div>
-        <div>
-          <h2>IP Lookup / Geolocation</h2>
+        <div role="region" aria-labelledby="lookup-title">
+          <h2 id="lookup-title">IP Lookup / Geolocation</h2>
           <input type="text" id="ip-input" placeholder="Enter an IP address" />
           <button onclick="lookupIP()">Lookup</button>
           <p id="ip-info">Results will appear here.</p>
         </div>
-        <div>
-          <h2>Internet Speed Test</h2>
+        <div role="region" aria-labelledby="speed-test-title">
+          <h2 id="speed-test-title">Internet Speed Test</h2>
           <button onclick="runSpeedTest()">Run Test</button>
           <p id="speed-results">Speed test results will appear here.</p>
         </div>
-        <div>
-          <h2>Ping</h2>
+        <div role="region" aria-labelledby="ping-title">
+          <h2 id="ping-title">Ping</h2>
           <input type="text" id="ping-url" placeholder="Enter URL" />
           <button onclick="ping()">Ping</button>
           <p id="ping-results">Ping results will appear here.</p>
