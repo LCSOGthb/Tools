@@ -22,7 +22,8 @@ async function lookupIP() {
     if (!response.ok) throw new Error("Failed to fetch IP data");
     const data = await response.json();
     if (data.status === "success") {
-      document.getElementById("ip-info").textContent = `Location: ${data.city}, ${data.region}, ${data.country} (ISP: ${data.isp})`;
+      document.getElementById("ip-info").textContent =
+        `Location: ${data.city}, ${data.region}, ${data.country} (ISP: ${data.isp})`;
     } else {
       showError("Invalid IP address.");
     }
@@ -41,7 +42,8 @@ function runSpeedTest() {
       const endTime = Date.now();
       const timeTaken = (endTime - startTime) / 1000; // seconds
       const speed = (1000000 / timeTaken / 1024).toFixed(2); // speed in KB/s
-      document.getElementById("speed-results").textContent = `Download speed: ${speed} KB/s`;
+      document.getElementById("speed-results").textContent =
+        `Download speed: ${speed} KB/s`;
     })
     .catch((error) => {
       showError("Speed test failed.");
@@ -60,7 +62,8 @@ async function ping() {
     const response = await fetch(url, { method: "HEAD" });
     if (!response.ok) throw new Error("Ping failed");
     const end = Date.now();
-    document.getElementById("ping-results").textContent = `Ping: ${end - start} ms`;
+    document.getElementById("ping-results").textContent =
+      `Ping: ${end - start} ms`;
   } catch (error) {
     showError("Ping failed.");
     console.error(error);
@@ -77,7 +80,8 @@ function showError(message) {
 }
 
 function validateIP(ip) {
-  const regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  const regex =
+    /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
   return regex.test(ip);
 }
 
