@@ -13,25 +13,28 @@ async function getMyIP() {
   }
 }
 
-// Lookup IP details
+// Lookup IP details or domain details
 async function lookupIP() {
-  const ip = document.getElementById("ip-input").value.trim(); // Trim spaces
-  if (!validateIP(ip)) {
-    showError("Please enter a valid IP address.");
+  const input = document.getElementById("ip-input").value.trim(); // Trim spaces
+  if (!validateIP(input) && !validateDomain(input)) {
+    showError("Please enter a valid IP address or domain name.");
     return;
   }
   try {
-    const response = await fetch(`https://ip-api.com/json/${ip}`);
-    if (!response.ok) throw new Error("Failed to fetch IP data");
+    const url = validateIP(input)
+      ? `https://ip-api.com/json/${input}`
+      : `https://ip-api.com/json/${input}`; // API can handle both domains and IPs
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch IP/domain data");
     const data = await response.json();
     if (data.status === "success") {
       document.getElementById("ip-info").textContent =
         `Location: ${data.city}, ${data.region}, ${data.country} (ISP: ${data.isp})`;
     } else {
-      showError("Invalid IP address or data not found.");
+      showError("Invalid IP address or domain name.");
     }
   } catch (error) {
-    showError("Error fetching IP data. Please try again.");
+    showError("Error fetching IP/domain data. Please try again.");
     console.error(error);
   }
 }
@@ -65,7 +68,10 @@ async function ping() {
   }
   const start = Date.now();
   try {
-    const response = await fetch(url, { method: "HEAD" });
+    const formattedUrl = url.startsWith("http://") || url.startsWith("https://")
+      ? url
+      : `http://${url}`; // Ensure the URL has a protocol
+    const response = await fetch(formattedUrl, { method: "HEAD" });
     if (!response.ok) throw new Error("Ping failed");
     const end = Date.now();
     document.getElementById("ping-results").textContent =
@@ -91,6 +97,12 @@ function validateIP(ip) {
   const regex =
     /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
   return regex.test(ip);
+}
+
+// Validate domain name
+function validateDomain(domain) {
+  const regex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(domain);
 }
 
 // Validate URL
