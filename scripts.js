@@ -15,7 +15,7 @@ async function getMyIP() {
 
 // Lookup IP details
 async function lookupIP() {
-  const ip = document.getElementById("ip-input").value.trim();
+  const ip = document.getElementById("ip-input").value.trim(); // Trim spaces
   if (!validateIP(ip)) {
     showError("Please enter a valid IP address.");
     return;
@@ -58,7 +58,7 @@ function runSpeedTest() {
 
 // Ping a URL
 async function ping() {
-  const url = document.getElementById("ping-url").value.trim();
+  const url = document.getElementById("ping-url").value.trim(); // Trim spaces
   if (!validateURL(url)) {
     showError("Please enter a valid URL.");
     return;
@@ -95,7 +95,7 @@ function validateIP(ip) {
 
 // Validate URL
 function validateURL(url) {
-  const regex = /^(https?:\/\/)?[\w.-]+(\.[\w.-]+)+[/#?]?.*$/;
+  const regex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w-]*)*\/?$/;
   return regex.test(url);
 }
 
