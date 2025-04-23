@@ -23,19 +23,20 @@ async function lookupIP() {
   try {
     const url = validateIP(input)
       ? `https://ip-api.com/json/${input}`
-      : `https://ip-api.com/json/${input}`; // API can handle both domains and IPs
+      : `https://ip-api.com/json/${input}`; // Using the same API for both cases
+
     const response = await fetch(url);
-    if (!response.ok) throw new Error("Failed to fetch IP/domain data");
     const data = await response.json();
+
     if (data.status === "success") {
       document.getElementById("ip-info").textContent =
         `Location: ${data.city}, ${data.region}, ${data.country} (ISP: ${data.isp})`;
     } else {
-      showError("Invalid IP address or domain name.");
+      showError("Data not found for the entered IP/domain.");
     }
   } catch (error) {
     showError("Error fetching IP/domain data. Please try again.");
-    console.error(error);
+    console.error("API Error:", error);
   }
 }
 
