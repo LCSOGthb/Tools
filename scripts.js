@@ -95,7 +95,7 @@ function validateIP (ip) {
 
 // Validate URL
 function validateURL (url) {
-  const regex = /^(https?:\/\/)?[A-Za-z0-9_.-]+(\.[A-Za-z0-9_.-]+)+[/#?]?.*$/
+  const regex = /^(https?:\/\/)?[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?(\.[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?)+[/#?]?.*$/
   return regex.test(url)
 }
 
