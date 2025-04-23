@@ -24,11 +24,12 @@ section#tools div {
   background: #f9f9f9;
 }
 
+/* Update button styles to meet WCAG 2 AA standards */
 button {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
-  background: #007bff;
-  color: #fff;
+  background: #0056b3; /* Darker blue for better contrast */
+  color: #ffffff; /* White text for high contrast */
   border: none;
   border-radius: 3px;
   cursor: pointer;
@@ -36,7 +37,13 @@ button {
 }
 
 button:hover {
-  background: #0056b3;
+  background: #003a80; /* Even darker blue for hover state */
+}
+
+/* Ensure focus states are accessible */
+button:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
 }
 
 #tools div:hover {
