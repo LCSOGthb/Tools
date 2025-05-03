@@ -1,6 +1,6 @@
 /* General styles */
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   line-height: 1.6;
@@ -68,12 +68,14 @@ h1 {
   transition: transform 0.3s ease;
 }
 
-.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container {
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__circle-container {
   transform: translateX(25px);
 }
 
 /* Cards container */
-/* From Uiverse.io by kamehame-ha */ 
+/* From Uiverse.io by kamehame-ha */
 .cards {
   display: flex;
   flex-direction: row;
@@ -104,13 +106,13 @@ h1 {
   border-radius: 10px;
   color: white;
   cursor: pointer;
-  transition: all 400ms;  /* Changed to include all properties */
+  transition: all 400ms; /* Changed to include all properties */
 }
 
 .cards .card p.tip {
   font-size: 1.5em;
   font-weight: 700;
-  margin-bottom: 10px;  /* Added spacing between title and description */
+  margin-bottom: 10px; /* Added spacing between title and description */
 }
 
 .cards .card p.second-text {
@@ -300,7 +302,9 @@ p {
   padding: 20px;
   width: 300px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .tool-cube:hover {
