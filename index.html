@@ -3,47 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI-Powered Toolbox</title>
+    <title>Tool Dashboard</title>
+    <!-- Add Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="light-theme">
     <header>
-      <h1>AI-Powered Online Toolbox</h1>
-      <p>
-        Your go-to tools enhanced by Artificial Intelligence for networking and
-        IP-related tasks.
-      </p>
+      <h1>Tool Dashboard</h1>
     </header>
-    <main>
-      <section id="tools">
-        <div>
-          <h2>What's My IP Address</h2>
-          <button onclick="getMyIP()">Check</button>
-          <p id="my-ip">Your IP will appear here.</p>
-        </div>
-        <div>
-          <h2>IP Lookup / Geolocation</h2>
-          <input type="text" id="ip-input" placeholder="Enter an IP address" />
-          <button onclick="lookupIP()">Lookup</button>
-          <p id="ip-info">Results will appear here.</p>
-        </div>
-        <div>
-          <h2>Internet Speed Test</h2>
-          <button onclick="runSpeedTest()">Run Test</button>
-          <p id="speed-results">Speed test results will appear here.</p>
-        </div>
-        <div>
-          <h2>Ping</h2>
-          <input type="text" id="ping-url" placeholder="Enter URL" />
-          <button onclick="ping()">Ping</button>
-          <p id="ping-results">Ping results will appear here.</p>
-        </div>
-      </section>
-      <div id="error-message" style="display: none"></div>
-    </main>
-    <footer>
-      <p>&copy; 2025 AI Toolbox</p>
-    </footer>
+
+    <div class="cards">
+      <div class="card red" onclick="openNetworkTools()">
+        <p class="tip">Network Tools</p>
+        <p class="second-text">Ping, Lookup, etc.</p>
+      </div>
+      <div class="card blue">
+        <p class="tip">File Converter</p>
+        <p class="second-text">Convert files easily</p>
+      </div>
+    </div>
+
+    <div id="tools-container" class="tools-container" style="display: none;">
+      <div class="tool-section">
+        <h2>Check My IP</h2>
+        <button onclick="getMyIP()">Check</button>
+        <p id="my-ip"></p>
+      </div>
+
+      <div class="tool-section">
+        <h2>IP Lookup</h2>
+        <input type="text" id="ip-input" placeholder="Enter an IP address" />
+        <button onclick="lookupIP()">Lookup</button>
+        <p id="ip-info"></p>
+      </div>
+
+      <div class="tool-section">
+        <h2>Ping</h2>
+        <input type="text" id="ping-url" placeholder="Enter URL" />
+        <button onclick="ping()">Ping</button>
+        <p id="ping-results"></p>
+      </div>
+
+      <div class="tool-section">
+        <h2>Speed Test</h2>
+        <button onclick="runSpeedTest()">Run Test</button>
+        <p id="speed-results"></p>
+      </div>
+    </div>
+
     <script src="scripts.js"></script>
   </body>
 </html>
