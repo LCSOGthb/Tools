@@ -15,6 +15,7 @@
       <h1>Tool Dashboard</h1>
     </header>
 
+    <!-- From Uiverse.io by kamehame-ha -->
     <div class="cards">
       <div class="card red" onclick="openNetworkTools()">
         <p class="tip">Network Tools</p>
@@ -35,8 +36,12 @@
 
       <div class="tool-section">
         <h2>IP Lookup</h2>
-        <input type="text" id="ip-input" placeholder="Enter an IP address" />
-        <button onclick="lookupIP()">Lookup</button>
+        <div class="input-group">
+          <input type="text" 
+                 id="ip-input" 
+                 placeholder="Enter an IP address or domain" />
+          <button onclick="lookupIP()">Lookup</button>
+        </div>
         <p id="ip-info"></p>
       </div>
 
@@ -53,6 +58,8 @@
         <p id="speed-results"></p>
       </div>
     </div>
+
+    <div id="error-message" class="error-message"></div>
 
     <script src="scripts.js"></script>
   </body>
