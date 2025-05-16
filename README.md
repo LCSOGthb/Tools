@@ -17,10 +17,6 @@ CodeRabbit:
 CodeFactor:
 [![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/tools/badge)](https://www.codefactor.io/repository/github/lcsogthb/tools)
 
-CodeClimate:
-[![Maintainability](https://api.codeclimate.com/v1/badges/99604814974f48ebd7ae/maintainability)](https://codeclimate.com/github/LCSOGthb/Tools/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/99604814974f48ebd7ae/test_coverage)](https://codeclimate.com/github/LCSOGthb/Tools/test_coverage)
-
 Codacy:
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/25ad5a464bbe44f482075089cc12e767)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
