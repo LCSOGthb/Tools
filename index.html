@@ -4,14 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Add Security Headers -->
-    <meta http-equiv="Content-Security-Policy" 
-          content="default-src 'self'; connect-src 'self' https://api.ipify.org https://dns.google; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    <meta http-equiv="X-Frame-Options" 
-          content="SAMEORIGIN">
-    <meta http-equiv="X-Content-Type-Options" 
-          content="nosniff">
-    <meta name="referrer" 
-          content="strict-origin-when-cross-origin">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' https://api.ipify.org https://dns.google; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
+    />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Tool Dashboard</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -31,7 +30,7 @@
       </div>
     </div>
 
-    <div id="tools-container" class="tools-container" style="display: none;">
+    <div id="tools-container" class="tools-container" style="display: none">
       <div class="tool-section">
         <h2>Check My IP</h2>
         <button onclick="getMyIP()">Check</button>
@@ -40,14 +39,14 @@
 
       <div class="tool-section">
         <h2>IP Lookup</h2>
-        <input type="text" id="ip-input" placeholder="Enter IP or domain">
+        <input type="text" id="ip-input" placeholder="Enter IP or domain" />
         <button onclick="lookupIP()">Lookup</button>
         <p id="ip-info"></p>
       </div>
 
       <div class="tool-section">
         <h2>Ping</h2>
-        <input type="text" id="ping-url" placeholder="Enter URL">
+        <input type="text" id="ping-url" placeholder="Enter URL" />
         <button onclick="ping()">Ping</button>
         <p id="ping-results"></p>
       </div>
