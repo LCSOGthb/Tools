@@ -1,8 +1,20 @@
 {
   "dependencies": {
+    "express": "^5.1.0",
     "speedtest-net": "^2.2.0"
   },
   "overrides": {
     "http-cache-semantics@<=4.1.1": "4.1.1"
-  }
+  },
+  "name": "tools",
+  "version": "1.0.0",
+  "description": "![Lines Of Code](https://tokei.rs/b1/github/LCSOGthb/Tools) ![Repo Size](https://img.shields.io/github/repo-size/LCSOGthb/Tools) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LCSOGthb/Tools) ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/LCSOGthb/Tools) ![Last Commit](https://img.shields.io/github/last-commit/LCSOGthb/Tools) ![Open Issues](https://img.shields.io/github/issues/LCSOGthb/Tools) ![Closed Issues](https://img.shields.io/github/issues-closed/LCSOGthb/Tools) ![Pull Requests](https://img.shields.io/github/issues-pr/LCSOGthb/Tools) ![GitHub branch status](https://img.shields.io/github/checks-status/LCSOGthb/Tools/main) ![GitHub branch check runs](https://img.shields.io/github/check-runs/LCSOGthb/Tools/main) ![GitHub language count](https://img.shields.io/github/languages/count/LCSOGthb/Tools) ![GitHub top language](https://img.shields.io/github/languages/top/LCSOGthb/Tools)",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
