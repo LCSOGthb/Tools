@@ -1,157 +1,127 @@
 // Ensure functions are globally accessible
 
-// Show the tools container when the Network Tools card is clicked
-function openNetworkTools() {
-    const toolsContainer = document.getElementById('tools-container');
-    if (toolsContainer) {
-        toolsContainer.style.display = 'block';
+// Cache DOM elements
+const elements = {
+    toolsContainer: null,
+    ipInput: null,
+    pingUrl: null,
+    myIp: null,
+    ipInfo: null,
+    pingResults: null,
+    errorMessage: null
+};
+
+// Initialize DOM elements and event listeners
+function initializeApp() {
+    // Cache DOM elements
+    elements.toolsContainer = document.getElementById('tools-container');
+    elements.ipInput = document.getElementById('ip-input');
+    elements.pingUrl = document.getElementById('ping-url');
+    elements.myIp = document.getElementById('my-ip');
+    elements.ipInfo = document.getElementById('ip-info');
+    elements.pingResults = document.getElementById('ping-results');
+    elements.errorMessage = document.getElementById('error-message');
+
+    // Add Enter key support
+    if (elements.ipInput) {
+        elements.ipInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') lookupIP();
+        });
+    }
+
+    if (elements.pingUrl) {
+        elements.pingUrl.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') ping();
+        });
     }
 }
 
-// Fetch and display the user's IP address
+// Show/hide the tools container
+function openNetworkTools() {
+    const container = document.getElementById('tools-container');
+    if (container) {
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+// Get user's IP address
 async function getMyIP() {
     try {
-        // Using a basic DNS resolver API
-        const response = await fetch('https://1.1.1.1/cdn-cgi/trace');
-        const text = await response.text();
-        const ip = text.split('\n')
-            .find(line => line.startsWith('ip='))
-            ?.split('=')[1];
-
+        const response = await fetch('https://api.ipify.org?format=json');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
         const myIpElement = document.getElementById('my-ip');
-        if (myIpElement && ip) {
-            myIpElement.textContent = `Your IP: ${ip}`;
+        if (myIpElement) {
+            myIpElement.textContent = `Your IP: ${data.ip}`;
         }
     } catch (error) {
-        showError('Unable to fetch IP address.');
+        showError('Unable to fetch IP address');
         console.error('Error fetching IP:', error);
     }
 }
 
-// Validate input for IP or domain
-function validateInput(input) {
-    // IP address regex
-    const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
-    // Basic domain regex
-    const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/;
-    
-    return ipRegex.test(input) || domainRegex.test(input);
-}
-
-// Lookup details for an IP address or domain
+// Lookup IP or domain
 async function lookupIP() {
     try {
-        const ipInput = document.getElementById('ip-input');
-        if (!ipInput || !ipInput.value.trim()) {
-            throw new Error('Please enter an IP address or domain');
-        }
+        const input = elements.ipInput?.value?.trim();
+        if (!input) throw new Error('Please enter an IP or domain');
 
-        const input = ipInput.value.trim();
-        if (!validateInput(input)) {
-            throw new Error('Invalid IP address or domain format');
-        }
-
-        // Using DNS resolver that works with both IP and domains
         const response = await fetch(`https://dns.google/resolve?name=${input}`);
+        if (!response.ok) throw new Error('Lookup failed');
         const data = await response.json();
 
-        const ipInfoElement = document.getElementById('ip-info');
-        if (ipInfoElement) {
-            ipInfoElement.textContent = data.Answer 
-                ? `Domain/IP resolves successfully\nResolved addresses: ${data.Answer.map(a => a.data).join(', ')}` 
-                : `Lookup failed`;
+        if (elements.ipInfo) {
+            elements.ipInfo.textContent = data.Answer 
+                ? `Resolved: ${data.Answer[0].data}`
+                : 'Lookup failed';
         }
     } catch (error) {
-        showError(error.message || 'Unable to lookup address.');
+        showError(error.message || 'Unable to lookup address');
         console.error('Error during lookup:', error);
     }
 }
 
-// Ping function with improved domain handling
+// Ping function
 async function ping() {
     try {
-        const urlInput = document.getElementById('ping-url');
-        if (!urlInput || !urlInput.value.trim()) {
-            throw new Error('Please enter a URL or domain');
-        }
+        const input = elements.pingUrl?.value?.trim();
+        if (!input) throw new Error('Please enter a URL');
 
-        const input = urlInput.value.trim();
-        const url = formatUrl(input);
         const startTime = performance.now();
-
-        const response = await Promise.race([
-            fetch(url, {
-                mode: 'no-cors',
-                cache: 'no-cache'
-            }),
-            new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Request timeout')), 5000)
-            )
-        ]);
-
-        const endTime = performance.now();
-        const pingTime = Math.round(endTime - startTime);
-
-        const resultsElement = document.getElementById('ping-results');
-        if (resultsElement) {
-            resultsElement.textContent = `Ping time: ${pingTime}ms`;
+        await fetch(`https://${input.replace(/^https?:\/\//, '')}`, { 
+            mode: 'no-cors' 
+        });
+        
+        if (elements.pingResults) {
+            elements.pingResults.textContent = 
+                `Ping time: ${Math.round(performance.now() - startTime)}ms`;
         }
     } catch (error) {
-        const resultsElement = document.getElementById('ping-results');
-        if (resultsElement) {
-            resultsElement.textContent = 'Host is reachable';
-        }
+        showError('Unable to ping the specified URL');
+        console.error('Error during ping:', error);
     }
 }
 
-// Helper function to format URLs
+// Format URL helper
 function formatUrl(input) {
     try {
-        // Remove any protocol if present
-        let cleanInput = input.replace(/^(https?:\/\/)/, '');
-        // Remove any paths or query parameters
-        cleanInput = cleanInput.split('/')[0];
-        // Construct final URL
+        let cleanInput = input.toLowerCase().trim()
+            .replace(/^(https?:\/\/)/, '')
+            .split('/')[0];
         return `https://${cleanInput}`;
     } catch (error) {
         throw new Error('Invalid URL format');
     }
 }
 
-// Validate and secure URL
-function validateAndSecureURL(url) {
-    try {
-        let secureUrl = url.toLowerCase().trim();
-        if (!secureUrl.startsWith('http://') && !secureUrl.startsWith('https://')) {
-            secureUrl = 'https://' + secureUrl;
-        } else if (secureUrl.startsWith('http://')) {
-            secureUrl = secureUrl.replace('http://', 'https://');
-        }
-        
-        const urlObj = new URL(secureUrl);
-        return urlObj.href;
-    } catch {
-        throw new Error('Invalid URL format');
-    }
-}
-
-// Show error message
+// Show error messages
 function showError(message) {
     const errorElement = document.getElementById('error-message');
-    if (!errorElement) {
-        console.error('Error element not found');
-        return;
-    }
+    if (!errorElement) return;
     
     errorElement.textContent = message;
     errorElement.style.display = 'block';
-    
-    setTimeout(() => {
-        const element = document.getElementById('error-message');
-        if (element) {
-            element.style.display = 'none';
-        }
-    }, 5000);
+    setTimeout(() => errorElement.style.display = 'none', 5000);
 }
 
 // Run speed test
@@ -198,45 +168,12 @@ document.getElementById('theme-toggle').addEventListener('change', function () {
   }
 });
 
-// Initialize event listeners
-document.addEventListener('DOMContentLoaded', () => {
-    // Add any initialization code here
-    const toolsContainer = document.getElementById('tools-container');
-    if (toolsContainer) {
-        toolsContainer.style.display = 'none';
-    }
-    initializeInputHandlers();
-});
+// Initialize app when document loads
+document.addEventListener('DOMContentLoaded', initializeApp);
 
-// Initialize input handlers for Enter key
-function initializeInputHandlers() {
-    const pingInput = document.getElementById('ping-url');
-    if (pingInput) {
-        pingInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                ping();
-            }
-        });
-    }
-}
-
-// Add event listener for Enter key
-function initializeInputHandlers() {
-    const ipInput = document.getElementById('ip-input');
-    if (ipInput) {
-        ipInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                lookupIP();
-            }
-        });
-    }
-}
-
-// Expose functions to global scope
-window.getMyIP = getMyIP
-window.lookupIP = lookupIP
-window.runSpeedTest = runSpeedTest
-window.ping = ping
-window.openNetworkTools = openNetworkTools
+// Expose necessary functions to global scope
+window.getMyIP = getMyIP;
+window.lookupIP = lookupIP;
+window.runSpeedTest = runSpeedTest;
+window.ping = ping;
+window.openNetworkTools = openNetworkTools;

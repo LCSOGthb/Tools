@@ -4,10 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tool Dashboard</title>
-    <!-- Add Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="light-theme">
@@ -15,7 +11,6 @@
       <h1>Tool Dashboard</h1>
     </header>
 
-    <!-- From Uiverse.io by kamehame-ha -->
     <div class="cards">
       <div class="card red" onclick="openNetworkTools()">
         <p class="tip">Network Tools</p>
@@ -36,31 +31,20 @@
 
       <div class="tool-section">
         <h2>IP Lookup</h2>
-        <div class="input-group">
-          <input type="text" 
-                 id="ip-input" 
-                 placeholder="Enter an IP address or domain" />
-          <button onclick="lookupIP()">Lookup</button>
-        </div>
+        <input type="text" id="ip-input" placeholder="Enter IP or domain">
+        <button onclick="lookupIP()">Lookup</button>
         <p id="ip-info"></p>
       </div>
 
       <div class="tool-section">
         <h2>Ping</h2>
-        <input type="text" id="ping-url" placeholder="Enter URL" />
+        <input type="text" id="ping-url" placeholder="Enter URL">
         <button onclick="ping()">Ping</button>
         <p id="ping-results"></p>
-      </div>
-
-      <div class="tool-section">
-        <h2>Speed Test</h2>
-        <button onclick="runSpeedTest()">Run Test</button>
-        <p id="speed-results"></p>
       </div>
     </div>
 
     <div id="error-message" class="error-message"></div>
-
     <script src="scripts.js"></script>
   </body>
 </html>
