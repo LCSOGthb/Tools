@@ -56,8 +56,3 @@ SonarQube Cloud:
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
-
-For the Badge:
-[![forthebadge](https://forthebadge.com/images/badges/uses-html.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/uses-js.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/uses-css.svg)](https://forthebadge.com)
