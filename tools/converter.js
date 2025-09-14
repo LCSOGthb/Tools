@@ -17,21 +17,23 @@ convertBtn.addEventListener("click", () => {
   switch (type) {
     case "length":
       // meters <-> kilometers
-      result = value >= 1000 
-        ? `${(value / 1000).toFixed(2)} km` 
-        : `${(value * 1000).toFixed(2)} m`;
+      result =
+        value >= 1000
+          ? `${(value / 1000).toFixed(2)} km`
+          : `${(value * 1000).toFixed(2)} m`;
       break;
 
     case "weight":
       // kilograms <-> grams
-      result = value >= 1 
-        ? `${(value * 1000).toFixed(2)} g` 
-        : `${(value / 1000).toFixed(2)} kg`;
+      result =
+        value >= 1
+          ? `${(value * 1000).toFixed(2)} g`
+          : `${(value / 1000).toFixed(2)} kg`;
       break;
 
     case "temperature":
       // Celsius <-> Fahrenheit
-      result = `${value} °C = ${(value * 9/5 + 32).toFixed(2)} °F`;
+      result = `${value} °C = ${((value * 9) / 5 + 32).toFixed(2)} °F`;
       break;
 
     default:

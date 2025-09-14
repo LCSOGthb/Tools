@@ -4,7 +4,7 @@
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .converter-box {
@@ -17,7 +17,7 @@
   font-weight: bold;
 }
 
-.converter-box input, 
+.converter-box input,
 .converter-box select {
   width: 100%;
   padding: 0.6rem;
