@@ -1,43 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All-in-One Tools</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools Hub</title>
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  <header>
-    <h1>All-in-One Tools</h1>
-    <p>A collection of useful tools, all in one place.</p>
+  <!-- Navbar -->
+  <header class="navbar">
+    <h1 class="logo">🛠 Tools Hub</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="tools/password.html">Password Generator</a>
+      <a href="tools/qr.html">QR Generator</a>
+      <a href="tools/calculator.html">Calculator</a>
+      <a href="tools/unit.html">Unit Converter</a>
+    </nav>
   </header>
 
-  <main class="tool-grid">
-    <div class="tool-card">
-      <h2>Unit Converter</h2>
-      <p>Convert between common units (length, weight, temperature).</p>
-      <a href="tools/converter.html" class="btn">Open</a>
-    </div>
-    <div class="tool-card">
-      <h2>Calculator</h2>
-      <p>Perform quick calculations.</p>
-      <a href="tools/calculator.html" class="btn">Open</a>
-    </div>
-    <div class="tool-card">
-      <h2>Password Generator</h2>
-      <p>Create strong and secure passwords.</p>
-      <a href="tools/password.html" class="btn">Open</a>
-     </div>
-    <div class="tool-card">
-      <h2>QR Code Generator</h2>
-      <p>Turn text or links into QR codes.</p>
-      <a href="tools/qr.html" class="btn">Open</a>
-    </div>
+  <!-- Main -->
+  <main class="container">
+    <h2 class="section-title">Available Tools</h2>
+    <div class="grid">
+      <!-- Password Generator -->
+      <div class="card">
+        <h3>Password Generator</h3>
+        <p>Create secure random passwords with custom settings.</p>
+        <a href="tools/password.html" class="btn">Open Tool</a>
+      </div>
 
+      <!-- QR Generator -->
+      <div class="card">
+        <h3>QR Code Generator</h3>
+        <p>Create and download QR codes for any text or URL.</p>
+        <a href="tools/qr.html" class="btn">Open Tool</a>
+      </div>
+
+      <!-- Calculator -->
+      <div class="card">
+        <h3>Calculator</h3>
+        <p>Simple calculator for quick math operations.</p>
+        <a href="tools/calculator.html" class="btn">Open Tool</a>
+      </div>
+
+      <!-- Unit Converter -->
+      <div class="card">
+        <h3>Unit Converter</h3>
+        <p>Convert between length, weight, temperature, and more.</p>
+        <a href="tools/unit.html" class="btn">Open Tool</a>
+      </div>
+    </div>
   </main>
-
-  <footer>
-    <p>Made with ❤️ by LCS</p>
-  </footer>
 </body>
 </html>
