@@ -6,7 +6,7 @@ Sentry.init({
   sendDefaultPii: true,
   integrations: [
     new BrowserTracing(), // React + Browser tracing
-    new Sentry.Replay(),  // Session replay
+    new Sentry.Replay(), // Session replay
   ],
   tracesSampleRate: 1.0,
   tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
