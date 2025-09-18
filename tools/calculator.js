@@ -3,19 +3,17 @@ const buttons = document.querySelectorAll(".calc-buttons button");
 
 let current = "";
 
-buttons.forEach(btn => {
+buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const value = btn.textContent;
 
     if (value === "C") {
       current = "";
       screen.textContent = "0";
-    } 
-    else if (value === "←") {
+    } else if (value === "←") {
       current = current.slice(0, -1);
       screen.textContent = current || "0";
-    }
-    else if (value === "=") {
+    } else if (value === "=") {
       try {
         current = eval(current).toString();
         screen.textContent = current;
@@ -23,8 +21,7 @@ buttons.forEach(btn => {
         screen.textContent = "Error";
         current = "";
       }
-    } 
-    else {
+    } else {
       current += value;
       screen.textContent = current;
     }
@@ -36,7 +33,7 @@ function calculateExpression(expression) {
     const result = eval(expression);
     Sentry.captureMessage("Calculation performed", {
       level: "info",
-      extra: { expression: expression, result: result }
+      extra: { expression, result },
     });
     return result;
   } catch (error) {

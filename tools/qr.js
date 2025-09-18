@@ -17,7 +17,7 @@ generateBtn.addEventListener("click", () => {
 
   // Generate new QR
   qr = new QRCode(qrCodeContainer, {
-    text: text,
+    text,
     width: 200,
     height: 200,
     colorDark: "#000000",
@@ -59,7 +59,7 @@ document.getElementById("generateBtn").addEventListener("click", () => {
 
   Sentry.captureMessage("QR code generated", {
     level: "info",
-    extra: { inputLength: text.length }
+    extra: { inputLength: text.length },
   });
 });
 
