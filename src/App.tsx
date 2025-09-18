@@ -19,18 +19,8 @@ export default function App() {
       {tools.map((tool) => (
         <ToolCard key={tool.name} name={tool.name} content={tool.component} />
       ))}
-    </main>
-  );
-}
 
-export default function ErrorButton() {
-  return (
-    <button
-      onClick={() => {
-        throw new Error("This is your first error!");
-      }}
-    >
-      Break the world
-    </button>
+      <ToolCard name="Sentry Test" content={<ErrorButton />} />
+    </main>
   );
 }
