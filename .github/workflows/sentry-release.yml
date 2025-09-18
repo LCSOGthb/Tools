@@ -15,20 +15,30 @@ jobs:
       - name: Install Sentry CLI
         run: npm install -g @sentry/cli
 
-      - name: Create Sentry release
+      - name: Generate release version
+        id: version
         run: |
-          sentry-cli releases new aiot@0.1
-          sentry-cli releases set-commits aiot@0.1 --auto
-          sentry-cli releases finalize aiot@0.1
+          VERSION="aiot@0.$(date +%Y%m%d%H%M%S)"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create js/sentry-release.js
+        run: |
+          echo "const SENTRY_RELEASE = '$VERSION';" > js/sentry-release.js
+
+      - name: Create Sentry release
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        run: |
+          sentry-cli releases new "$VERSION"
+          sentry-cli releases set-commits "$VERSION" --auto
+          sentry-cli releases finalize "$VERSION"
 
       - name: Create Deploy
-        run: |
-          sentry-cli releases deploys aiot@0.1 new -e production
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        run: |
+          sentry-cli releases deploys "$VERSION" new -e production
