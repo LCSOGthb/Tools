@@ -15,7 +15,9 @@ let targetTime = null;
 let paused = false;
 let remainingWhenPaused = null;
 
-function pad(n) { return String(n).padStart(2, "0"); }
+function pad(n) {
+  return String(n).padStart(2, "0");
+}
 
 function updateDisplay(diff) {
   if (diff <= 0) {
@@ -120,7 +122,7 @@ pauseBtn.addEventListener("click", pauseCountdown);
 resetBtn.addEventListener("click", resetCountdown);
 
 // Preset buttons: add days or minutes to now and populate input
-presets.forEach(btn => {
+presets.forEach((btn) => {
   btn.addEventListener("click", () => {
     const days = Number(btn.dataset.days || 0);
     const minutes = Number(btn.dataset.minutes || 0);
@@ -130,7 +132,8 @@ presets.forEach(btn => {
 
     // Format to datetime-local value (local timezone)
     const localISO = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-      .toISOString().slice(0,16);
+      .toISOString()
+      .slice(0, 16);
     targetInput.value = localISO;
   });
 });
