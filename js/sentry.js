@@ -1,5 +1,7 @@
 Sentry.init({
   dsn: "https://c38250fd2a7fdb30e16b4673276ff3de@o4509151884148736.ingest.us.sentry.io/4510038332080128",
+  release: "aiot@0.1",
+  environment: "production",
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration(),
