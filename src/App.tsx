@@ -1,3 +1,5 @@
+import React from "react";
+import ErrorButton from "./components/ErrorButton";
 import ToolCard from "./components/ToolCard";
 import Calculator from "./tools/Calculator";
 import PasswordGenerator from "./tools/PasswordGenerator";
@@ -18,5 +20,17 @@ export default function App() {
         <ToolCard key={tool.name} name={tool.name} content={tool.component} />
       ))}
     </main>
+  );
+}
+
+export default function ErrorButton() {
+  return (
+    <button
+      onClick={() => {
+        throw new Error("This is your first error!");
+      }}
+    >
+      Break the world
+    </button>
   );
 }
