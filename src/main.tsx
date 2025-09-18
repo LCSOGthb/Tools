@@ -10,5 +10,5 @@ const root = createRoot(container);
 root.render(
   <ErrorBoundary fallback={<h2>Something went wrong.</h2>}>
     <App />
-  </ErrorBoundary>
+  </ErrorBoundary>,
 );
