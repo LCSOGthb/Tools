@@ -1,0 +1,26 @@
+name: Sentry Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Sentry CLI
+        run: npm install -g @sentry/cli
+
+      - name: Create Sentry release
+        run: |
+          sentry-cli releases new aiot@0.1
+          sentry-cli releases set-commits aiot@0.1 --auto
+          sentry-cli releases finalize aiot@0.1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
