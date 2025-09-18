@@ -1,40 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timestamp Converter</title>
-  <link rel="stylesheet" href="timestamp.css">
-</head>
-<body>
-  <header>
-    <h1>⏳ Timestamp Converter</h1>
-    <p>Convert between UNIX timestamps and human-readable dates.</p>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timestamp Converter</title>
+    <link rel="stylesheet" href="timestamp.css" />
+  </head>
+  <body>
+    <header>
+      <h1>⏳ Timestamp Converter</h1>
+      <p>Convert between UNIX timestamps and human-readable dates.</p>
+    </header>
 
-  <main class="timestamp-container">
-    <div class="converter-box">
-      <h2>Timestamp ➝ Date</h2>
-      <input type="number" id="timestampInput" placeholder="Enter UNIX timestamp">
-      <button onclick="convertToDate()">Convert</button>
-      <p id="dateResult">Result: --</p>
-    </div>
+    <main class="timestamp-container">
+      <div class="converter-box">
+        <h2>Timestamp ➝ Date</h2>
+        <input
+          type="number"
+          id="timestampInput"
+          placeholder="Enter UNIX timestamp"
+        />
+        <button onclick="convertToDate()">Convert</button>
+        <p id="dateResult">Result: --</p>
+      </div>
 
-    <div class="converter-box">
-      <h2>Date ➝ Timestamp</h2>
-      <input type="datetime-local" id="dateInput">
-      <button onclick="convertToTimestamp()">Convert</button>
-      <p id="timestampResult">Result: --</p>
-    </div>
-  </main>
+      <div class="converter-box">
+        <h2>Date ➝ Timestamp</h2>
+        <input type="datetime-local" id="dateInput" />
+        <button onclick="convertToTimestamp()">Convert</button>
+        <p id="timestampResult">Result: --</p>
+      </div>
+    </main>
 
-  <footer>
-    <p><a href="../index.html">⬅ Back to Tools</a></p>
-  </footer>
+    <footer>
+      <p><a href="../index.html">⬅ Back to Tools</a></p>
+    </footer>
 
-  <script src="timestamp.js"></script>
-</body>
+    <script src="timestamp.js"></script>
+  </body>
 </html>
 
-<script src="https://js.sentry-cdn.com/c38250fd2a7fdb30e16b4673276ff3de.min.js" crossorigin="anonymous"></script>
+<script
+  src="https://js.sentry-cdn.com/c38250fd2a7fdb30e16b4673276ff3de.min.js"
+  crossorigin="anonymous"
+></script>
 <script src="../js/sentry.js"></script>
