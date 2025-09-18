@@ -41,3 +41,27 @@ copyBtn.addEventListener("click", () => {
     alert("Password copied!");
   }
 });
+
+document.getElementById("generateBtn").addEventListener("click", () => {
+  const length = document.getElementById("length").value;
+  const password = generatePassword(); // assume you already have this
+
+  document.getElementById("result").value = password;
+
+  // Track usage
+  Sentry.captureMessage("Password generated", {
+    level: "info",
+    extra: {
+      length: length,
+      lowercase: document.getElementById("lowercase").checked,
+      uppercase: document.getElementById("uppercase").checked,
+      numbers: document.getElementById("numbers").checked,
+      symbols: document.getElementById("symbols").checked
+    }
+  });
+});
+
+document.getElementById("copyBtn").addEventListener("click", () => {
+  navigator.clipboard.writeText(document.getElementById("result").value);
+  Sentry.captureMessage("Password copied", { level: "info" });
+});

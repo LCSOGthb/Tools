@@ -51,3 +51,18 @@ function downloadImage(dataUrl) {
   link.click();
   document.body.removeChild(link);
 }
+
+document.getElementById("generateBtn").addEventListener("click", () => {
+  const text = document.getElementById("qrText").value;
+
+  // ... your QR generator code ...
+
+  Sentry.captureMessage("QR code generated", {
+    level: "info",
+    extra: { inputLength: text.length }
+  });
+});
+
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  Sentry.captureMessage("QR code downloaded", { level: "info" });
+});

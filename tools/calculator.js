@@ -30,3 +30,17 @@ buttons.forEach(btn => {
     }
   });
 });
+
+function calculateExpression(expression) {
+  try {
+    const result = eval(expression);
+    Sentry.captureMessage("Calculation performed", {
+      level: "info",
+      extra: { expression: expression, result: result }
+    });
+    return result;
+  } catch (error) {
+    Sentry.captureException(error); // error tracking
+    return "Error";
+  }
+}

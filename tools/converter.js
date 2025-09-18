@@ -40,3 +40,16 @@ convertBtn.addEventListener("click", () => {
 
   resultSpan.textContent = result;
 });
+
+document.getElementById("convertBtn").addEventListener("click", () => {
+  const from = document.getElementById("fromUnit").value;
+  const to = document.getElementById("toUnit").value;
+  const value = document.getElementById("inputValue").value;
+
+  // ... your conversion code ...
+
+  Sentry.captureMessage("Unit conversion", {
+    level: "info",
+    extra: { from: from, to: to, value: value }
+  });
+});

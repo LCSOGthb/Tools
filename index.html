@@ -41,3 +41,24 @@
   </footer>
 </body>
 </html>
+
+<script
+  src="https://js.sentry-cdn.com/3410730c33a0ed28fc51370949258ba8.min.js"
+  crossorigin="anonymous"
+></script>
+
+<script>
+  Sentry.init({
+    integrations: [
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+  });
+</script>
+
+<script>
+  myUndefinedFunction(); // This will trigger an error
+</script>
