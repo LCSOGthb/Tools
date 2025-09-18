@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [react(), sentryVitePlugin({
     org: "lcsorganization-el",
     project: "tools"
+  }), sentryVitePlugin({
+    org: "lcsorganization-el",
+    project: "tools"
   })],
 
   // points to the root now
