@@ -1,63 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Countdown Timer</title>
-  <link rel="stylesheet" href="countdown.css" />
-</head>
-<body>
-  <header>
-    <h1>⏱ Countdown Timer</h1>
-    <p>Set a target date/time and watch the live countdown.</p>
-  </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Countdown Timer</title>
+    <link rel="stylesheet" href="countdown.css" />
+  </head>
+  <body>
+    <header>
+      <h1>⏱ Countdown Timer</h1>
+      <p>Set a target date/time and watch the live countdown.</p>
+    </header>
 
-  <main class="countdown-container">
-    <div class="controls">
-      <label for="targetInput">Target date & time</label>
-      <input type="datetime-local" id="targetInput" />
+    <main class="countdown-container">
+      <div class="controls">
+        <label for="targetInput">Target date & time</label>
+        <input type="datetime-local" id="targetInput" />
 
-      <div class="buttons">
-        <button id="startBtn" class="btn">Start</button>
-        <button id="pauseBtn" class="btn" disabled>Pause</button>
-        <button id="resetBtn" class="btn" disabled>Reset</button>
+        <div class="buttons">
+          <button id="startBtn" class="btn">Start</button>
+          <button id="pauseBtn" class="btn" disabled>Pause</button>
+          <button id="resetBtn" class="btn" disabled>Reset</button>
+        </div>
+
+        <div class="presets">
+          <button class="preset" data-days="1">+1 day</button>
+          <button class="preset" data-days="7">+7 days</button>
+          <button class="preset" data-minutes="5">+5 minutes</button>
+        </div>
       </div>
 
-      <div class="presets">
-        <button class="preset" data-days="1">+1 day</button>
-        <button class="preset" data-days="7">+7 days</button>
-        <button class="preset" data-minutes="5">+5 minutes</button>
+      <div class="display" id="display">
+        <div class="time-part">
+          <span id="days">--</span>
+          <small>Days</small>
+        </div>
+        <div class="time-part">
+          <span id="hours">--</span>
+          <small>Hours</small>
+        </div>
+        <div class="time-part">
+          <span id="minutes">--</span>
+          <small>Minutes</small>
+        </div>
+        <div class="time-part">
+          <span id="seconds">--</span>
+          <small>Seconds</small>
+        </div>
       </div>
-    </div>
 
-    <div class="display" id="display">
-      <div class="time-part">
-        <span id="days">--</span>
-        <small>Days</small>
-      </div>
-      <div class="time-part">
-        <span id="hours">--</span>
-        <small>Hours</small>
-      </div>
-      <div class="time-part">
-        <span id="minutes">--</span>
-        <small>Minutes</small>
-      </div>
-      <div class="time-part">
-        <span id="seconds">--</span>
-        <small>Seconds</small>
-      </div>
-    </div>
+      <div class="message" id="message">No countdown running</div>
+    </main>
 
-    <div class="message" id="message">No countdown running</div>
-  </main>
+    <footer>
+      <p><a href="../index.html">⬅ Back to Tools</a></p>
+    </footer>
 
-  <footer>
-    <p><a href="../index.html">⬅ Back to Tools</a></p>
-  </footer>
-
-  <script src="countdown.js"></script>
-</body>
+    <script src="countdown.js"></script>
+  </body>
 </html>
 
 <script src="https://browser.sentry-cdn.com/7.120.1/bundle.tracing.replay.min.js"></script>

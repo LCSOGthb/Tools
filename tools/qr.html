@@ -1,39 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Generator</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="qr.css">
-  <!-- QRCode.js library -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-</head>
-<body>
-  <header>
-    <h1>QR Code Generator</h1>
-    <a href="../index.html" class="btn">← Back</a>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="qr.css" />
+    <!-- QRCode.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>QR Code Generator</h1>
+      <a href="../index.html" class="btn">← Back</a>
+    </header>
 
-<main class="qr-container">
-  <div class="qr-box">
-    <label for="qrText">Enter text or URL:</label>
-    <input type="text" id="qrText" placeholder="https://example.com">
-  </div>
+    <main class="qr-container">
+      <div class="qr-box">
+        <label for="qrText">Enter text or URL:</label>
+        <input type="text" id="qrText" placeholder="https://example.com" />
+      </div>
 
-  <div class="qr-box">
-    <button id="generateBtn" class="btn">Generate</button>
-  </div>
+      <div class="qr-box">
+        <button id="generateBtn" class="btn">Generate</button>
+      </div>
 
-  <div class="qr-box" id="qrcode"></div>
+      <div class="qr-box" id="qrcode"></div>
 
-  <div class="qr-box">
-    <button id="downloadBtn" class="btn" disabled>Download</button>
-  </div>
-</main>
+      <div class="qr-box">
+        <button id="downloadBtn" class="btn" disabled>Download</button>
+      </div>
+    </main>
 
-<script src="qr.js"></script>
-</body>
+    <script src="qr.js"></script>
+  </body>
 </html>
 
 <script src="https://browser.sentry-cdn.com/7.120.1/bundle.tracing.replay.min.js"></script>
