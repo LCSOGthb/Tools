@@ -1,46 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unit Converter</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="converter.css">
-</head>
-<body>
-  <header>
-    <h1>Unit Converter</h1>
-    <a href="../index.html" class="btn">← Back</a>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="converter.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Unit Converter</h1>
+      <a href="../index.html" class="btn">← Back</a>
+    </header>
 
-  <main class="converter-container">
-    <div class="converter-box">
-      <label for="type">Conversion Type:</label>
-      <select id="type">
-        <option value="length">Length (m ↔ km)</option>
-        <option value="weight">Weight (kg ↔ g)</option>
-        <option value="temperature">Temperature (°C ↔ °F)</option>
-      </select>
-    </div>
+    <main class="converter-container">
+      <div class="converter-box">
+        <label for="type">Conversion Type:</label>
+        <select id="type">
+          <option value="length">Length (m ↔ km)</option>
+          <option value="weight">Weight (kg ↔ g)</option>
+          <option value="temperature">Temperature (°C ↔ °F)</option>
+        </select>
+      </div>
 
-    <div class="converter-box">
-      <label for="inputValue">Input Value:</label>
-      <input type="number" id="inputValue" placeholder="Enter value">
-    </div>
+      <div class="converter-box">
+        <label for="inputValue">Input Value:</label>
+        <input type="number" id="inputValue" placeholder="Enter value" />
+      </div>
 
-    <div class="converter-box">
-      <button id="convertBtn" class="btn">Convert</button>
-    </div>
+      <div class="converter-box">
+        <button id="convertBtn" class="btn">Convert</button>
+      </div>
 
-    <div class="converter-box">
-      <h2>Result: <span id="result">-</span></h2>
-    </div>
-  </main>
+      <div class="converter-box">
+        <h2>Result: <span id="result">-</span></h2>
+      </div>
+    </main>
 
-  <script src="converter.js"></script>
-</body>
+    <script src="converter.js"></script>
+  </body>
 </html>
 
 <script src="js/sentry-release.js"></script>
-<script src="https://browser.sentry-cdn.com/7.120.1/bundle.tracing.replay.min.js" crossorigin="anonymous"></script>
+<script
+  src="https://browser.sentry-cdn.com/7.120.1/bundle.tracing.replay.min.js"
+  crossorigin="anonymous"
+></script>
 <script src="js/sentry.js"></script>
