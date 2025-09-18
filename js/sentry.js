@@ -1,14 +1,5 @@
 Sentry.init({
-  integrations: [
-    Sentry.browserTracingIntegration(),
-    Sentry.replayIntegration(),
-  ],
-  tracesSampleRate: 1.0,           // Performance monitoring
-  replaysSessionSampleRate: 0.1,   // Record 10% of sessions
-  replaysOnErrorSampleRate: 1.0,   // Always record on error
+  dsn: "https://3410730c33a0ed28fc51370949258ba8@o4508406269995008.ingest.us.sentry.io/4508406275608576",
+  integrations: [new Sentry.BrowserTracing()],
+  tracesSampleRate: 1.0,
 });
-
-// Test error (remove after verification)
-setTimeout(() => {
-  myUndefinedFunction();
-}, 2000);
