@@ -52,12 +52,12 @@ document.getElementById("generateBtn").addEventListener("click", () => {
   Sentry.captureMessage("Password generated", {
     level: "info",
     extra: {
-      length: length,
+      length,
       lowercase: document.getElementById("lowercase").checked,
       uppercase: document.getElementById("uppercase").checked,
       numbers: document.getElementById("numbers").checked,
-      symbols: document.getElementById("symbols").checked
-    }
+      symbols: document.getElementById("symbols").checked,
+    },
   });
 });
 
