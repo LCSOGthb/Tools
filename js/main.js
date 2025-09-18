@@ -10,17 +10,14 @@ Sentry.init({
   sendDefaultPii: true,
 
   // Enable performance monitoring + session replay
-  integrations: [
-    new BrowserTracing(),
-    new Replay()
-  ],
+  integrations: [new BrowserTracing(), new Replay()],
 
   // Performance Monitoring
   tracesSampleRate: 1.0, // Capture 100% (lower in prod)
 
   // Session Replay
   replaysSessionSampleRate: 0.1, // Capture 10% of sessions
-  replaysOnErrorSampleRate: 1.0  // Always capture replay on error
+  replaysOnErrorSampleRate: 1.0, // Always capture replay on error
 });
 
 // Test error
