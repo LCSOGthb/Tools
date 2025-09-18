@@ -10,12 +10,3 @@ Sentry.addBreadcrumb({
   message: `Visited ${window.location.pathname}`,
   level: "info",
 });
-
-// Test error (you can remove later)
-setTimeout(() => {
-  try {
-    myUndefinedFunction(); // should trigger an error in Sentry
-  } catch (err) {
-    Sentry.captureException(err);
-  }
-}, 2000);
