@@ -15,7 +15,7 @@ const tools = [
 export default function App() {
   return (
     <main className="tool-grid">
-        {tools.map((tool) => (
+      {tools.map((tool) => (
         <ToolCard key={tool.name} name={tool.name} content={tool.component} />
       ))}
     </main>
