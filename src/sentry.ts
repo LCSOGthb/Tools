@@ -16,5 +16,3 @@ Sentry.init({
   sendDefaultPii: true,
   enableTracing: true
 });
-
-Sentry.captureException(new Error("Startup test error"));

@@ -14,5 +14,3 @@ if (!container) throw new Error("No root container found");
 
 const root = createRoot(container);
 root.render(<App />);
-
-Sentry.captureException(new Error("Manual test event"));

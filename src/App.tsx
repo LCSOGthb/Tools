@@ -1,5 +1,4 @@
 import React from "react";
-import ErrorButton from "./components/ErrorButton";
 import ToolCard from "./components/ToolCard";
 import Calculator from "./tools/Calculator";
 import PasswordGenerator from "./tools/PasswordGenerator";
@@ -16,8 +15,7 @@ const tools = [
 export default function App() {
   return (
     <main className="tool-grid">
-      <ErrorButton /> {/* 👈 click this to send a test error */}
-      {tools.map((tool) => (
+        {tools.map((tool) => (
         <ToolCard key={tool.name} name={tool.name} content={tool.component} />
       ))}
     </main>
