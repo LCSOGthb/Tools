@@ -7,12 +7,12 @@ Sentry.init({
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration(),
-    new BrowserTracing(), 
+    new BrowserTracing(),
     new Replay(),
   ],
   tracesSampleRate: 1.0,
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
   sendDefaultPii: true,
-  enableTracing: true
+  enableTracing: true,
 });
