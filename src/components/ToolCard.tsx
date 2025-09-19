@@ -1,7 +1,9 @@
-type Props = {
+import React from "react";
+
+interface ToolCardProps {
   name: string;
-  content: JSX.Element;
-};
+  content: React.ReactNode;
+}
 
 export default function ToolCard({ name, content }: Props) {
   return (
