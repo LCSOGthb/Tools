@@ -9,6 +9,7 @@ export default defineConfig({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
       bundleName: "Tools",
       uploadToken: process.env.CODECOV_TOKEN,
+      telemetry: false
     }),
   ],
 });
