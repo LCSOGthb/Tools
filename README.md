@@ -40,6 +40,7 @@ Qlty:
 
 Scrutinizer:
 ![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/LCSOGthb/Tools)
+[![Build Status](https://scrutinizer-ci.com/g/LCSOGthb/Tools/badges/build.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/Tools/build-status/main)
 
 Snyk:
 [![Known Vulnerabilities](https://snyk.io/test/github/LCSOGthb/Tools/badge.svg)](https://snyk.io/test/github/LCSOGthb/Tools)
