@@ -36,7 +36,7 @@ OSSF:
 
 Qlty:
 [![Maintainability](https://qlty.sh/badges/e3c02970-6a80-4e74-b130-8cca7af27d06/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
-[![Maintainability](https://qlty.sh/badges/e3c02970-6a80-4e74-b130-8cca7af27d06/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
+[![Code Coverage](https://qlty.sh/gh/LCSOGthb/projects/Tools/coverage.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
 
 Scrutinizer:
 ![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/LCSOGthb/Tools)
