@@ -1,4 +1,3 @@
-![Lines Of Code](https://tokei.rs/b1/github/LCSOGthb/Tools)
 ![Repo Size](https://img.shields.io/github/repo-size/LCSOGthb/Tools)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LCSOGthb/Tools)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/LCSOGthb/Tools)
@@ -16,9 +15,6 @@ CodeRabbit:
 
 CodeFactor:
 [![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/tools/badge)](https://www.codefactor.io/repository/github/lcsogthb/tools)
-
-Codacy:
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/25ad5a464bbe44f482075089cc12e767)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 Codecov:
 [![codecov](https://codecov.io/github/LCSOGthb/Tools/graph/badge.svg?token=Sb7NqvuWyJ)](https://codecov.io/github/LCSOGthb/Tools)
