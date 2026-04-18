@@ -38,9 +38,6 @@ Scrutinizer:
 ![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/LCSOGthb/Tools)
 [![Build Status](https://scrutinizer-ci.com/g/LCSOGthb/Tools/badges/build.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/Tools/build-status/main)
 
-Snyk:
-[![Known Vulnerabilities](https://snyk.io/test/github/LCSOGthb/Tools/badge.svg)](https://snyk.io/test/github/LCSOGthb/Tools)
-
 SonarQube Cloud:
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=bugs)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
