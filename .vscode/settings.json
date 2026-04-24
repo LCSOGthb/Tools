@@ -1,6 +1,0 @@
-{
-    "sonarlint.connectedMode.project": {
-        "connectionId": "lcssonarqube1512",
-        "projectKey": "LCSOGthb_Tools"
-    }
-}
