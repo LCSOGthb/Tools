@@ -10,14 +10,8 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/LCSOGthb/Tools)
 ![GitHub top language](https://img.shields.io/github/languages/top/LCSOGthb/Tools)
 
-CodeRabbit:
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/Tools?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FTools&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
-
 CodeFactor:
 [![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/tools/badge)](https://www.codefactor.io/repository/github/lcsogthb/tools)
-
-Codecov:
-[![codecov](https://codecov.io/github/LCSOGthb/Tools/graph/badge.svg?token=Sb7NqvuWyJ)](https://codecov.io/github/LCSOGthb/Tools)
 
 CircleCI:
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main)
@@ -50,3 +44,5 @@ SonarQube Cloud:
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
+
+Codacy: [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a37a51513fa34b95b4c06d48b24e36e1)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
