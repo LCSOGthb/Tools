@@ -46,3 +46,5 @@ SonarQube Cloud:
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 
 Codacy: [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a37a51513fa34b95b4c06d48b24e36e1)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
+CodeRabbit: ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/Tools?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FTools&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
