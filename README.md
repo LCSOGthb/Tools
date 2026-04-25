@@ -21,8 +21,7 @@ DeepSource:
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=active+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=resolved+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
 
-OSSF:
-![OSSF-Scorecard Score](https://img.shields.io/ossf-scorecard/github.com/LCSOGthb/Tools)
+OSSF: [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge)](https://scorecard.dev/viewer/?uri=github.com/{owner}/{repo})
 
 Qlty:
 [![Maintainability](https://qlty.sh/badges/e3c02970-6a80-4e74-b130-8cca7af27d06/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
