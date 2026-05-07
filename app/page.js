@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react'; from 'react';
 
 const STORAGE_KEYS = {
   history: 'ptc_history_v1',
@@ -260,6 +260,7 @@ function commandSuggestions(query) {
 function App() {
   const [prefs, setPrefs] = useState(DEFAULT_PREFS);
   const [input, setInput] = useState('');
+  const [selectedSuggestion, setSelectedSuggestion] = uconst [isPaletteOpen, setIsPaletteOpen] = useState(false); useState(false);
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
   const [pinned, setPinned] = useState([]);
@@ -400,14 +401,10 @@ function App() {
     }
   }
 
-  function runSuggestion(text) {
-    setInput(text);
+  function runSuggessetInput(text);
     inputRef.current?.focus();
-    executeCommand(text);
-  }
-
-  function runSpeedTest() {
-    const testUrl = 'https://speed.hetzner.de/10MB.bin';
+    setIsPaletteOpen(false);
+    executeCommand(text);https://speed.hetzner.de/10MB.bin';
     const started = performance.now();
     setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Downloading a test payload…' });
     fetch(testUrl, { cache: 'no-store' })
@@ -448,34 +445,37 @@ function App() {
   const suggestions = useMemo(() => commandSuggestions(input), [input]);
 
   useEffect(() => {
+    setSelectedSuggestion(0);
+  }, [input]);
+
+  useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === '/' && document.activeElement !== inputRef.current) {
         e.preventDefault();
         inputRef.current?.focus();
       }
-      if (e.key === 'Enter' && document.activeElement === inputRef.current) {
-        e.preventDefault();
-        if (normalize(input) === 'speed test' || normalize(input) === 'speed') runSpeedTest();
-        else executeCommand(input);
+      if (document.activeElement === inputRef.current) {
+        if (e.key === 'ArrowDown') {
+          e.pprev) => Math.min(prev + 1, Math.max(suggestions.length - 1, 0)));
+        }
+
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          setSelectedSuggestion((prev) => Math.max(prev - 1, 0));
+        }
+
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          if (suggestions[selectedSuggestion]) {
+            setInput(suggestions[selectedSuggestid test' || normalize(finalCommand) === 'speed') runSpeedTest();
+          else executeCommand(finalCommand);
+        }
       }
     };
     window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [input, prefs]);
-
-  const commandExamples = [
-    '100 usd to myr',
-    '10 km to mi',
-    '16 * 24 + 10',
-    'gen password 16 strong',
-    'qr https://example.com',
-    'speed test',
-  ];
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    return () => window.removeEventListh-screen bg-slate-950 text-slate-100">
       <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
-        <header className="mb-6 flex flex-col gap-3 rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-2xl shadow-black/20 backdrop-blur">
+        <header className="sticky top-4 z-20 mb-6 flex flex-col gap-3 rounded-3xl border border-slate-800 bg-slate-900/90 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h1 className="text-2xl font-semibold tracking-tight">Personal Tool Console</h1>
@@ -488,31 +488,68 @@ function App() {
           </div>
 
           <div className="grid gap-3 lg:grid-cols-[1fr_auto]">
-            <div className="relative">
+            <div className="relative group">
               <input
                 ref={inputRef}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  setIsPaletteOpen(true);
+                }}
                 onKeyDown={(e) => {
+                  
+                }}
+                placeholder="Search or run a command… 100 usd to myr, password 20, qr https://..., 16*24+10"
+                className="w-full rounded-2xl border border-slate-700 bg-black/70 px-5 py-5 pr-28 text-lg outline-none ring-0 transition placeholder:text-slate-500 focus:border-slate-400 focus:bg-black"
+              />
+              <onChange={(e) => {
+                setInput(e.target.value);
+                setIsPaletteOpen(true);
+              }}e inset-y-0 right-3 flex items-center gap-2 text-xs texif (e.key === 'Escape') {
+                    e.preventDefault();
+                    setIsPaletteOpen(false);
+                    return;
+                  }
+
                   if (e.key === 'Enter') {
                     e.preventDefault();
                     if (normalize(input) === 'speed test' || normalize(input) === 'speed') runSpeedTest();
                     else executeCommand(input);
-                  }
-                }}
-                placeholder="Type a command: 100 usd to myr, gen password 16 strong, qr https://..., 16*24+10"
-                className="w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-4 pr-24 text-base outline-none ring-0 placeholder:text-slate-500 focus:border-slate-500"
-              />
-              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center gap-2 text-xs text-slate-500">
-                <span className="rounded-lg border border-slate-800 px-2 py-1">Cmd</span>
-              </div>
+                    setIsPaletteOpen(false);
+                  }-0 top-[calc(100%+12px)] z-30 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/95 shadow-2xl shadow-black/50 backdrop-blur-xl">
+                  <div className="border-b border-slate-800 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-500">
+                    Command palette
+                  </div>
+
+                  <div className="max-h-80 overflow-auto p-2">
+                    {suggestions.map((s, idx) => (
+                      <button
+                        key={s}
+                        onClick={() => runSuggestion(s)}
+                        className={`flex isPaletteOpens-center justify-between rounded-xl px-4 py-3 text-left transition ${idx === selectedSuggestion ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-900'}`}
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-mono text-sm">{s}</span>
+                          <span className="mt-1 text-xs text-slate-500">
+                            {s.includes('to') ? 'Conversion command' : s.includes('password') ? 'Password generation' : s.includes('qr') ? 'QR generation' : s.includes('speed') ? 'Network test' : 'Calculator'}
+                          </span>
+                        </div>
+
+                        <div className="rounded-lg border border-slate-700 px-2 py-1 text-[10px] text-slate-500">
+                          ↵
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div className="flex gap-2">
               <button
                 onClick={() => (normalize(input) === 'speed test' || normalize(input) === 'speed' ? runSpeedTest() : executeCommand(input))}
                 className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white"
               >
-                Run
+                Execute
               </button>
               <button
                 onClick={() => setInput('')}
@@ -523,16 +560,11 @@ function App() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {suggestions.map((s) => (
-              <button
-                key={s}
-                onClick={() => runSuggestion(s)}
-                className="rounded-full border border-slate-700 bg-slate-950/80 px-3 py-1.5 text-sm text-slate-300 transition hover:border-slate-500 hover:bg-slate-800"
-              >
-                {s}
-              </button>
-            ))}
+          <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-slate-500">
+            <span className="rounded-full border border-slate-800 px-3 py-1">↑↓ navigate</span>
+            <span className="rounded-full border border-slate-800 px-3 py-1">Tab autocomplete</span>
+            <span className="rounded-full border border-slate-800 px-3 py-1">Enter execute</span>
+            <span className="rounded-full border border-slate-800 px-3 py-1">/ focus</span>
           </div>
         </header>
 
@@ -556,7 +588,7 @@ function App() {
 
               {!result && (
                 <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-6 text-sm text-slate-400">
-                  Run a command to see a structured result here.
+                  Execute a command to see a structured result here.
                 </div>
               )}
 
@@ -635,7 +667,7 @@ function App() {
                         onClick={runSpeedTest}
                         className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white"
                       >
-                        Run download test
+                        Execute download test
                       </button>
                     </div>
                   )}
