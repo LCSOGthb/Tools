@@ -367,9 +367,10 @@ export default function Home() {
   }
 
   async function runSpeedTest() {
-    const pingUrl = 'https://cloudflare.com/cdn-cgi/trace';
-    const downloadUrl = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js';
-    const uploadUrl = 'https://httpbin.org/post';
+    // All three endpoints are from speed.cloudflare.com — CORS-enabled, no auth needed
+    const pingUrl = 'https://speed.cloudflare.com/__down?bytes=0';
+    const downloadUrl = 'https://speed.cloudflare.com/__down?bytes=5000000'; // 5 MB
+    const uploadUrl = 'https://speed.cloudflare.com/__up';
 
     setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Testing ping…' });
 
@@ -378,11 +379,11 @@ export default function Home() {
     let ulMbps: string = '—';
 
     try {
-      // Ping: 5 round trips, drop highest, average the rest
+      // Ping: 5 round trips to a 0-byte endpoint, drop the highest, average the rest
       const pingTimes: number[] = [];
       for (let i = 0; i < 5; i++) {
         const t0 = performance.now();
-        await fetch(pingUrl, { cache: 'no-store', mode: 'no-cors' });
+        await fetch(pingUrl, { cache: 'no-store' });
         pingTimes.push(performance.now() - t0);
       }
       pingTimes.sort((a, b) => a - b);
@@ -394,7 +395,7 @@ export default function Home() {
     }
 
     try {
-      // Download
+      // Download: stream 5 MB from Cloudflare's speed test endpoint
       const dlStart = performance.now();
       const res = await fetch(downloadUrl, { cache: 'no-store' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -414,12 +415,17 @@ export default function Home() {
     }
 
     try {
-      // Upload: POST 1 MB of random data
+      // Upload: POST 1 MB of random data to Cloudflare's upload endpoint
       const bytes = new Uint8Array(1_000_000);
       crypto.getRandomValues(bytes);
       const blob = new Blob([bytes]);
       const ulStart = performance.now();
-      await fetch(uploadUrl, { method: 'POST', body: blob, headers: { 'Content-Type': 'application/octet-stream' } });
+      const res = await fetch(uploadUrl, {
+        method: 'POST',
+        body: blob,
+        headers: { 'Content-Type': 'application/octet-stream' },
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const ulSec = (performance.now() - ulStart) / 1000;
       ulMbps = ((blob.size * 8) / ulSec / 1_000_000).toFixed(2);
     } catch {
@@ -434,7 +440,7 @@ export default function Home() {
       normalized: 'speed test',
       type: 'speed',
       label: 'Speed test',
-      output: { downloadMbps: dlMbps, uploadMbps: ulMbps, pingMs, note: 'Browser-based estimate using CDN test files.' },
+      output: { downloadMbps: dlMbps, uploadMbps: ulMbps, pingMs, note: 'Browser-based estimate via Cloudflare speed test endpoints.' },
       actions: ['copy', 'pin'],
       createdAt: new Date().toISOString(),
     };
