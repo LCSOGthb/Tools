@@ -69,6 +69,15 @@ const CURRENCY_SYMBOLS = {
   idr: 'Rp',
 };
 
+const COMMAND_EXAMPLES = [
+  '100 usd to myr',
+  '10 km to mi',
+  '16 * 24 + 10',
+  'gen password 16 strong',
+  'qr https://example.com',
+  'speed test',
+];
+
 function loadJson(key, fallback) {
   if (typeof window === 'undefined') return fallback;
   try {
@@ -235,26 +244,10 @@ function resultLabel(type) {
   }
 }
 
-function serializeAction(action) {
-  return {
-    ...action,
-    ts: Date.now(),
-    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-  };
-}
-
 function commandSuggestions(query) {
   const q = normalize(query);
-  const all = [
-    '100 usd to myr',
-    '10 km to mi',
-    '16 * 24 + 10',
-    'gen password 16 strong',
-    'qr https://example.com',
-    'speed test',
-  ];
-  if (!q) return all;
-  return all.filter((item) => item.includes(q)).slice(0, 6);
+  if (!q) return COMMAND_EXAMPLES;
+  return COMMAND_EXAMPLES.filter((item) => item.includes(q)).slice(0, 6);
 }
 
 function App() {
@@ -402,11 +395,15 @@ function App() {
     }
   }
 
-  function runSuggessetInput(text);
+  function runSuggestion(text) {
     setInput(text);
     inputRef.current?.focus();
     setIsPaletteOpen(false);
-    executeCommand(text);https://speed.hetzner.de/10MB.bin';
+    executeCommand(text);
+  }
+
+  function runSpeedTest() {
+    const testUrl = 'https://speed.hetzner.de/10MB.bin';
     const started = performance.now();
     setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Downloading a test payload…' });
     fetch(testUrl, { cache: 'no-store' })
@@ -459,7 +456,8 @@ function App() {
       if (document.activeElement === inputRef.current) {
         if (e.key === 'ArrowDown') {
           e.preventDefault();
-          setSelectedSuggestion((prev) => Math.min(prev + 1, suggestions.length -1));
+          setSelectedSuggestion((prev) => Math.min(prev + 1, Math.max(suggestions.length - 1, 0)));
+        }
 
         if (e.key === 'ArrowUp') {
           e.preventDefault();
@@ -469,13 +467,31 @@ function App() {
         if (e.key === 'Tab') {
           e.preventDefault();
           if (suggestions[selectedSuggestion]) {
-            setInput(suggestions[selectedSuggestid test' || normalize(finalCommand) === 'speed') runSpeedTest();
+            setInput(suggestions[selectedSuggestion]);
+          }
+        }
+
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          setIsPaletteOpen(false);
+          return;
+        }
+
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const finalCommand = input || suggestions[selectedSuggestion];
+          if (normalize(finalCommand) === 'speed test' || normalize(finalCommand) === 'speed') runSpeedTest();
           else executeCommand(finalCommand);
+          setIsPaletteOpen(false);
         }
       }
     };
     window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListh-screen bg-slate-950 text-slate-100">
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [input, suggestions, selectedSuggestion]);
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100">
       <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
         <header className="sticky top-4 z-20 mb-6 flex flex-col gap-3 rounded-3xl border border-slate-800 bg-slate-900/90 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -499,15 +515,7 @@ function App() {
                   setIsPaletteOpen(true);
                 }}
                 onKeyDown={(e) => {
-                  
-                }}
-                placeholder="Search or run a command… 100 usd to myr, password 20, qr https://..., 16*24+10"
-                className="w-full rounded-2xl border border-slate-700 bg-black/70 px-5 py-5 pr-28 text-lg outline-none ring-0 transition placeholder:text-slate-500 focus:border-slate-400 focus:bg-black"
-              />
-              <onChange={(e) => {
-                setInput(e.target.value);
-                setIsPaletteOpen(true);
-              }}e inset-y-0 right-3 flex items-center gap-2 text-xs texif (e.key === 'Escape') {
+                  if (e.key === 'Escape') {
                     e.preventDefault();
                     setIsPaletteOpen(false);
                     return;
@@ -518,7 +526,16 @@ function App() {
                     if (normalize(input) === 'speed test' || normalize(input) === 'speed') runSpeedTest();
                     else executeCommand(input);
                     setIsPaletteOpen(false);
-                  }-0 top-[calc(100%+12px)] z-30 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/95 shadow-2xl shadow-black/50 backdrop-blur-xl">
+                  }
+                }}
+                placeholder="Search or run a command… 100 usd to myr, password 20, qr https://..., 16*24+10"
+                className="w-full rounded-2xl border border-slate-700 bg-black/70 px-5 py-5 pr-28 text-lg outline-none ring-0 transition placeholder:text-slate-500 focus:border-slate-400 focus:bg-black"
+              />
+              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center gap-2 text-xs text-slate-400">
+                <span>⌘↵</span>
+              </div>
+              {isPaletteOpen && suggestions.length > 0 && (
+                <div className="absolute left-0 top-[calc(100%+12px)] z-30 w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/95 shadow-2xl shadow-black/50 backdrop-blur-xl">
                   <div className="border-b border-slate-800 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-500">
                     Command palette
                   </div>
@@ -528,7 +545,7 @@ function App() {
                       <button
                         key={s}
                         onClick={() => runSuggestion(s)}
-                        className={`flex isPaletteOpens-center justify-between rounded-xl px-4 py-3 text-left transition ${idx === selectedSuggestion ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-900'}`}
+                        className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-left transition ${idx === selectedSuggestion ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800/50'}`}
                       >
                         <div className="flex flex-col">
                           <span className="font-mono text-sm">{s}</span>
@@ -711,7 +728,9 @@ function App() {
                   <span className="text-xs text-slate-500">{pinned.length}/12</span>
                 </div>
                 {pinned.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400">Pin commands from results or use <span className="font-mono text-slate-300">pin ...</span>.</div>
+                  <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400">
+                    Pin commands from results or use <span className="font-mono text-slate-300">pin [command]</span>
+                  </div>
                 ) : (
                   <div className="space-y-2">
                     {pinned.map((item) => (
@@ -759,7 +778,7 @@ function App() {
                     </select>
                   </label>
                   <div className="text-sm text-slate-400">
-                    Tip: use <span className="font-mono text-slate-200">gen password</span>, <span className="font-mono text-slate-200">qr ...</span>, <span className="font-mono text-slate-200">100 usd to myr</span>, or plain math.
+                    Tip: use <span className="font-mono text-slate-200">gen password</span>, <span className="font-mono text-slate-200">qr ...</span>, <span className="font-mono text-slate-200">100 usd to myr</span>
                   </div>
                 </div>
               </div>
@@ -770,7 +789,7 @@ function App() {
             <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10">
               <h3 className="text-lg font-semibold">Examples</h3>
               <div className="mt-4 space-y-2">
-                {commandExamples.map((cmd) => (
+                {COMMAND_EXAMPLES.map((cmd) => (
                   <button
                     key={cmd}
                     onClick={() => runSuggestion(cmd)}
