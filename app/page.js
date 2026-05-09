@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'; from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 const STORAGE_KEYS = {
   history: 'ptc_history_v1',
@@ -260,7 +260,8 @@ function commandSuggestions(query) {
 function App() {
   const [prefs, setPrefs] = useState(DEFAULT_PREFS);
   const [input, setInput] = useState('');
-  const [selectedSuggestion, setSelectedSuggestion] = uconst [isPaletteOpen, setIsPaletteOpen] = useState(false); useState(false);
+  const [selectedSuggestion, setSelectedSuggestion] = useState(0);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
   const [pinned, setPinned] = useState([]);
@@ -402,6 +403,7 @@ function App() {
   }
 
   function runSuggessetInput(text);
+    setInput(text);
     inputRef.current?.focus();
     setIsPaletteOpen(false);
     executeCommand(text);https://speed.hetzner.de/10MB.bin';
@@ -456,8 +458,8 @@ function App() {
       }
       if (document.activeElement === inputRef.current) {
         if (e.key === 'ArrowDown') {
-          e.pprev) => Math.min(prev + 1, Math.max(suggestions.length - 1, 0)));
-        }
+          e.preventDefault();
+          setSelectedSuggestion((prev) => Math.min(prev + 1, suggestions.length -1));
 
         if (e.key === 'ArrowUp') {
           e.preventDefault();
