@@ -16,56 +16,31 @@ const DEFAULT_PREFS = {
 
 const UNIT_TABLE: Record<string, Record<string, number>> = {
   length: {
-    mm: 0.001,
-    cm: 0.01,
-    m: 1,
-    km: 1000,
-    in: 0.0254,
-    ft: 0.3048,
-    yd: 0.9144,
-    mi: 1609.344,
+    mm: 0.001, cm: 0.01, m: 1, km: 1000,
+    in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.344,
   },
   mass: {
-    mg: 0.000001,
-    g: 0.001,
-    kg: 1,
-    oz: 0.028349523125,
-    lb: 0.45359237,
+    mg: 0.000001, g: 0.001, kg: 1,
+    oz: 0.028349523125, lb: 0.45359237,
   },
   speed: {
-    'm/s': 1,
-    'km/h': 1000 / 3600,
-    mph: 1609.344 / 3600,
-    knot: 1852 / 3600,
+    'm/s': 1, 'km/h': 1000 / 3600,
+    mph: 1609.344 / 3600, knot: 1852 / 3600,
   },
   area: {
-    'm2': 1,
-    'cm2': 0.0001,
-    'km2': 1_000_000,
-    acre: 4046.8564224,
-    ha: 10_000,
+    'm2': 1, 'cm2': 0.0001, 'km2': 1_000_000,
+    acre: 4046.8564224, ha: 10_000,
   },
   volume: {
-    ml: 0.000001,
-    l: 0.001,
-    m3: 1,
-    tsp: 0.00000492892159375,
-    tbsp: 0.00001478676478125,
-    cup: 0.0002365882365,
-    fl_oz: 0.0000295735295625,
-    gal: 0.003785411784,
+    ml: 0.000001, l: 0.001, m3: 1,
+    tsp: 0.00000492892159375, tbsp: 0.00001478676478125,
+    cup: 0.0002365882365, fl_oz: 0.0000295735295625, gal: 0.003785411784,
   },
 };
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
-  usd: '$',
-  myr: 'RM',
-  eur: '€',
-  gbp: '£',
-  jpy: '¥',
-  sgd: 'S$',
-  aud: 'A$',
-  idr: 'Rp',
+  usd: '$', myr: 'RM', eur: '€', gbp: '£',
+  jpy: '¥', sgd: 'S$', aud: 'A$', idr: 'Rp',
 };
 
 const COMMAND_EXAMPLES = [
@@ -77,31 +52,31 @@ const COMMAND_EXAMPLES = [
   'speed test',
 ];
 
+function suggestionDescription(s: string) {
+  if (s.includes(' to ')) return s.includes('usd') || s.includes('myr') || s.includes('eur') ? 'Currency conversion' : 'Unit conversion';
+  if (s.includes('password')) return 'Password generation';
+  if (s.startsWith('qr')) return 'QR generation';
+  if (s.includes('speed')) return 'Network test';
+  return 'Math expression';
+}
+
 function loadJson<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback;
   try {
     const raw = window.localStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
-  } catch {
-    return fallback;
-  }
+  } catch { return fallback; }
 }
 
 function saveJson(key: string, value: unknown) {
   if (typeof window === 'undefined') return;
-  try {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    // ignore
-  }
+  try { window.localStorage.setItem(key, JSON.stringify(value)); } catch {}
 }
 
 function formatNumber(value: number, digits = 8) {
   if (!Number.isFinite(value)) return '—';
   const abs = Math.abs(value);
-  if (abs !== 0 && (abs >= 1e9 || abs < 1e-6)) {
-    return value.toExponential(6).replace(/\+/, '');
-  }
+  if (abs !== 0 && (abs >= 1e9 || abs < 1e-6)) return value.toExponential(6).replace(/\+/, '');
   return Number.parseFloat(value.toFixed(digits)).toString();
 }
 
@@ -115,9 +90,7 @@ function isMathExpression(input: string) {
 
 function safeMathEval(expression: string) {
   const cleaned = expression.replace(/,/g, '.').replace(/\^/g, '**');
-  if (!/^[0-9+\-*/%().*\s**]+$/.test(cleaned.replace(/\*\*/g, ''))) {
-    throw new Error('Invalid expression');
-  }
+  if (!/^[0-9+\-*/%().*\s**]+$/.test(cleaned.replace(/\*\*/g, ''))) throw new Error('Invalid expression');
   // eslint-disable-next-line no-new-func
   const result = Function(`"use strict"; return (${cleaned});`)();
   if (typeof result !== 'number' || !Number.isFinite(result)) throw new Error('Invalid result');
@@ -144,26 +117,20 @@ function parseQrCommand(input: string) {
 function parseConversion(input: string, prefs: typeof DEFAULT_PREFS) {
   const currencyPattern = /^(?:(\d+(?:\.\d+)?)\s+)?([a-z]{3})\s+to\s+([a-z]{3})$/i;
   const unitPattern = /^(\d+(?:\.\d+)?)\s+([a-z\/0-9_]+)\s+to\s+([a-z\/0-9_]+)$/i;
-
   const cm = input.match(currencyPattern);
   if (cm) {
-    const value = cm[1] ? Number(cm[1]) : 1;
     return {
       type: 'currency',
-      value,
+      value: cm[1] ? Number(cm[1]) : 1,
       from: cm[2].toLowerCase(),
       to: cm[3].toLowerCase(),
       note: 'Rates are local/manual in this prototype.',
       prefs,
     };
   }
-
   const um = input.match(unitPattern);
   if (!um) return null;
-  const value = Number(um[1]);
-  const from = um[2].toLowerCase();
-  const to = um[3].toLowerCase();
-  return { type: 'unit', value, from, to };
+  return { type: 'unit', value: Number(um[1]), from: um[2].toLowerCase(), to: um[3].toLowerCase() };
 }
 
 function findUnitCategory(unit: string) {
@@ -182,18 +149,11 @@ function convertUnits(value: number, from: string, to: string) {
 
 function convertCurrency(value: number, from: string, to: string) {
   const rates: Record<string, number> = {
-    usd: 1,
-    myr: 4.7,
-    eur: 0.92,
-    gbp: 0.78,
-    jpy: 154,
-    sgd: 1.35,
-    aud: 1.51,
-    idr: 15850,
+    usd: 1, myr: 4.7, eur: 0.92, gbp: 0.78,
+    jpy: 154, sgd: 1.35, aud: 1.51, idr: 15850,
   };
   if (!rates[from] || !rates[to]) throw new Error('Unsupported currency');
-  const usd = value / rates[from];
-  return usd * rates[to];
+  return (value / rates[from]) * rates[to];
 }
 
 function randomPassword(length: number, mode: string) {
@@ -206,18 +166,18 @@ function randomPassword(length: number, mode: string) {
   const bytes = new Uint32Array(length);
   window.crypto.getRandomValues(bytes);
   let out = '';
-  for (let i = 0; i < length; i += 1) out += chars[bytes[i] % chars.length];
+  for (let i = 0; i < length; i++) out += chars[bytes[i] % chars.length];
   return out;
 }
 
 function strengthScore(pw: string) {
   let score = 0;
-  if (pw.length >= 12) score += 1;
-  if (pw.length >= 16) score += 1;
-  if (/[a-z]/.test(pw)) score += 1;
-  if (/[A-Z]/.test(pw)) score += 1;
-  if (/\d/.test(pw)) score += 1;
-  if (/[^A-Za-z0-9]/.test(pw)) score += 1;
+  if (pw.length >= 12) score++;
+  if (pw.length >= 16) score++;
+  if (/[a-z]/.test(pw)) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/\d/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
   return score;
 }
 
@@ -295,7 +255,6 @@ export default function Home() {
     const normalized = normalize(raw);
     if (!normalized) return;
 
-    let parsed: ReturnType<typeof parsePasswordCommand> | ReturnType<typeof parseQrCommand> | ReturnType<typeof parseConversion> | null = null;
     let output: Record<string, unknown> = {};
     let type = 'unknown';
     let actions: string[] = [];
@@ -309,65 +268,61 @@ export default function Home() {
         };
         setSpeedState({ running: false, dl: null, ul: null, ping: null });
         actions = ['configure speed endpoint'];
-      } else if ((parsed = parsePasswordCommand(normalized, prefs))) {
-        type = 'password';
-        const pw = randomPassword((parsed as { length: number; mode: string }).length, (parsed as { length: number; mode: string }).mode);
-        output = {
-          password: pw,
-          score: strengthScore(pw),
-          mode: (parsed as { mode: string }).mode,
-          length: (parsed as { length: number }).length,
-        };
-        actions = ['copy', 'pin'];
-      } else if ((parsed = parseQrCommand(normalized))) {
-        type = 'qr';
-        output = {
-          value: (parsed as { value: string }).value,
-        };
-        actions = ['copy', 'pin'];
-      } else if ((parsed = parseConversion(normalized, prefs))) {
-        const conv = parsed as { type: string; value: number; from: string; to: string; note?: string };
-        if (conv.type === 'currency') {
-          type = 'currency';
-          const converted = convertCurrency(conv.value, conv.from, conv.to);
-          output = {
-            value: converted,
-            formatted: `${CURRENCY_SYMBOLS[conv.to] || conv.to.toUpperCase()} ${formatNumber(converted, 6)}`,
-            source: `${conv.value} ${conv.from.toUpperCase()}`,
-            note: conv.note,
-          };
-          actions = ['copy', 'pin'];
-        } else {
-          type = 'unit';
-          const converted = convertUnits(conv.value, conv.from, conv.to);
-          output = {
-            value: converted,
-            formatted: `${formatNumber(converted, 8)} ${conv.to}`,
-            source: `${conv.value} ${conv.from}`,
-          };
-          actions = ['copy', 'pin'];
-        }
-      } else if (isMathExpression(normalized)) {
-        type = 'math';
-        const value = safeMathEval(normalized);
-        output = {
-          value,
-          formatted: formatNumber(value, 10),
-        };
-        actions = ['copy', 'pin'];
-      } else if (normalized.startsWith('pin ')) {
-        const target = normalized.slice(4).trim();
-        if (!target) throw new Error('Nothing to pin');
-        setPinned((prev) => [target, ...prev.filter((x) => x !== target)].slice(0, 12));
-        setStatus(`Pinned: ${target}`);
-        return;
-      } else if (normalized.startsWith('unpin ')) {
-        const target = normalized.slice(6).trim();
-        setPinned((prev) => prev.filter((x) => x !== target));
-        setStatus(`Unpinned: ${target}`);
-        return;
       } else {
-        throw new Error('Unknown command');
+        const parsedPw = parsePasswordCommand(normalized, prefs);
+        const parsedQr = !parsedPw ? parseQrCommand(normalized) : null;
+        const parsedConv = !parsedPw && !parsedQr ? parseConversion(normalized, prefs) : null;
+
+        if (parsedPw) {
+          type = 'password';
+          const pw = randomPassword(parsedPw.length, parsedPw.mode);
+          output = { password: pw, score: strengthScore(pw), mode: parsedPw.mode, length: parsedPw.length };
+          actions = ['copy', 'pin'];
+        } else if (parsedQr) {
+          type = 'qr';
+          output = { value: parsedQr.value };
+          actions = ['copy', 'pin'];
+        } else if (parsedConv) {
+          const conv = parsedConv as { type: string; value: number; from: string; to: string; note?: string };
+          if (conv.type === 'currency') {
+            type = 'currency';
+            const converted = convertCurrency(conv.value, conv.from, conv.to);
+            output = {
+              value: converted,
+              formatted: `${CURRENCY_SYMBOLS[conv.to] || conv.to.toUpperCase()} ${formatNumber(converted, 6)}`,
+              source: `${conv.value} ${conv.from.toUpperCase()}`,
+              note: conv.note,
+            };
+            actions = ['copy', 'pin'];
+          } else {
+            type = 'unit';
+            const converted = convertUnits(conv.value, conv.from, conv.to);
+            output = {
+              value: converted,
+              formatted: `${formatNumber(converted, 8)} ${conv.to}`,
+              source: `${conv.value} ${conv.from}`,
+            };
+            actions = ['copy', 'pin'];
+          }
+        } else if (isMathExpression(normalized)) {
+          type = 'math';
+          const value = safeMathEval(normalized);
+          output = { value, formatted: formatNumber(value, 10) };
+          actions = ['copy', 'pin'];
+        } else if (normalized.startsWith('pin ')) {
+          const target = normalized.slice(4).trim();
+          if (!target) throw new Error('Nothing to pin');
+          setPinned((prev) => [target, ...prev.filter((x) => x !== target)].slice(0, 12));
+          setStatus(`Pinned: ${target}`);
+          return;
+        } else if (normalized.startsWith('unpin ')) {
+          const target = normalized.slice(6).trim();
+          setPinned((prev) => prev.filter((x) => x !== target));
+          setStatus(`Unpinned: ${target}`);
+          return;
+        } else {
+          throw new Error('Unknown command');
+        }
       }
 
       const record: HistoryRecord = {
@@ -452,9 +407,7 @@ export default function Home() {
 
   const suggestions = useMemo(() => commandSuggestions(input), [input]);
 
-  useEffect(() => {
-    setSelectedSuggestion(0);
-  }, [input]);
+  useEffect(() => { setSelectedSuggestion(0); }, [input]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -473,9 +426,7 @@ export default function Home() {
         }
         if (e.key === 'Tab') {
           e.preventDefault();
-          if (suggestions[selectedSuggestion]) {
-            setInput(suggestions[selectedSuggestion]);
-          }
+          if (suggestions[selectedSuggestion]) setInput(suggestions[selectedSuggestion]);
         }
         if (e.key === 'Escape') {
           e.preventDefault();
@@ -498,6 +449,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
+
+        {/* Sticky header */}
         <header className="sticky top-4 z-20 mb-6 flex flex-col gap-3 rounded-3xl border border-slate-800 bg-slate-900/90 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -511,70 +464,110 @@ export default function Home() {
           </div>
 
           <div className="grid gap-3 lg:grid-cols-[1fr_auto]">
-            <div className="relative group">
+            <div className="relative">
               <input
                 ref={inputRef}
-                type="text"
                 value={input}
                 onChange={(e) => { setInput(e.target.value); setIsPaletteOpen(true); }}
                 onFocus={() => setIsPaletteOpen(true)}
-                placeholder="Type a command… (e.g. 100 usd to myr)"
-                className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 pr-10 text-sm outline-none placeholder:text-slate-500 focus:border-slate-500"
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') { e.preventDefault(); setIsPaletteOpen(false); return; }
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (normalize(input) === 'speed test' || normalize(input) === 'speed') runSpeedTest();
+                    else executeCommand(input);
+                    setIsPaletteOpen(false);
+                  }
+                }}
+                placeholder="Search or run a command… 100 usd to myr, password 20, qr https://..., 16*24+10"
+                className="w-full rounded-2xl border border-slate-700 bg-black/70 px-5 py-5 pr-28 text-lg outline-none transition placeholder:text-slate-500 focus:border-slate-400 focus:bg-slate-900"
               />
-              {input && (
-                <button
-                  onClick={() => { setInput(''); inputRef.current?.focus(); }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
-                >
-                  ✕
-                </button>
-              )}
+              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center gap-2 text-xs text-slate-400">
+                <span>⌘↵</span>
+              </div>
+
               {isPaletteOpen && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 z-30 mt-2 rounded-2xl border border-slate-700 bg-slate-900 p-2 shadow-2xl">
-                  {suggestions.map((s, i) => (
-                    <button
-                      key={s}
-                      onClick={() => runSuggestion(s)}
-                      className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm ${i === selectedSuggestion ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-800'}`}
-                    >
-                      <span className="font-mono">{s}</span>
-                    </button>
-                  ))}
+                <div className="absolute left-0 top-[calc(100%+12px)] z-30 w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/95 shadow-2xl shadow-black/50 backdrop-blur-xl">
+                  <div className="border-b border-slate-800 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-500">
+                    Command palette
+                  </div>
+                  <div className="max-h-80 overflow-auto p-2">
+                    {suggestions.map((s, idx) => (
+                      <button
+                        key={s}
+                        onClick={() => runSuggestion(s)}
+                        className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-left transition ${idx === selectedSuggestion ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800/50'}`}
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-mono text-sm">{s}</span>
+                          <span className="mt-1 text-xs text-slate-500">{suggestionDescription(s)}</span>
+                        </div>
+                        <div className="rounded-lg border border-slate-700 px-2 py-1 text-[10px] text-slate-500">↵</div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
-            <button
-              onClick={() => {
-                const finalCommand = input || suggestions[selectedSuggestion];
-                if (normalize(finalCommand) === 'speed test' || normalize(finalCommand) === 'speed') runSpeedTest();
-                else executeCommand(finalCommand);
-                setIsPaletteOpen(false);
-              }}
-              className="rounded-2xl bg-slate-100 px-6 py-3 text-sm font-medium text-slate-900 hover:bg-white"
-            >
-              Run
-            </button>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => (normalize(input) === 'speed test' || normalize(input) === 'speed' ? runSpeedTest() : executeCommand(input))}
+                className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white"
+              >
+                Execute
+              </button>
+              <button
+                onClick={() => setInput('')}
+                className="rounded-2xl border border-slate-700 px-4 py-3 font-medium text-slate-200 transition hover:bg-slate-800"
+              >
+                Clear
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <span className="h-1.5 w-1.5 rounded-full bg-slate-600" />
-            {status}
+          <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-slate-500">
+            <span className="rounded-full border border-slate-800 px-3 py-1">↑↓ navigate</span>
+            <span className="rounded-full border border-slate-800 px-3 py-1">Tab autocomplete</span>
+            <span className="rounded-full border border-slate-800 px-3 py-1">Enter execute</span>
+            <span className="rounded-full border border-slate-800 px-3 py-1">/ focus</span>
           </div>
         </header>
 
-        <main className="grid gap-6 lg:grid-cols-[1fr_320px]">
+        <main className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
           <section className="space-y-6">
+
+            {/* Result panel */}
             <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10">
-              <h2 className="mb-4 text-lg font-semibold">Result</h2>
-              {!result ? (
-                <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-6 text-sm text-slate-400">
-                  Run a command to see the result here.
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-lg font-semibold">Result</h2>
+                  <p className="text-sm text-slate-400">{status}</p>
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-slate-800 px-3 py-1 text-xs font-medium text-slate-300">{result.label}</span>
-                    <span className="text-xs text-slate-500">{new Date(result.createdAt).toLocaleTimeString()}</span>
+                {result && (
+                  <button
+                    onClick={() => copyText(typeof result.output === 'string' ? result.output : JSON.stringify(result.output, null, 2))}
+                    className="rounded-xl border border-slate-700 px-3 py-2 text-sm text-slate-200 hover:bg-slate-800"
+                  >
+                    Copy output
+                  </button>
+                )}
+              </div>
+
+              {!result && (
+                <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-6 text-sm text-slate-400">
+                  Execute a command to see a structured result here.
+                </div>
+              )}
+
+              {result && (
+                <div className="space-y-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <div className="text-xs uppercase tracking-[0.2em] text-slate-500">{result.label}</div>
+                      <div className="mt-1 text-xl font-semibold text-slate-100">{result.input}</div>
+                    </div>
+                    <div className="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-300">{result.type}</div>
                   </div>
 
                   {result.type === 'error' && (
@@ -584,107 +577,104 @@ export default function Home() {
                   )}
 
                   {result.type === 'math' && (
-                    <div className="rounded-2xl border border-slate-700 bg-slate-950/50 p-4">
-                      <div className="text-xs text-slate-500 mb-1">{result.input}</div>
-                      <div className="text-3xl font-mono font-semibold text-white">{result.output.formatted as string}</div>
+                    <div>
+                      <div className="text-sm text-slate-400">Answer</div>
+                      <div className="mt-1 text-3xl font-semibold">{result.output.formatted as string}</div>
                     </div>
                   )}
 
                   {(result.type === 'unit' || result.type === 'currency') && (
-                    <div className="rounded-2xl border border-slate-700 bg-slate-950/50 p-4">
-                      <div className="text-xs text-slate-500 mb-1">{result.output.source as string}</div>
-                      <div className="text-3xl font-mono font-semibold text-white">{result.output.formatted as string}</div>
-                      {result.output.note && (
-                        <div className="mt-2 text-xs text-slate-500">{result.output.note as string}</div>
-                      )}
+                    <div>
+                      <div className="text-sm text-slate-400">Converted</div>
+                      <div className="mt-1 text-3xl font-semibold">{result.output.formatted as string}</div>
+                      <div className="mt-2 text-sm text-slate-400">From {result.output.source as string}</div>
+                      {result.output.note && <div className="mt-1 text-xs text-slate-500">{result.output.note as string}</div>}
                     </div>
                   )}
 
                   {result.type === 'password' && (
-                    <div className="rounded-2xl border border-slate-700 bg-slate-950/50 p-4 space-y-2">
-                      <div className="font-mono text-lg break-all text-white">{result.output.password as string}</div>
-                      <div className="flex gap-2 text-xs text-slate-400">
-                        <span>Length: {result.output.length as number}</span>
-                        <span>·</span>
-                        <span>Mode: {result.output.mode as string}</span>
-                        <span>·</span>
-                        <span>Strength: {result.output.score as number}/6</span>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-sm text-slate-400">Password</div>
+                        <div className="mt-1 break-all rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 font-mono text-base">{result.output.password as string}</div>
+                      </div>
+                      <div className="text-sm text-slate-400">
+                        Strength score: {result.output.score as number}/6 · Mode: {result.output.mode as string} · Length: {result.output.length as number}
                       </div>
                     </div>
                   )}
 
                   {result.type === 'qr' && (
-                    <div className="rounded-2xl border border-slate-700 bg-slate-950/50 p-4 flex flex-col items-center gap-3">
-                      <div className="bg-white p-3 rounded-xl">
-                        <QRCodeSVG value={result.output.value as string} size={200} />
+                    <div className="grid gap-4 md:grid-cols-[auto_1fr] md:items-center">
+                      <div className="rounded-2xl border border-slate-800 bg-white p-3 inline-block">
+                        <QRCodeSVG value={result.output.value as string} size={176} />
                       </div>
-                      <div className="text-xs text-slate-400 break-all text-center">{result.output.value as string}</div>
+                      <div>
+                        <div className="text-sm text-slate-400">Encoded value</div>
+                        <div className="mt-1 break-all rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm">{result.output.value as string}</div>
+                      </div>
                     </div>
                   )}
 
                   {result.type === 'speed' && (
-                    <div className="rounded-2xl border border-slate-700 bg-slate-950/50 p-4 space-y-3">
-                      {speedState?.running ? (
-                        <div className="text-sm text-slate-400">{speedState.message}</div>
-                      ) : speedState && speedState.dl ? (
-                        <div className="grid grid-cols-3 gap-4 text-center">
-                          <div>
-                            <div className="text-2xl font-mono font-semibold text-white">{speedState.dl}</div>
-                            <div className="text-xs text-slate-500">Mbps DL</div>
-                          </div>
-                          <div>
-                            <div className="text-2xl font-mono font-semibold text-slate-400">{speedState.ul}</div>
-                            <div className="text-xs text-slate-500">UL</div>
-                          </div>
-                          <div>
-                            <div className="text-2xl font-mono font-semibold text-slate-400">{speedState.ping}</div>
-                            <div className="text-xs text-slate-500">Ping</div>
-                          </div>
+                    <div className="space-y-4">
+                      <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                        <div className="text-sm text-slate-400">Speed test status</div>
+                        <div className="mt-1 text-lg text-slate-100">{speedState?.message || result.output.title as string}</div>
+                        <div className="mt-2 text-sm text-slate-400">This prototype runs a basic download-based estimate. For production use, configure your own test endpoint.</div>
+                      </div>
+                      <div className="grid gap-3 md:grid-cols-3">
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Download</div>
+                          <div className="mt-1 text-2xl font-semibold">{speedState?.dl ?? '—'} Mbps</div>
                         </div>
-                      ) : (
-                        <div className="text-sm text-slate-400">
-                          {result.output.title as string}
-                          <p className="mt-1 text-xs">{result.output.details as string}</p>
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Upload</div>
+                          <div className="mt-1 text-2xl font-semibold">{speedState?.ul ?? '—'}</div>
                         </div>
-                      )}
-                      {!speedState?.running && !speedState?.dl && (
-                        <button
-                          onClick={runSpeedTest}
-                          className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:bg-slate-800"
-                        >
-                          Run speed test
-                        </button>
-                      )}
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Ping</div>
+                          <div className="mt-1 text-2xl font-semibold">{speedState?.ping ?? '—'}</div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={runSpeedTest}
+                        className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white"
+                      >
+                        Execute download test
+                      </button>
                     </div>
                   )}
 
-                  {result.actions.length > 0 && (
-                    <div className="flex gap-2">
-                      {result.actions.map((a) => (
-                        <button
-                          key={a}
-                          onClick={() => {
-                            if (a === 'copy') {
-                              const copyVal = result.output.password || result.output.formatted || result.output.value || result.output.downloadMbps;
-                              copyText(String(copyVal));
-                              setStatus('Copied to clipboard');
-                            }
-                            if (a === 'pin') {
-                              setPinned((prev) => [result.input, ...prev.filter((x) => x !== result.input)].slice(0, 12));
-                              setStatus('Pinned command');
-                            }
-                          }}
-                          className="rounded-full border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800"
-                        >
-                          {a}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {result.actions.map((a) => (
+                      <button
+                        key={a}
+                        onClick={() => {
+                          if (a === 'copy') {
+                            const copyValue =
+                              result.type === 'password' ? result.output.password as string
+                              : result.type === 'qr' ? result.output.value as string
+                              : (result.output.formatted as string) || JSON.stringify(result.output, null, 2);
+                            copyText(copyValue);
+                            setStatus('Copied to clipboard');
+                          }
+                          if (a === 'pin') {
+                            setPinned((prev) => [result.input, ...prev.filter((x) => x !== result.input)].slice(0, 12));
+                            setStatus('Pinned command');
+                          }
+                        }}
+                        className="rounded-full border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800"
+                      >
+                        {a}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
 
+            {/* Pinned + Settings */}
             <div className="grid gap-6 md:grid-cols-2">
               <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10">
                 <div className="mb-4 flex items-center justify-between">
@@ -750,6 +740,7 @@ export default function Home() {
           </section>
 
           <aside className="space-y-6">
+            {/* Examples */}
             <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10">
               <h3 className="text-lg font-semibold">Examples</h3>
               <div className="mt-4 space-y-2">
@@ -766,6 +757,7 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Recent history */}
             <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10">
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Recent history</h3>
@@ -797,6 +789,7 @@ export default function Home() {
               )}
             </div>
 
+            {/* Notes */}
             <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10">
               <h3 className="text-lg font-semibold">Notes</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-400">
