@@ -366,43 +366,81 @@ export default function Home() {
     executeCommand(text);
   }
 
-  function runSpeedTest() {
-    const testUrl = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js';
-    const started = performance.now();
-    setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Testing download speed…' });
+  async function runSpeedTest() {
+    const pingUrl = 'https://cloudflare.com/cdn-cgi/trace';
+    const downloadUrl = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js';
+    const uploadUrl = 'https://httpbin.org/post';
 
-    fetch(testUrl, { cache: 'no-store' })
-      .then(async (res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const reader = res.body?.getReader();
-        if (!reader) throw new Error('Streaming not available in this browser');
-        let loaded = 0;
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          loaded += value.byteLength;
-        }
-        const seconds = (performance.now() - started) / 1000;
-        const mbps = (loaded * 8) / seconds / 1_000_000;
-        setSpeedState({ running: false, dl: mbps.toFixed(2), ul: '—', ping: '—', message: 'Test complete' });
-        const record: HistoryRecord = {
-          id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-          input: 'speed test',
-          normalized: 'speed test',
-          type: 'speed',
-          label: 'Speed test',
-          output: { downloadMbps: mbps.toFixed(2), note: 'Download estimate from a single test file.' },
-          actions: ['copy', 'pin'],
-          createdAt: new Date().toISOString(),
-        };
-        setResult(record);
-        addHistory(record);
-        setStatus(`Speed test complete: ${mbps.toFixed(2)} Mbps`);
-      })
-      .catch((err: Error) => {
-        setSpeedState({ running: false, dl: null, ul: null, ping: null, message: err.message });
-        setStatus(`Speed test failed: ${err.message}`);
-      });
+    setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Testing ping…' });
+
+    let pingMs: string = '—';
+    let dlMbps: string = '—';
+    let ulMbps: string = '—';
+
+    try {
+      // Ping: 5 round trips, drop highest, average the rest
+      const pingTimes: number[] = [];
+      for (let i = 0; i < 5; i++) {
+        const t0 = performance.now();
+        await fetch(pingUrl, { cache: 'no-store', mode: 'no-cors' });
+        pingTimes.push(performance.now() - t0);
+      }
+      pingTimes.sort((a, b) => a - b);
+      const avg = pingTimes.slice(0, 4).reduce((s, v) => s + v, 0) / 4;
+      pingMs = avg.toFixed(0);
+      setSpeedState({ running: true, dl: null, ul: null, ping: pingMs, message: `Ping ${pingMs} ms — testing download…` });
+    } catch {
+      setSpeedState({ running: true, dl: null, ul: null, ping: '—', message: 'Ping failed — testing download…' });
+    }
+
+    try {
+      // Download
+      const dlStart = performance.now();
+      const res = await fetch(downloadUrl, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error('Streaming not supported');
+      let loaded = 0;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        loaded += value.byteLength;
+      }
+      const dlSec = (performance.now() - dlStart) / 1000;
+      dlMbps = ((loaded * 8) / dlSec / 1_000_000).toFixed(2);
+      setSpeedState({ running: true, dl: dlMbps, ul: null, ping: pingMs, message: `↓ ${dlMbps} Mbps — testing upload…` });
+    } catch {
+      setSpeedState({ running: true, dl: '—', ul: null, ping: pingMs, message: 'Download failed — testing upload…' });
+    }
+
+    try {
+      // Upload: POST 1 MB of random data
+      const bytes = new Uint8Array(1_000_000);
+      crypto.getRandomValues(bytes);
+      const blob = new Blob([bytes]);
+      const ulStart = performance.now();
+      await fetch(uploadUrl, { method: 'POST', body: blob, headers: { 'Content-Type': 'application/octet-stream' } });
+      const ulSec = (performance.now() - ulStart) / 1000;
+      ulMbps = ((blob.size * 8) / ulSec / 1_000_000).toFixed(2);
+    } catch {
+      ulMbps = '—';
+    }
+
+    setSpeedState({ running: false, dl: dlMbps, ul: ulMbps, ping: pingMs, message: 'Test complete' });
+
+    const record: HistoryRecord = {
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      input: 'speed test',
+      normalized: 'speed test',
+      type: 'speed',
+      label: 'Speed test',
+      output: { downloadMbps: dlMbps, uploadMbps: ulMbps, pingMs, note: 'Browser-based estimate using CDN test files.' },
+      actions: ['copy', 'pin'],
+      createdAt: new Date().toISOString(),
+    };
+    setResult(record);
+    addHistory(record);
+    setStatus(`↓ ${dlMbps} Mbps  ↑ ${ulMbps} Mbps  ping ${pingMs} ms`);
   }
 
   const suggestions = useMemo(() => commandSuggestions(input), [input]);
@@ -620,28 +658,41 @@ export default function Home() {
                     <div className="space-y-4">
                       <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
                         <div className="text-sm text-slate-400">Speed test status</div>
-                        <div className="mt-1 text-lg text-slate-100">{speedState?.message || result.output.title as string}</div>
-                        <div className="mt-2 text-sm text-slate-400">This prototype runs a basic download-based estimate. For production use, configure your own test endpoint.</div>
+                        <div className="mt-1 text-lg text-slate-100">
+                          {speedState?.message ?? 'Run the test to see results'}
+                        </div>
+                        {speedState?.running && (
+                          <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-800">
+                            <div className="h-full w-1/3 animate-pulse rounded-full bg-slate-400" />
+                          </div>
+                        )}
                       </div>
                       <div className="grid gap-3 md:grid-cols-3">
                         <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
                           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Download</div>
-                          <div className="mt-1 text-2xl font-semibold">{speedState?.dl ?? '—'} Mbps</div>
+                          <div className="mt-1 text-2xl font-semibold">
+                            {speedState?.dl != null ? `${speedState.dl} Mbps` : (result.output.downloadMbps ? `${result.output.downloadMbps} Mbps` : '—')}
+                          </div>
                         </div>
                         <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
                           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Upload</div>
-                          <div className="mt-1 text-2xl font-semibold">{speedState?.ul ?? '—'}</div>
+                          <div className="mt-1 text-2xl font-semibold">
+                            {speedState?.ul != null ? (speedState.ul === '—' ? '—' : `${speedState.ul} Mbps`) : (result.output.uploadMbps ? `${result.output.uploadMbps} Mbps` : '—')}
+                          </div>
                         </div>
                         <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
                           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Ping</div>
-                          <div className="mt-1 text-2xl font-semibold">{speedState?.ping ?? '—'}</div>
+                          <div className="mt-1 text-2xl font-semibold">
+                            {speedState?.ping != null ? (speedState.ping === '—' ? '—' : `${speedState.ping} ms`) : (result.output.pingMs ? `${result.output.pingMs} ms` : '—')}
+                          </div>
                         </div>
                       </div>
                       <button
                         onClick={runSpeedTest}
-                        className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white"
+                        disabled={speedState?.running}
+                        className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        Execute download test
+                        {speedState?.running ? 'Running…' : 'Run speed test'}
                       </button>
                     </div>
                   )}
