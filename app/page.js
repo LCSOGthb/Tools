@@ -403,16 +403,17 @@ function App() {
   }
 
   function runSpeedTest() {
-    const testUrl = 'https://speed.hetzner.de/10MB.bin';
+    const testUrl = 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png';
+    const fileSize = 13 * 1024; // Approximate size in bytes
     const started = performance.now();
-    setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Downloading a test payload…' });
+    setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Testing download speed…' });
+    
     fetch(testUrl, { cache: 'no-store' })
       .then(async (res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const reader = res.body?.getReader();
         if (!reader) throw new Error('Streaming not available in this browser');
         let loaded = 0;
-        const total = Number(res.headers.get('content-length')) || 10 * 1024 * 1024;
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -420,14 +421,14 @@ function App() {
         }
         const seconds = (performance.now() - started) / 1000;
         const mbps = (loaded * 8) / seconds / 1_000_000;
-        setSpeedState({ running: false, dl: mbps.toFixed(2), ul: '—', ping: '—', message: `${Math.round((loaded / total) * 100)}%` });
+        setSpeedState({ running: false, dl: mbps.toFixed(2), ul: '—', ping: '—', message: `Test complete` });
         const record = {
           id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
           input: 'speed test',
           normalized: 'speed test',
           type: 'speed',
           label: 'Speed test',
-          output: { downloadMbps: mbps.toFixed(2), note: 'Download estimate from a single download payload.' },
+          output: { downloadMbps: mbps.toFixed(2), note: 'Download estimate from a single test file.' },
           actions: ['copy', 'pin'],
           createdAt: new Date().toISOString(),
         };
@@ -529,7 +530,7 @@ function App() {
                   }
                 }}
                 placeholder="Search or run a command… 100 usd to myr, password 20, qr https://..., 16*24+10"
-                className="w-full rounded-2xl border border-slate-700 bg-black/70 px-5 py-5 pr-28 text-lg outline-none ring-0 transition placeholder:text-slate-500 focus:border-slate-400 focus:bg-black"
+                className="w-full rounded-2xl border border-slate-700 bg-black/70 px-5 py-5 pr-28 text-lg outline-none ring-0 transition placeholder:text-slate-500 focus:border-slate-400 focus:bg-slate-900"
               />
               <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center gap-2 text-xs text-slate-400">
                 <span>⌘↵</span>
@@ -550,7 +551,7 @@ function App() {
                         <div className="flex flex-col">
                           <span className="font-mono text-sm">{s}</span>
                           <span className="mt-1 text-xs text-slate-500">
-                            {s.includes('to') ? 'Conversion command' : s.includes('password') ? 'Password generation' : s.includes('qr') ? 'QR generation' : s.includes('speed') ? 'Network test' : 'Calculator'}
+                            {s.includes('to') ? 'Conversion command' : s.includes('password') ? 'Password generation' : s.includes('qr') ? 'QR generation' : s.includes('speed') ? 'Network test' : 'Command'}
                           </span>
                         </div>
 
@@ -666,7 +667,7 @@ function App() {
                       <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
                         <div className="text-sm text-slate-400">Speed test status</div>
                         <div className="mt-1 text-lg text-slate-100">{speedState?.message || result.output.title}</div>
-                        <div className="mt-2 text-sm text-slate-400">This prototype can run a basic download-based estimate, but a robust speed test should use your own test endpoint.</div>
+                        <div className="mt-2 text-sm text-slate-400">This prototype runs a basic download-based estimate. For production use, configure your own test endpoint.</div>
                       </div>
                       <div className="grid gap-3 md:grid-cols-3">
                         <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
@@ -838,7 +839,7 @@ function App() {
               <ul className="mt-4 space-y-3 text-sm text-slate-400">
                 <li>QR generation uses a public image endpoint for this prototype. Swap it for a local library before deploying.</li>
                 <li>Currency conversion is manual/static here. Replace it with a real rate source if you need live FX.</li>
-                <li>Speed test is scaffolded; the browser download test works only if the test URL is reachable and not blocked by CORS.</li>
+                <li>Speed test now uses Google's public logo image for testing. For production, configure your own test file or backend endpoint.</li>
               </ul>
             </div>
           </aside>
