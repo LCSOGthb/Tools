@@ -443,25 +443,45 @@ export default function Home() {
       setSpeedState({ running: true, dl: '—', ul: null, ping: pingMs, message: 'Download failed — testing upload…' });
     }
 
+    let ulError = '';
     try {
-      // Upload: POST 1 MB of random data to Cloudflare's upload endpoint
-      const bytes = new Uint8Array(1_000_000);
-      crypto.getRandomValues(bytes);
-      const blob = new Blob([bytes]);
-      const ulStart = performance.now();
-      const res = await fetch(uploadUrl, {
+      // Upload: send JSON payloads (proxy-safe content type) across multiple rounds
+      // Each round sends a ~4 KB JSON body; 12 measured rounds = ~48 KB total
+      const payload = JSON.stringify({ d: Array.from({ length: 2000 }, () => Math.random().toString(36)).join('') });
+      const byteCount = new TextEncoder().encode(payload).byteLength;
+
+      // Warm-up round (not timed)
+      await fetch(uploadUrl, {
         method: 'POST',
-        body: blob,
-        headers: { 'Content-Type': 'application/octet-stream' },
+        body: payload,
+        headers: { 'Content-Type': 'application/json' },
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const ROUNDS = 12;
+      let totalBytes = 0;
+      const ulStart = performance.now();
+      for (let i = 0; i < ROUNDS; i++) {
+        const res = await fetch(uploadUrl, {
+          method: 'POST',
+          body: payload,
+          headers: { 'Content-Type': 'application/json' },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        await res.json();
+        totalBytes += byteCount;
+      }
       const ulSec = (performance.now() - ulStart) / 1000;
-      ulMbps = ((blob.size * 8) / ulSec / 1_000_000).toFixed(2);
-    } catch {
+      ulMbps = ((totalBytes * 8) / ulSec / 1_000_000).toFixed(2);
+    } catch (e) {
+      ulError = (e as Error).message;
       ulMbps = '—';
     }
 
-    setSpeedState({ running: false, dl: dlMbps, ul: ulMbps, ping: pingMs, message: 'Test complete' });
+    if (ulError) {
+      setSpeedState({ running: false, dl: dlMbps, ul: '—', ping: pingMs, message: `Upload failed: ${ulError}` });
+    } else {
+      setSpeedState({ running: false, dl: dlMbps, ul: ulMbps, ping: pingMs, message: 'Test complete' });
+    }
 
     const record: HistoryRecord = {
       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
