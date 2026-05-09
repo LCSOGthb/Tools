@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Personal Tool Console"
+version = "1.0.0"
+id = "artifacts/personal-tool-console"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23235
+
+[services.development]
+run = "pnpm --filter @workspace/personal-tool-console run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/personal-tool-console", "run", "build" ]
+publicDir = "artifacts/personal-tool-console/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23235"
+BASE_PATH = "/"
