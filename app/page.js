@@ -403,8 +403,7 @@ function App() {
   }
 
   function runSpeedTest() {
-    const testUrl = 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png';
-    const fileSize = 13 * 1024; // Approximate size in bytes
+    const testUrl = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js';
     const started = performance.now();
     setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Testing download speed…' });
     
@@ -839,7 +838,7 @@ function App() {
               <ul className="mt-4 space-y-3 text-sm text-slate-400">
                 <li>QR generation uses a public image endpoint for this prototype. Swap it for a local library before deploying.</li>
                 <li>Currency conversion is manual/static here. Replace it with a real rate source if you need live FX.</li>
-                <li>Speed test now uses Google's public logo image for testing. For production, configure your own test file or backend endpoint.</li>
+                <li>Speed test downloads a public library file via CDN. For production, use your own test file or backend endpoint.</li>
               </ul>
             </div>
           </aside>
