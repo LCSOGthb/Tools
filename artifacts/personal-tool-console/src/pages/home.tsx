@@ -53,6 +53,7 @@ const COMMAND_EXAMPLES = [
   'dns lookup google.com',
   'base64 encode hello world',
   'base64 decode aGVsbG8gd29ybGQ=',
+  'hash hello world',
 ];
 
 function suggestionDescription(s: string) {
@@ -62,6 +63,7 @@ function suggestionDescription(s: string) {
   if (s.includes('speed')) return 'Network test';
   if (s.startsWith('dns')) return 'DNS lookup';
   if (s.startsWith('base64')) return 'Base64 encode/decode';
+  if (s.startsWith('hash')) return 'Hash (SHA-1 / SHA-256 / SHA-512)';
   return 'Math expression';
 }
 
@@ -196,8 +198,14 @@ function resultLabel(type: string) {
     case 'speed': return 'Speed test';
     case 'dns': return 'DNS lookup';
     case 'base64': return 'Base64';
+    case 'hash': return 'Hash';
     default: return 'Command';
   }
+}
+
+function parseHashCommand(input: string): string | null {
+  const m = input.match(/^hash\s+(.+)$/is);
+  return m ? m[1] : null;
 }
 
 function parseBase64Command(input: string): { op: 'encode' | 'decode'; text: string } | null {
@@ -572,6 +580,35 @@ export default function Home() {
     }
   }
 
+  async function runHash(text: string, raw: string) {
+    try {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      const [buf1, buf256, buf512] = await Promise.all([
+        crypto.subtle.digest('SHA-1', data),
+        crypto.subtle.digest('SHA-256', data),
+        crypto.subtle.digest('SHA-512', data),
+      ]);
+      const toHex = (buf: ArrayBuffer) => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      const record: HistoryRecord = {
+        id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        input: raw,
+        normalized: normalize(raw),
+        type: 'hash',
+        label: 'Hash',
+        output: { text, sha1: toHex(buf1), sha256: toHex(buf256), sha512: toHex(buf512) },
+        actions: ['pin'],
+        createdAt: new Date().toISOString(),
+      };
+      setResult(record);
+      addHistory(record);
+      setStatus('Hashes computed');
+      setInput('');
+    } catch (err) {
+      setStatus(`Hash failed: ${(err as Error).message}`);
+    }
+  }
+
   const suggestions = useMemo(() => commandSuggestions(input), [input]);
 
   useEffect(() => { setSelectedSuggestion(0); }, [input]);
@@ -605,8 +642,10 @@ export default function Home() {
           const finalCommand = input || suggestions[selectedSuggestion];
           const n = normalize(finalCommand);
           const dnsDomain = parseDnsCommand(n);
+          const hashText = parseHashCommand(n);
           if (n === 'speed test' || n === 'speed') runSpeedTest();
           else if (dnsDomain) runDnsLookup(dnsDomain, finalCommand);
+          else if (hashText) runHash(hashText, finalCommand);
           else executeCommand(finalCommand);
           setIsPaletteOpen(false);
         }
@@ -646,8 +685,10 @@ export default function Home() {
                     e.preventDefault();
                     const n = normalize(input);
                     const dnsDomain = parseDnsCommand(n);
+                    const hashText = parseHashCommand(n);
                     if (n === 'speed test' || n === 'speed') runSpeedTest();
                     else if (dnsDomain) runDnsLookup(dnsDomain, input);
+                    else if (hashText) runHash(hashText, input);
                     else executeCommand(input);
                     setIsPaletteOpen(false);
                   }
@@ -688,8 +729,10 @@ export default function Home() {
                 onClick={() => {
                   const n = normalize(input);
                   const dnsDomain = parseDnsCommand(n);
+                  const hashText = parseHashCommand(n);
                   if (n === 'speed test' || n === 'speed') runSpeedTest();
                   else if (dnsDomain) runDnsLookup(dnsDomain, input);
+                  else if (hashText) runHash(hashText, input);
                   else executeCommand(input);
                 }}
                 className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white"
@@ -850,6 +893,25 @@ export default function Home() {
                       >
                         {speedState?.running ? 'Running…' : 'Run speed test'}
                       </button>
+                    </div>
+                  )}
+
+                  {result.type === 'hash' && (
+                    <div className="space-y-2">
+                      {(['sha1', 'sha256', 'sha512'] as const).map((algo) => (
+                        <div key={algo} className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3">
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                              {algo === 'sha1' ? 'SHA-1' : algo === 'sha256' ? 'SHA-256' : 'SHA-512'}
+                            </div>
+                            <button
+                              onClick={() => { copyText(result.output[algo] as string); setStatus('Copied'); }}
+                              className="rounded-lg px-2 py-0.5 text-xs text-slate-400 hover:bg-slate-700 hover:text-white transition"
+                            >copy</button>
+                          </div>
+                          <div className="mt-1 break-all font-mono text-xs text-slate-100">{result.output[algo] as string}</div>
+                        </div>
+                      ))}
                     </div>
                   )}
 
