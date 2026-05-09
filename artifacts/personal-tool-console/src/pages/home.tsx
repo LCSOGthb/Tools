@@ -50,6 +50,7 @@ const COMMAND_EXAMPLES = [
   'gen password 16 strong',
   'qr https://example.com',
   'speed test',
+  'dns lookup google.com',
 ];
 
 function suggestionDescription(s: string) {
@@ -57,6 +58,7 @@ function suggestionDescription(s: string) {
   if (s.includes('password')) return 'Password generation';
   if (s.startsWith('qr')) return 'QR generation';
   if (s.includes('speed')) return 'Network test';
+  if (s.startsWith('dns')) return 'DNS lookup';
   return 'Math expression';
 }
 
@@ -189,8 +191,14 @@ function resultLabel(type: string) {
     case 'password': return 'Password generator';
     case 'qr': return 'QR generator';
     case 'speed': return 'Speed test';
+    case 'dns': return 'DNS lookup';
     default: return 'Command';
   }
+}
+
+function parseDnsCommand(input: string): string | null {
+  const m = input.match(/^dns(?:\s+lookup)?\s+([a-z0-9._-]+\.[a-z]{2,})$/i);
+  return m ? m[1].toLowerCase() : null;
 }
 
 type Quality = { label: string; color: string };
@@ -246,6 +254,9 @@ interface SpeedState {
   ping: string | null;
   message?: string;
 }
+
+interface DnsRecord { name: string; type: number; TTL: number; data: string; }
+interface DnsResponse { Status: number; Answer?: DnsRecord[]; }
 
 export default function Home() {
   const [prefs, setPrefs] = useState(DEFAULT_PREFS);
@@ -498,6 +509,44 @@ export default function Home() {
     setStatus(`↓ ${dlMbps} Mbps  ↑ ${ulMbps} Mbps  ping ${pingMs} ms`);
   }
 
+  async function runDnsLookup(domain: string, raw: string) {
+    setStatus(`Looking up ${domain}…`);
+    const t0 = performance.now();
+    try {
+      const [resA, resAAAA] = await Promise.all([
+        fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=A`, {
+          headers: { Accept: 'application/dns-json' },
+        }),
+        fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=AAAA`, {
+          headers: { Accept: 'application/dns-json' },
+        }),
+      ]);
+      const responseMs = Math.round(performance.now() - t0);
+      const [dataA, dataAAAA] = await Promise.all([resA.json() as Promise<DnsResponse>, resAAAA.json() as Promise<DnsResponse>]);
+      const ipv4 = (dataA.Answer ?? []).filter(r => r.type === 1).map(r => r.data);
+      const ipv6 = (dataAAAA.Answer ?? []).filter(r => r.type === 28).map(r => r.data);
+      const ttl = dataA.Answer?.[0]?.TTL ?? null;
+      const status = dataA.Status === 0 ? 'resolved' : `NXDOMAIN (${dataA.Status})`;
+      const record: HistoryRecord = {
+        id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        input: raw,
+        normalized: normalize(raw),
+        type: 'dns',
+        label: 'DNS lookup',
+        output: { domain, ipv4, ipv6, ttl, responseMs, status },
+        actions: ['copy', 'pin'],
+        createdAt: new Date().toISOString(),
+      };
+      setResult(record);
+      addHistory(record);
+      setStatus(`${domain} → ${ipv4[0] ?? ipv6[0] ?? 'NXDOMAIN'} (${responseMs} ms)`);
+      setInput('');
+    } catch (err) {
+      const msg = (err as Error).message;
+      setStatus(`DNS lookup failed: ${msg}`);
+    }
+  }
+
   const suggestions = useMemo(() => commandSuggestions(input), [input]);
 
   useEffect(() => { setSelectedSuggestion(0); }, [input]);
@@ -529,7 +578,10 @@ export default function Home() {
         if (e.key === 'Enter') {
           e.preventDefault();
           const finalCommand = input || suggestions[selectedSuggestion];
-          if (normalize(finalCommand) === 'speed test' || normalize(finalCommand) === 'speed') runSpeedTest();
+          const n = normalize(finalCommand);
+          const dnsDomain = parseDnsCommand(n);
+          if (n === 'speed test' || n === 'speed') runSpeedTest();
+          else if (dnsDomain) runDnsLookup(dnsDomain, finalCommand);
           else executeCommand(finalCommand);
           setIsPaletteOpen(false);
         }
@@ -567,7 +619,10 @@ export default function Home() {
                   if (e.key === 'Escape') { e.preventDefault(); setIsPaletteOpen(false); return; }
                   if (e.key === 'Enter') {
                     e.preventDefault();
-                    if (normalize(input) === 'speed test' || normalize(input) === 'speed') runSpeedTest();
+                    const n = normalize(input);
+                    const dnsDomain = parseDnsCommand(n);
+                    if (n === 'speed test' || n === 'speed') runSpeedTest();
+                    else if (dnsDomain) runDnsLookup(dnsDomain, input);
                     else executeCommand(input);
                     setIsPaletteOpen(false);
                   }
@@ -605,7 +660,13 @@ export default function Home() {
 
             <div className="flex gap-2">
               <button
-                onClick={() => (normalize(input) === 'speed test' || normalize(input) === 'speed' ? runSpeedTest() : executeCommand(input))}
+                onClick={() => {
+                  const n = normalize(input);
+                  const dnsDomain = parseDnsCommand(n);
+                  if (n === 'speed test' || n === 'speed') runSpeedTest();
+                  else if (dnsDomain) runDnsLookup(dnsDomain, input);
+                  else executeCommand(input);
+                }}
                 className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white"
               >
                 Execute
@@ -767,6 +828,47 @@ export default function Home() {
                     </div>
                   )}
 
+                  {result.type === 'dns' && (
+                    <div className="space-y-3">
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">IPv4 (A records)</div>
+                          {(result.output.ipv4 as string[]).length === 0
+                            ? <div className="mt-2 text-sm text-slate-400">No A records</div>
+                            : (result.output.ipv4 as string[]).map((ip) => (
+                              <div key={ip} className="mt-2 font-mono text-sm text-slate-100">{ip}</div>
+                            ))
+                          }
+                        </div>
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">IPv6 (AAAA records)</div>
+                          {(result.output.ipv6 as string[]).length === 0
+                            ? <div className="mt-2 text-sm text-slate-400">No AAAA records</div>
+                            : (result.output.ipv6 as string[]).map((ip) => (
+                              <div key={ip} className="mt-2 break-all font-mono text-sm text-slate-100">{ip}</div>
+                            ))
+                          }
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-3">
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3">
+                          <span className="text-xs text-slate-500">Response time </span>
+                          <span className="font-mono text-sm text-slate-100">{result.output.responseMs as number} ms</span>
+                        </div>
+                        {result.output.ttl !== null && (
+                          <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3">
+                            <span className="text-xs text-slate-500">TTL </span>
+                            <span className="font-mono text-sm text-slate-100">{result.output.ttl as number} s</span>
+                          </div>
+                        )}
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3">
+                          <span className="text-xs text-slate-500">Status </span>
+                          <span className={`font-mono text-sm ${result.output.status === 'resolved' ? 'text-green-400' : 'text-red-400'}`}>{result.output.status as string}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex flex-wrap gap-2 pt-2">
                     {result.actions.map((a) => (
                       <button
@@ -776,6 +878,7 @@ export default function Home() {
                             const copyValue =
                               result.type === 'password' ? result.output.password as string
                               : result.type === 'qr' ? result.output.value as string
+                              : result.type === 'dns' ? (result.output.ipv4 as string[]).concat(result.output.ipv6 as string[]).join('\n')
                               : (result.output.formatted as string) || JSON.stringify(result.output, null, 2);
                             copyText(copyValue);
                             setStatus('Copied to clipboard');
