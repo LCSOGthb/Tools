@@ -742,7 +742,7 @@ export default function Home() {
                       <div className="text-sm text-slate-400">Converted</div>
                       <div className="mt-1 text-3xl font-semibold">{result.output.formatted as string}</div>
                       <div className="mt-2 text-sm text-slate-400">From {result.output.source as string}</div>
-                      {result.output.note && <div className="mt-1 text-xs text-slate-500">{result.output.note as string}</div>}
+                      {!!result.output.note && <div className="mt-1 text-xs text-slate-500">{result.output.note as string}</div>}
                     </div>
                   )}
 
