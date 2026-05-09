@@ -51,6 +51,8 @@ const COMMAND_EXAMPLES = [
   'qr https://example.com',
   'speed test',
   'dns lookup google.com',
+  'base64 encode hello world',
+  'base64 decode aGVsbG8gd29ybGQ=',
 ];
 
 function suggestionDescription(s: string) {
@@ -59,6 +61,7 @@ function suggestionDescription(s: string) {
   if (s.startsWith('qr')) return 'QR generation';
   if (s.includes('speed')) return 'Network test';
   if (s.startsWith('dns')) return 'DNS lookup';
+  if (s.startsWith('base64')) return 'Base64 encode/decode';
   return 'Math expression';
 }
 
@@ -192,8 +195,15 @@ function resultLabel(type: string) {
     case 'qr': return 'QR generator';
     case 'speed': return 'Speed test';
     case 'dns': return 'DNS lookup';
+    case 'base64': return 'Base64';
     default: return 'Command';
   }
+}
+
+function parseBase64Command(input: string): { op: 'encode' | 'decode'; text: string } | null {
+  const m = input.match(/^base64\s+(encode|decode)\s+(.+)$/is);
+  if (!m) return null;
+  return { op: m[1].toLowerCase() as 'encode' | 'decode', text: m[2] };
 }
 
 function parseDnsCommand(input: string): string | null {
@@ -348,6 +358,21 @@ export default function Home() {
           type = 'math';
           const value = safeMathEval(normalized);
           output = { value, formatted: formatNumber(value, 10) };
+          actions = ['copy', 'pin'];
+        } else if (parseBase64Command(normalized)) {
+          const b64 = parseBase64Command(normalized)!;
+          type = 'base64';
+          if (b64.op === 'encode') {
+            const encoded = btoa(unescape(encodeURIComponent(b64.text)));
+            output = { op: 'encode', input: b64.text, result: encoded };
+          } else {
+            try {
+              const decoded = decodeURIComponent(escape(atob(b64.text)));
+              output = { op: 'decode', input: b64.text, result: decoded };
+            } catch {
+              throw new Error('Invalid base64 string');
+            }
+          }
           actions = ['copy', 'pin'];
         } else if (normalized.startsWith('pin ')) {
           const target = normalized.slice(4).trim();
@@ -828,6 +853,21 @@ export default function Home() {
                     </div>
                   )}
 
+                  {result.type === 'base64' && (
+                    <div className="space-y-3">
+                      <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                        <div className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                          {result.output.op === 'encode' ? 'Encoded' : 'Decoded'}
+                        </div>
+                        <div className="mt-2 break-all font-mono text-sm text-slate-100">{result.output.result as string}</div>
+                      </div>
+                      <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3">
+                        <span className="text-xs text-slate-500">Input  </span>
+                        <span className="break-all font-mono text-sm text-slate-400">{result.output.input as string}</span>
+                      </div>
+                    </div>
+                  )}
+
                   {result.type === 'dns' && (
                     <div className="space-y-3">
                       <div className="grid gap-3 sm:grid-cols-2">
@@ -879,6 +919,7 @@ export default function Home() {
                               result.type === 'password' ? result.output.password as string
                               : result.type === 'qr' ? result.output.value as string
                               : result.type === 'dns' ? (result.output.ipv4 as string[]).concat(result.output.ipv6 as string[]).join('\n')
+                              : result.type === 'base64' ? result.output.result as string
                               : (result.output.formatted as string) || JSON.stringify(result.output, null, 2);
                             copyText(copyValue);
                             setStatus('Copied to clipboard');
