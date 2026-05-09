@@ -193,6 +193,35 @@ function resultLabel(type: string) {
   }
 }
 
+type Quality = { label: string; color: string };
+
+function downloadQuality(mbps: string): Quality {
+  const v = parseFloat(mbps);
+  if (isNaN(v)) return { label: '—', color: 'text-slate-400' };
+  if (v >= 100) return { label: 'Excellent', color: 'text-cyan-400' };
+  if (v >= 25)  return { label: 'Good',      color: 'text-green-400' };
+  if (v >= 5)   return { label: 'Fair',      color: 'text-amber-400' };
+  return           { label: 'Poor',      color: 'text-red-400' };
+}
+
+function uploadQuality(mbps: string): Quality {
+  const v = parseFloat(mbps);
+  if (isNaN(v)) return { label: '—', color: 'text-slate-400' };
+  if (v >= 50) return { label: 'Excellent', color: 'text-cyan-400' };
+  if (v >= 10) return { label: 'Good',      color: 'text-green-400' };
+  if (v >= 2)  return { label: 'Fair',      color: 'text-amber-400' };
+  return          { label: 'Poor',      color: 'text-red-400' };
+}
+
+function pingQuality(ms: string): Quality {
+  const v = parseFloat(ms);
+  if (isNaN(v))  return { label: '—', color: 'text-slate-400' };
+  if (v < 20)    return { label: 'Excellent', color: 'text-cyan-400' };
+  if (v < 50)    return { label: 'Good',      color: 'text-green-400' };
+  if (v < 100)   return { label: 'Fair',      color: 'text-amber-400' };
+  return            { label: 'Poor',      color: 'text-red-400' };
+}
+
 function commandSuggestions(query: string) {
   const q = normalize(query);
   if (!q) return COMMAND_EXAMPLES;
@@ -674,24 +703,39 @@ export default function Home() {
                         )}
                       </div>
                       <div className="grid gap-3 md:grid-cols-3">
-                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
-                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Download</div>
-                          <div className="mt-1 text-2xl font-semibold">
-                            {speedState?.dl != null ? `${speedState.dl} Mbps` : (result.output.downloadMbps ? `${result.output.downloadMbps} Mbps` : '—')}
-                          </div>
-                        </div>
-                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
-                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Upload</div>
-                          <div className="mt-1 text-2xl font-semibold">
-                            {speedState?.ul != null ? (speedState.ul === '—' ? '—' : `${speedState.ul} Mbps`) : (result.output.uploadMbps ? `${result.output.uploadMbps} Mbps` : '—')}
-                          </div>
-                        </div>
-                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
-                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Ping</div>
-                          <div className="mt-1 text-2xl font-semibold">
-                            {speedState?.ping != null ? (speedState.ping === '—' ? '—' : `${speedState.ping} ms`) : (result.output.pingMs ? `${result.output.pingMs} ms` : '—')}
-                          </div>
-                        </div>
+                        {(() => {
+                          const dlVal = speedState?.dl ?? (result.output.downloadMbps as string | undefined) ?? null;
+                          const ulVal = speedState?.ul ?? (result.output.uploadMbps as string | undefined) ?? null;
+                          const pingVal = speedState?.ping ?? (result.output.pingMs as string | undefined) ?? null;
+                          const dlQ = dlVal && dlVal !== '—' ? downloadQuality(dlVal) : null;
+                          const ulQ = ulVal && ulVal !== '—' ? uploadQuality(ulVal) : null;
+                          const pingQ = pingVal && pingVal !== '—' ? pingQuality(pingVal) : null;
+                          return (
+                            <>
+                              <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                                <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Download</div>
+                                <div className="mt-1 text-2xl font-semibold">
+                                  {dlVal && dlVal !== '—' ? `${dlVal} Mbps` : '—'}
+                                </div>
+                                {dlQ && <div className={`mt-1 text-xs font-medium ${dlQ.color}`}>{dlQ.label}</div>}
+                              </div>
+                              <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                                <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Upload</div>
+                                <div className="mt-1 text-2xl font-semibold">
+                                  {ulVal && ulVal !== '—' ? `${ulVal} Mbps` : '—'}
+                                </div>
+                                {ulQ && <div className={`mt-1 text-xs font-medium ${ulQ.color}`}>{ulQ.label}</div>}
+                              </div>
+                              <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4">
+                                <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Ping</div>
+                                <div className="mt-1 text-2xl font-semibold">
+                                  {pingVal && pingVal !== '—' ? `${pingVal} ms` : '—'}
+                                </div>
+                                {pingQ && <div className={`mt-1 text-xs font-medium ${pingQ.color}`}>{pingQ.label}</div>}
+                              </div>
+                            </>
+                          );
+                        })()}
                       </div>
                       <button
                         onClick={runSpeedTest}
