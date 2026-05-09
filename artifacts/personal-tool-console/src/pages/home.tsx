@@ -660,20 +660,10 @@ export default function Home() {
       <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
 
         {/* Sticky header */}
-        <header className="sticky top-4 z-20 mb-6 flex flex-col gap-3 rounded-3xl border border-slate-800 bg-slate-900/90 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight">Personal Tool Console</h1>
-              <p className="mt-1 text-sm text-slate-400">Command-driven utilities with local history, saved shortcuts, and fast results.</p>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <span className="rounded-full border border-slate-700 px-3 py-1">Press / to focus</span>
-              <span className="rounded-full border border-slate-700 px-3 py-1">Enter to run</span>
-            </div>
-          </div>
-
-          <div className="grid gap-3 lg:grid-cols-[1fr_auto]">
-            <div className="relative">
+        <header className="sticky top-4 z-20 mb-6 rounded-3xl border border-slate-800 bg-slate-900/90 px-4 py-3 shadow-2xl shadow-black/30 backdrop-blur-xl">
+          <div className="flex items-center gap-3">
+            <h1 className="text-base font-semibold tracking-tight shrink-0">Personal Tool Console</h1>
+            <div className="relative flex-1">
               <input
                 ref={inputRef}
                 value={input}
@@ -693,11 +683,11 @@ export default function Home() {
                     setIsPaletteOpen(false);
                   }
                 }}
-                placeholder="Search or run a command… 100 usd to myr, password 20, qr https://..., 16*24+10"
-                className="w-full rounded-2xl border border-slate-700 bg-black/70 px-5 py-5 pr-28 text-lg outline-none transition placeholder:text-slate-500 focus:border-slate-400 focus:bg-slate-900"
+                placeholder="100 usd to myr · password 20 · qr https://... · 16*24+10 · hash ..."
+                className="w-full rounded-xl border border-slate-700 bg-black/70 px-4 py-2.5 pr-10 text-sm outline-none transition placeholder:text-slate-500 focus:border-slate-400 focus:bg-slate-900"
               />
-              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center gap-2 text-xs text-slate-400">
-                <span>⌘↵</span>
+              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-xs text-slate-500">
+                <span>↵</span>
               </div>
 
               {isPaletteOpen && suggestions.length > 0 && (
@@ -724,35 +714,26 @@ export default function Home() {
               )}
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  const n = normalize(input);
-                  const dnsDomain = parseDnsCommand(n);
-                  const hashText = parseHashCommand(n);
-                  if (n === 'speed test' || n === 'speed') runSpeedTest();
-                  else if (dnsDomain) runDnsLookup(dnsDomain, input);
-                  else if (hashText) runHash(hashText, input);
-                  else executeCommand(input);
-                }}
-                className="rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white"
-              >
-                Execute
-              </button>
-              <button
-                onClick={() => setInput('')}
-                className="rounded-2xl border border-slate-700 px-4 py-3 font-medium text-slate-200 transition hover:bg-slate-800"
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-slate-500">
-            <span className="rounded-full border border-slate-800 px-3 py-1">↑↓ navigate</span>
-            <span className="rounded-full border border-slate-800 px-3 py-1">Tab autocomplete</span>
-            <span className="rounded-full border border-slate-800 px-3 py-1">Enter execute</span>
-            <span className="rounded-full border border-slate-800 px-3 py-1">/ focus</span>
+            <button
+              onClick={() => {
+                const n = normalize(input);
+                const dnsDomain = parseDnsCommand(n);
+                const hashText = parseHashCommand(n);
+                if (n === 'speed test' || n === 'speed') runSpeedTest();
+                else if (dnsDomain) runDnsLookup(dnsDomain, input);
+                else if (hashText) runHash(hashText, input);
+                else executeCommand(input);
+              }}
+              className="shrink-0 rounded-xl bg-slate-100 px-4 py-2.5 text-sm font-medium text-slate-950 transition hover:bg-white"
+            >
+              Run
+            </button>
+            <button
+              onClick={() => setInput('')}
+              className="shrink-0 rounded-xl border border-slate-700 px-3 py-2.5 text-sm text-slate-400 transition hover:bg-slate-800 hover:text-white"
+            >
+              ✕
+            </button>
           </div>
         </header>
 
