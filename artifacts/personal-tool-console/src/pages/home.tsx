@@ -370,7 +370,7 @@ export default function Home() {
     // All three endpoints are from speed.cloudflare.com — CORS-enabled, no auth needed
     const pingUrl = 'https://speed.cloudflare.com/__down?bytes=0';
     const downloadUrl = 'https://speed.cloudflare.com/__down?bytes=5000000'; // 5 MB
-    const uploadUrl = 'https://speed.cloudflare.com/__up';
+    const uploadUrl = '/api/upload-test';
 
     setSpeedState({ running: true, dl: null, ul: null, ping: null, message: 'Testing ping…' });
 
