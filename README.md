@@ -27,10 +27,6 @@ Qlty:
 [![Maintainability](https://qlty.sh/badges/e3c02970-6a80-4e74-b130-8cca7af27d06/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
 [![Code Coverage](https://qlty.sh/gh/LCSOGthb/projects/Tools/coverage.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
 
-Scrutinizer:
-![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/LCSOGthb/Tools)
-[![Build Status](https://scrutinizer-ci.com/g/LCSOGthb/Tools/badges/build.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/Tools/build-status/main)
-
 SonarQube Cloud:
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=bugs)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
