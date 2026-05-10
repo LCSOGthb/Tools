@@ -46,6 +46,8 @@ CodeRabbit: ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit
 
 CodeScene: [![CodeScene Average Code Health](https://codescene.io/projects/79942/status-badges/average-code-health)](https://codescene.io/projects/79942) [![CodeScene Hotspot Code Health](https://codescene.io/projects/79942/status-badges/hotspot-code-health)](https://codescene.io/projects/79942) [![CodeScene Missed Goals](https://codescene.io/projects/79942/status-badges/missed-goals)](https://codescene.io/projects/79942) [![CodeScene System Mastery](https://codescene.io/projects/79942/status-badges/system-mastery)](https://codescene.io/projects/79942)
 
+DeepScan: [![DeepScan grade](https://deepscan.io/api/teams/29732/projects/31613/branches/1026410/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=29732&pid=31613&bid=1026410)
+
 This project is licensed under AGPLv3.
 
 You may use, modify, and redistribute this software freely.
