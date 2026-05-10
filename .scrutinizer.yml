@@ -1,17 +1,21 @@
-build:
-    image: default-jammy
+name: CI
 
-    environment:
-        node: 22
+on:
+  push:
+  pull_request:
 
-    nodes:
-        analysis:
-            dependencies:
-                override:
-                    - npm install -g pnpm@10
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-            tests:
-                override:
-                    - cd artifacts/personal-tool-console
-                    - pnpm install --frozen-lockfile
-                    - pnpm run build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
