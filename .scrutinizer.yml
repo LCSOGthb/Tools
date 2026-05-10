@@ -6,6 +6,8 @@ build:
     nodes:
         analysis:
             commands:
+                - checkout-code ~/build
+                - cd ~/build
                 - corepack enable
                 - corepack prepare pnpm@latest-10 --activate
                 - pnpm install --frozen-lockfile
