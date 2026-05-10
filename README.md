@@ -1,9 +1,3 @@
-This project is licensed under AGPLv3.
-
-You may use, modify, and redistribute this software freely.
-
-If you distribute modified versions or run modified versions as a public service, you must also make the corresponding source code available under the same license.
-
 ![Repo Size](https://img.shields.io/github/repo-size/LCSOGthb/Tools)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LCSOGthb/Tools)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/LCSOGthb/Tools)
@@ -53,3 +47,9 @@ SonarQube Cloud:
 Codacy: [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a37a51513fa34b95b4c06d48b24e36e1)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 CodeRabbit: ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/Tools?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FTools&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
+This project is licensed under AGPLv3.
+
+You may use, modify, and redistribute this software freely.
+
+If you distribute modified versions or run modified versions as a public service, you must also make the corresponding source code available under the same license.
