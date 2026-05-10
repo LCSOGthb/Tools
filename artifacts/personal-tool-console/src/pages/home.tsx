@@ -722,6 +722,7 @@ export default function Home() {
                 value={input}
                 onChange={(e) => { setInput(e.target.value); setIsPaletteOpen(true); }}
                 onFocus={() => setIsPaletteOpen(true)}
+                onBlur={() => setTimeout(() => setIsPaletteOpen(false), 120)}
                 onKeyDown={(e) => {
                   if (e.key === 'Escape') { e.preventDefault(); setIsPaletteOpen(false); return; }
                   if (e.key === 'Enter') {
