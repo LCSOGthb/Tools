@@ -5,17 +5,15 @@ build:
     image: default-jammy
 
     environment:
-        node: 20
+        node: 22
 
     nodes:
         analysis:
             dependencies:
                 override:
-                    - npm install -g pnpm
+                    - npm install -g pnpm@10
 
             tests:
                 override:
-                    - export npm_config_user_agent="pnpm"
-                    - export PORT=4173
                     - pnpm install --frozen-lockfile
                     - pnpm run build
