@@ -4,13 +4,14 @@ checks:
 build:
     image: default-jammy
     nodes:
-        analysis:
+        build:
             commands:
                 - checkout-code ~/build
                 - cd ~/build
                 - corepack enable
                 - corepack prepare pnpm@latest-10 --activate
                 - pnpm install --frozen-lockfile
+        analysis:
             tests:
                 override:
                     - js-scrutinizer-run
