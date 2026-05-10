@@ -1,3 +1,9 @@
+This project is licensed under AGPLv3.
+
+You may use, modify, and redistribute this software freely.
+
+If you distribute modified versions or run modified versions as a public service, you must also make the corresponding source code available under the same license.
+
 ![Repo Size](https://img.shields.io/github/repo-size/LCSOGthb/Tools)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LCSOGthb/Tools)
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/LCSOGthb/Tools)
