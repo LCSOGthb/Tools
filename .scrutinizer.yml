@@ -3,10 +3,14 @@ checks:
 
 build:
     image: default-jammy
+
     nodes:
         analysis:
             environment:
                 node: 20
+
             tests:
                 override:
-                    - js-scrutinizer-run
+                    - corepack enable
+                    - pnpm install --frozen-lockfile
+                    - pnpm build
