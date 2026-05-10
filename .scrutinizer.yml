@@ -5,9 +5,8 @@ build:
     image: default-jammy
     nodes:
         analysis:
-            environment:
-                node: 20
             commands:
+                - checkout-code ~/build
                 - corepack enable
                 - corepack prepare pnpm@latest-11 --activate
                 - pnpm install --frozen-lockfile
