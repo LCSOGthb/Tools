@@ -44,6 +44,8 @@ Codacy: [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a37a51513fa3
 
 CodeRabbit: ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/Tools?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FTools&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
+CodeScene: [![CodeScene Average Code Health](https://codescene.io/projects/79942/status-badges/average-code-health)](https://codescene.io/projects/79942) [![CodeScene Hotspot Code Health](https://codescene.io/projects/79942/status-badges/hotspot-code-health)](https://codescene.io/projects/79942) [![CodeScene Missed Goals](https://codescene.io/projects/79942/status-badges/missed-goals)](https://codescene.io/projects/79942) [![CodeScene System Mastery](https://codescene.io/projects/79942/status-badges/system-mastery)](https://codescene.io/projects/79942)
+
 This project is licensed under AGPLv3.
 
 You may use, modify, and redistribute this software freely.
