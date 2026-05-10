@@ -16,5 +16,6 @@ build:
             tests:
                 override:
                     - export npm_config_user_agent="pnpm"
+                    - export PORT=4173
                     - pnpm install --frozen-lockfile
                     - pnpm run build
