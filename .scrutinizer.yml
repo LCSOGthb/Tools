@@ -1,21 +1,12 @@
-name: CI
+checks:
+    javascript: true
 
-on:
-  push:
-  pull_request:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20.19.0
-          cache: npm
-
-      - run: npm ci
-      - run: npm run build
-      - run: npm run lint
+build:
+    image: default-jammy
+    nodes:
+        analysis:
+            environment:
+                node: 20
+            tests:
+                override:
+                    - js-scrutinizer-run
