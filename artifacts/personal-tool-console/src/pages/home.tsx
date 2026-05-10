@@ -54,6 +54,9 @@ const COMMAND_EXAMPLES = [
   'base64 encode hello world',
   'base64 decode aGVsbG8gd29ybGQ=',
   'hash hello world',
+  'timestamp',
+  'timestamp 1700000000',
+  'timestamp 2024-01-15',
 ];
 
 function suggestionDescription(s: string) {
@@ -64,6 +67,7 @@ function suggestionDescription(s: string) {
   if (s.startsWith('dns')) return 'DNS lookup';
   if (s.startsWith('base64')) return 'Base64 encode/decode';
   if (s.startsWith('hash')) return 'Hash (SHA-1 / SHA-256 / SHA-512)';
+  if (s.startsWith('timestamp')) return 'Timestamp converter';
   return 'Math expression';
 }
 
@@ -199,8 +203,19 @@ function resultLabel(type: string) {
     case 'dns': return 'DNS lookup';
     case 'base64': return 'Base64';
     case 'hash': return 'Hash';
+    case 'timestamp': return 'Timestamp';
     default: return 'Command';
   }
+}
+
+function parseTimestampCommand(input: string): { mode: 'now' | 'unix' | 'date'; value: string } | null {
+  const n = input.trim();
+  if (n === 'timestamp' || n === 'timestamp now') return { mode: 'now', value: '' };
+  const unixM = n.match(/^timestamp\s+(\d{1,13})$/);
+  if (unixM) return { mode: 'unix', value: unixM[1] };
+  const dateM = n.match(/^timestamp\s+(\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2})?)?)$/);
+  if (dateM) return { mode: 'date', value: dateM[1] };
+  return null;
 }
 
 function parseHashCommand(input: string): string | null {
@@ -366,6 +381,44 @@ export default function Home() {
           type = 'math';
           const value = safeMathEval(normalized);
           output = { value, formatted: formatNumber(value, 10) };
+          actions = ['copy', 'pin'];
+        } else if (parseTimestampCommand(normalized)) {
+          const ts = parseTimestampCommand(normalized)!;
+          type = 'timestamp';
+          const fmtOptions: Intl.DateTimeFormatOptions = {
+            year: 'numeric', month: 'short', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            timeZoneName: 'short',
+          };
+          if (ts.mode === 'now') {
+            const now = new Date();
+            const unix = Math.floor(now.getTime() / 1000);
+            output = {
+              unix, unixMs: now.getTime(),
+              utc: now.toUTCString(),
+              local: now.toLocaleString(undefined, fmtOptions),
+              iso: now.toISOString(),
+            };
+          } else if (ts.mode === 'unix') {
+            const n = Number(ts.value);
+            const d = new Date(n > 1e10 ? n : n * 1000);
+            if (isNaN(d.getTime())) throw new Error('Invalid Unix timestamp');
+            output = {
+              unix: Math.floor(d.getTime() / 1000), unixMs: d.getTime(),
+              utc: d.toUTCString(),
+              local: d.toLocaleString(undefined, fmtOptions),
+              iso: d.toISOString(),
+            };
+          } else {
+            const d = new Date(ts.value.includes('T') || ts.value.includes(' ') ? ts.value : ts.value + 'T00:00:00');
+            if (isNaN(d.getTime())) throw new Error('Invalid date string');
+            output = {
+              unix: Math.floor(d.getTime() / 1000), unixMs: d.getTime(),
+              utc: d.toUTCString(),
+              local: d.toLocaleString(undefined, fmtOptions),
+              iso: d.toISOString(),
+            };
+          }
           actions = ['copy', 'pin'];
         } else if (parseBase64Command(normalized)) {
           const b64 = parseBase64Command(normalized)!;
@@ -874,6 +927,40 @@ export default function Home() {
                       >
                         {speedState?.running ? 'Running…' : 'Run speed test'}
                       </button>
+                    </div>
+                  )}
+
+                  {result.type === 'timestamp' && (
+                    <div className="space-y-2">
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3">
+                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Unix (seconds)</div>
+                          <div className="mt-1 flex items-center justify-between gap-2">
+                            <span className="font-mono text-lg text-slate-100">{result.output.unix as number}</span>
+                            <button onClick={() => { copyText(String(result.output.unix)); setStatus('Copied'); }} className="rounded-lg px-2 py-0.5 text-xs text-slate-400 hover:bg-slate-700 hover:text-white transition">copy</button>
+                          </div>
+                        </div>
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3">
+                          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Unix (ms)</div>
+                          <div className="mt-1 flex items-center justify-between gap-2">
+                            <span className="font-mono text-lg text-slate-100">{result.output.unixMs as number}</span>
+                            <button onClick={() => { copyText(String(result.output.unixMs)); setStatus('Copied'); }} className="rounded-lg px-2 py-0.5 text-xs text-slate-400 hover:bg-slate-700 hover:text-white transition">copy</button>
+                          </div>
+                        </div>
+                      </div>
+                      {[
+                        { label: 'ISO 8601', key: 'iso' },
+                        { label: 'UTC', key: 'utc' },
+                        { label: 'Local', key: 'local' },
+                      ].map(({ label, key }) => (
+                        <div key={key} className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</span>
+                            <button onClick={() => { copyText(result.output[key] as string); setStatus('Copied'); }} className="rounded-lg px-2 py-0.5 text-xs text-slate-400 hover:bg-slate-700 hover:text-white transition">copy</button>
+                          </div>
+                          <div className="mt-1 font-mono text-sm text-slate-100">{result.output[key] as string}</div>
+                        </div>
+                      ))}
                     </div>
                   )}
 
