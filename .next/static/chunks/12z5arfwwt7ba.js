@@ -1,1 +1,1173 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,81694,e=>{"use strict";var t=e.i(43476),s=e.i(71645);let r="ptc_history_v1",l="ptc_pins_v1",a="ptc_prefs_v1",n={passwordLength:16,passwordMode:"strong",defaultCurrencyFrom:"usd",defaultCurrencyTo:"myr"},o={length:{mm:.001,cm:.01,m:1,km:1e3,in:.0254,ft:.3048,yd:.9144,mi:1609.344},mass:{mg:1e-6,g:.001,kg:1,oz:.028349523125,lb:.45359237},speed:{"m/s":1,"km/h":1e3/3600,mph:.44704,knot:1852/3600},area:{m2:1,cm2:1e-4,km2:1e6,acre:4046.8564224,ha:1e4},volume:{ml:1e-6,l:.001,m3:1,tsp:492892159375e-17,tbsp:1478676478125e-17,cup:2365882365e-13,fl_oz:295735295625e-16,gal:.003785411784}},d={usd:"$",myr:"RM",eur:"€",gbp:"£",jpy:"¥",sgd:"S$",aud:"A$",idr:"Rp"};function i(e,t){try{let s=window.localStorage.getItem(e);return s?JSON.parse(s):t}catch{return t}}function c(e,t){try{window.localStorage.setItem(e,JSON.stringify(t))}catch{}}function u(e,t=8){if(!Number.isFinite(e))return"—";let s=Math.abs(e);return 0!==s&&(s>=1e9||s<1e-6)?e.toExponential(6).replace(/\+/,""):Number.parseFloat(e.toFixed(t)).toString()}function m(e){return e.trim().replace(/\s+/g," ").toLowerCase()}function x(e){for(let[t,s]of Object.entries(o))if(Object.prototype.hasOwnProperty.call(s,e))return t;return null}e.s(["default",0,function(){let[e,p]=(0,s.useState)(n),[h,b]=(0,s.useState)(""),[g,f]=(0,s.useState)(null),[v,y]=(0,s.useState)([]),[j,w]=(0,s.useState)([]),[N,k]=(0,s.useState)("Ready"),[C,S]=(0,s.useState)(null),$=(0,s.useRef)(null);function E(e){y(t=>[e,...t].slice(0,80))}function R(e){navigator.clipboard?.writeText(e).catch(()=>{})}function M(t,s={}){let r=m(t);if(!r)return;let l=null,a=null,n="unknown",i=[];try{if("speed test"===r||"speed"===r)n="speed",a={title:"Speed test is scaffolded",details:"This prototype includes the UI and history, but a true browser speed test needs a test file or backend endpoint you control."},S({running:!1,dl:null,ul:null,ping:null}),i=["configure speed endpoint"];else{let t;if(l=(t=r.match(/^(?:gen\s+)?password(?:\s+(\d{1,3}))?(?:\s+(weak|medium|strong))?$/i))?{type:"password",length:Math.max(4,Math.min(128,Number(t[1]||e.passwordLength||16))),mode:(t[2]||e.passwordMode||"strong").toLowerCase()}:null){let e;n="password";let t=function(e,t){let s={weak:"abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",medium:"abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%?_-",strong:"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{};:,.<>/?"},r=s[t]||s.strong,l=new Uint32Array(e);window.crypto.getRandomValues(l);let a="";for(let t=0;t<e;t+=1)a+=r[l[t]%r.length];return a}(l.length,l.mode);a={password:t,score:(e=0,t.length>=12&&(e+=1),t.length>=16&&(e+=1),/[a-z]/.test(t)&&(e+=1),/[A-Z]/.test(t)&&(e+=1),/\d/.test(t)&&(e+=1),/[^A-Za-z0-9]/.test(t)&&(e+=1),e),mode:l.mode,length:l.length},i=["copy","pin"]}else if(l=function(e){if(!e.startsWith("qr "))return null;let t=e.slice(3).trim();return t?{type:"qr",value:t}:null}(r))n="qr",a={value:l.value,url:`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(l.value)}`},i=["copy","pin"];else if(l=function(e,t){let s=e.match(/^(?:(\d+(?:\.\d+)?)\s+)?([a-z]{3})\s+to\s+([a-z]{3})$/i);if(s)return{type:"currency",value:s[1]?Number(s[1]):1,from:s[2].toLowerCase(),to:s[3].toLowerCase(),note:"Rates are local/manual in this prototype.",prefs:t};let r=e.match(/^(\d+(?:\.\d+)?)\s+([a-z\/0-9_]+)\s+to\s+([a-z\/0-9_]+)$/i);if(!r)return null;let l=Number(r[1]),a=r[2].toLowerCase();return{type:"unit",value:l,from:a,to:r[3].toLowerCase()}}(r,e))if("currency"===l.type){n="currency";let e=function(e,t,s){let r={usd:1,myr:4.7,eur:.92,gbp:.78,jpy:154,sgd:1.35,aud:1.51,idr:15850};if(!r[t]||!r[s])throw Error("Unsupported currency");return e/r[t]*r[s]}(l.value,l.from,l.to);a={value:e,formatted:`${d[l.to]||l.to.toUpperCase()} ${u(e,6)}`,source:`${l.value} ${l.from.toUpperCase()}`,note:l.note},i=["copy","pin"]}else{n="unit";let e=function(e,t,s){let r=x(t);if(!r||x(s)!==r)throw Error("Unsupported unit pair");if("speed"===r)return e*o.speed[t]/o.speed[s];if("area"===r||"volume"===r||"length"===r||"mass"===r)return e*o[r][t]/o[r][s];throw Error("Unsupported unit category")}(l.value,l.from,l.to);a={value:e,formatted:`${u(e,8)} ${l.to}`,source:`${l.value} ${l.from}`},i=["copy","pin"]}else if(/^[0-9+\-*/%^().,\s]+$/.test(r)&&/\d/.test(r)){n="math";let e=function(e){let t=e.replace(/,/g,".").replace(/\^/g,"**");if(!/^[0-9+\-*/%().*\s**]+$/.test(t.replace(/\*\*/g,"")))throw Error("Invalid expression");let s=Function(`"use strict"; return (${t});`)();if("number"!=typeof s||!Number.isFinite(s))throw Error("Invalid result");return s}(r);a={value:e,formatted:u(e,10)},i=["copy","pin"]}else if(r.startsWith("pin ")){let e=r.slice(4).trim();if(!e)throw Error("Nothing to pin");w(t=>[e,...t.filter(t=>t!==e)].slice(0,12)),k(`Pinned: ${e}`);return}else if(r.startsWith("unpin ")){let e=r.slice(6).trim();w(t=>t.filter(t=>t!==e)),k(`Unpinned: ${e}`);return}else throw Error("Unknown command")}let c={id:`${Date.now()}-${Math.random().toString(16).slice(2)}`,input:t,normalized:r,type:n,label:function(e){switch(e){case"math":return"Calculator";case"unit":return"Unit converter";case"currency":return"Currency converter";case"password":return"Password generator";case"qr":return"QR generator";case"speed":return"Speed test";default:return"Command"}}(n),output:a,actions:i,createdAt:new Date().toISOString()};return f(c),E(c),k(`Ran ${c.label}`),!1!==s.clearInput&&b(""),c}catch(s){let e={id:`${Date.now()}-${Math.random().toString(16).slice(2)}`,input:t,normalized:r,type:"error",label:"Error",output:{message:s.message||"Command failed"},actions:[],createdAt:new Date().toISOString()};return f(e),E(e),k(e.output.message),e}}function D(e){b(e),$.current?.focus(),M(e)}function L(){let e=performance.now();S({running:!0,dl:null,ul:null,ping:null,message:"Downloading a test payload…"}),fetch("https://speed.hetzner.de/10MB.bin",{cache:"no-store"}).then(async t=>{if(!t.ok)throw Error(`HTTP ${t.status}`);let s=t.body?.getReader();if(!s)throw Error("Streaming not available in this browser");let r=0,l=Number(t.headers.get("content-length"))||0xa00000;for(;;){let{done:e,value:t}=await s.read();if(e)break;r+=t.byteLength}let a=8*r/((performance.now()-e)/1e3)/1e6;S({running:!1,dl:a.toFixed(2),ul:"—",ping:"—",message:`${Math.round(r/l*100)}%`});let n={id:`${Date.now()}-${Math.random().toString(16).slice(2)}`,input:"speed test",normalized:"speed test",type:"speed",label:"Speed test",output:{downloadMbps:a.toFixed(2),note:"Download estimate from a single download payload."},actions:["copy","pin"],createdAt:new Date().toISOString()};f(n),E(n),k(`Speed test complete: ${a.toFixed(2)} Mbps`)}).catch(e=>{S({running:!1,dl:null,ul:null,ping:null,message:e.message}),k(`Speed test failed: ${e.message}`)})}(0,s.useEffect)(()=>{let e=i(a,n),t=i(r,[]),s=i(l,[]);p({...n,...e}),y(Array.isArray(t)?t:[]),w(Array.isArray(s)?s:[])},[]),(0,s.useEffect)(()=>c(a,e),[e]),(0,s.useEffect)(()=>c(r,v.slice(0,80)),[v]),(0,s.useEffect)(()=>c(l,j),[j]);let A=(0,s.useMemo)(()=>{let e,t;return e=m(h),t=["100 usd to myr","10 km to mi","16 * 24 + 10","gen password 16 strong","qr https://example.com","speed test"],e?t.filter(t=>t.includes(e)).slice(0,6):t},[h]);return(0,s.useEffect)(()=>{let e=e=>{"/"===e.key&&document.activeElement!==$.current&&(e.preventDefault(),$.current?.focus()),"Enter"===e.key&&document.activeElement===$.current&&(e.preventDefault(),"speed test"===m(h)||"speed"===m(h)?L():M(h))};return window.addEventListener("keydown",e),()=>window.removeEventListener("keydown",e)},[h,e]),(0,t.jsx)("div",{className:"min-h-screen bg-slate-950 text-slate-100",children:(0,t.jsxs)("div",{className:"mx-auto max-w-7xl px-4 py-6 lg:px-8",children:[(0,t.jsxs)("header",{className:"mb-6 flex flex-col gap-3 rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-2xl shadow-black/20 backdrop-blur",children:[(0,t.jsxs)("div",{className:"flex flex-wrap items-center justify-between gap-3",children:[(0,t.jsxs)("div",{children:[(0,t.jsx)("h1",{className:"text-2xl font-semibold tracking-tight",children:"Personal Tool Console"}),(0,t.jsx)("p",{className:"mt-1 text-sm text-slate-400",children:"Command-driven utilities with local history, saved shortcuts, and fast results."})]}),(0,t.jsxs)("div",{className:"flex items-center gap-2 text-xs text-slate-400",children:[(0,t.jsx)("span",{className:"rounded-full border border-slate-700 px-3 py-1",children:"Press / to focus"}),(0,t.jsx)("span",{className:"rounded-full border border-slate-700 px-3 py-1",children:"Enter to run"})]})]}),(0,t.jsxs)("div",{className:"grid gap-3 lg:grid-cols-[1fr_auto]",children:[(0,t.jsxs)("div",{className:"relative",children:[(0,t.jsx)("input",{ref:$,value:h,onChange:e=>b(e.target.value),onKeyDown:e=>{"Enter"===e.key&&(e.preventDefault(),"speed test"===m(h)||"speed"===m(h)?L():M(h))},placeholder:"Type a command: 100 usd to myr, gen password 16 strong, qr https://..., 16*24+10",className:"w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-4 pr-24 text-base outline-none ring-0 placeholder:text-slate-500 focus:border-slate-500"}),(0,t.jsx)("div",{className:"pointer-events-none absolute inset-y-0 right-3 flex items-center gap-2 text-xs text-slate-500",children:(0,t.jsx)("span",{className:"rounded-lg border border-slate-800 px-2 py-1",children:"Cmd"})})]}),(0,t.jsxs)("div",{className:"flex gap-2",children:[(0,t.jsx)("button",{onClick:()=>"speed test"===m(h)||"speed"===m(h)?L():M(h),className:"rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white",children:"Run"}),(0,t.jsx)("button",{onClick:()=>b(""),className:"rounded-2xl border border-slate-700 px-4 py-3 font-medium text-slate-200 transition hover:bg-slate-800",children:"Clear"})]})]}),(0,t.jsx)("div",{className:"flex flex-wrap gap-2",children:A.map(e=>(0,t.jsx)("button",{onClick:()=>D(e),className:"rounded-full border border-slate-700 bg-slate-950/80 px-3 py-1.5 text-sm text-slate-300 transition hover:border-slate-500 hover:bg-slate-800",children:e},e))})]}),(0,t.jsxs)("main",{className:"grid gap-6 lg:grid-cols-[1.25fr_0.75fr]",children:[(0,t.jsxs)("section",{className:"space-y-6",children:[(0,t.jsxs)("div",{className:"rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",children:[(0,t.jsxs)("div",{className:"mb-4 flex items-center justify-between gap-3",children:[(0,t.jsxs)("div",{children:[(0,t.jsx)("h2",{className:"text-lg font-semibold",children:"Result"}),(0,t.jsx)("p",{className:"text-sm text-slate-400",children:N})]}),g&&(0,t.jsx)("button",{onClick:()=>R("string"==typeof g.output?g.output:JSON.stringify(g.output,null,2)),className:"rounded-xl border border-slate-700 px-3 py-2 text-sm text-slate-200 hover:bg-slate-800",children:"Copy output"})]}),!g&&(0,t.jsx)("div",{className:"rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-6 text-sm text-slate-400",children:"Run a command to see a structured result here."}),g&&(0,t.jsxs)("div",{className:"space-y-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-5",children:[(0,t.jsxs)("div",{className:"flex flex-wrap items-start justify-between gap-3",children:[(0,t.jsxs)("div",{children:[(0,t.jsx)("div",{className:"text-xs uppercase tracking-[0.2em] text-slate-500",children:g.label}),(0,t.jsx)("div",{className:"mt-1 text-xl font-semibold text-slate-100",children:g.input})]}),(0,t.jsx)("div",{className:"rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-300",children:g.type})]}),"math"===g.type&&(0,t.jsxs)("div",{children:[(0,t.jsx)("div",{className:"text-sm text-slate-400",children:"Answer"}),(0,t.jsx)("div",{className:"mt-1 text-3xl font-semibold",children:g.output.formatted})]}),("unit"===g.type||"currency"===g.type)&&(0,t.jsxs)("div",{children:[(0,t.jsx)("div",{className:"text-sm text-slate-400",children:"Converted"}),(0,t.jsx)("div",{className:"mt-1 text-3xl font-semibold",children:g.output.formatted}),(0,t.jsxs)("div",{className:"mt-2 text-sm text-slate-400",children:["From ",g.output.source]}),g.output.note&&(0,t.jsx)("div",{className:"mt-1 text-xs text-slate-500",children:g.output.note})]}),"password"===g.type&&(0,t.jsxs)("div",{className:"space-y-3",children:[(0,t.jsxs)("div",{children:[(0,t.jsx)("div",{className:"text-sm text-slate-400",children:"Password"}),(0,t.jsx)("div",{className:"mt-1 break-all rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 font-mono text-base",children:g.output.password})]}),(0,t.jsxs)("div",{className:"text-sm text-slate-400",children:["Strength score: ",g.output.score,"/6 · Mode: ",g.output.mode," · Length: ",g.output.length]})]}),"qr"===g.type&&(0,t.jsxs)("div",{className:"grid gap-4 md:grid-cols-[auto_1fr] md:items-center",children:[(0,t.jsx)("img",{src:g.output.url,alt:"QR code",className:"h-44 w-44 rounded-2xl border border-slate-800 bg-white p-3"}),(0,t.jsxs)("div",{children:[(0,t.jsx)("div",{className:"text-sm text-slate-400",children:"Encoded value"}),(0,t.jsx)("div",{className:"mt-1 break-all rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm",children:g.output.value})]})]}),"speed"===g.type&&(0,t.jsxs)("div",{className:"space-y-4",children:[(0,t.jsxs)("div",{className:"rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4",children:[(0,t.jsx)("div",{className:"text-sm text-slate-400",children:"Speed test status"}),(0,t.jsx)("div",{className:"mt-1 text-lg text-slate-100",children:C?.message||g.output.title}),(0,t.jsx)("div",{className:"mt-2 text-sm text-slate-400",children:"This prototype can run a basic download-based estimate, but a robust speed test should use your own test endpoint."})]}),(0,t.jsxs)("div",{className:"grid gap-3 md:grid-cols-3",children:[(0,t.jsxs)("div",{className:"rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4",children:[(0,t.jsx)("div",{className:"text-xs uppercase tracking-[0.2em] text-slate-500",children:"Download"}),(0,t.jsxs)("div",{className:"mt-1 text-2xl font-semibold",children:[C?.dl??"—"," Mbps"]})]}),(0,t.jsxs)("div",{className:"rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4",children:[(0,t.jsx)("div",{className:"text-xs uppercase tracking-[0.2em] text-slate-500",children:"Upload"}),(0,t.jsx)("div",{className:"mt-1 text-2xl font-semibold",children:C?.ul??"—"})]}),(0,t.jsxs)("div",{className:"rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4",children:[(0,t.jsx)("div",{className:"text-xs uppercase tracking-[0.2em] text-slate-500",children:"Ping"}),(0,t.jsx)("div",{className:"mt-1 text-2xl font-semibold",children:C?.ping??"—"})]})]}),(0,t.jsx)("button",{onClick:L,className:"rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white",children:"Run download test"})]}),(0,t.jsx)("div",{className:"flex flex-wrap gap-2 pt-2",children:g.actions.map(e=>(0,t.jsx)("button",{onClick:()=>{"copy"===e&&(R("password"===g.type?g.output.password:"qr"===g.type?g.output.value:g.output.formatted||JSON.stringify(g.output,null,2)),k("Copied to clipboard")),"pin"===e&&(w(e=>[g.input,...e.filter(e=>e!==g.input)].slice(0,12)),k("Pinned command"))},className:"rounded-full border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800",children:e},e))})]})]}),(0,t.jsxs)("div",{className:"grid gap-6 md:grid-cols-2",children:[(0,t.jsxs)("div",{className:"rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",children:[(0,t.jsxs)("div",{className:"mb-4 flex items-center justify-between",children:[(0,t.jsx)("h3",{className:"text-lg font-semibold",children:"Pinned shortcuts"}),(0,t.jsxs)("span",{className:"text-xs text-slate-500",children:[j.length,"/12"]})]}),0===j.length?(0,t.jsxs)("div",{className:"rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400",children:["Pin commands from results or use ",(0,t.jsx)("span",{className:"font-mono text-slate-300",children:"pin ..."}),"."]}):(0,t.jsx)("div",{className:"space-y-2",children:j.map(e=>(0,t.jsxs)("div",{className:"flex items-center justify-between gap-2 rounded-2xl border border-slate-800 bg-slate-950/50 px-4 py-3",children:[(0,t.jsx)("button",{className:"text-left text-sm text-slate-200 hover:text-white",onClick:()=>D(e),children:e}),(0,t.jsx)("button",{onClick:()=>w(t=>t.filter(t=>t!==e)),className:"rounded-full border border-slate-700 px-2.5 py-1 text-xs text-slate-400 hover:bg-slate-800",children:"remove"})]},e))})]}),(0,t.jsxs)("div",{className:"rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",children:[(0,t.jsxs)("div",{className:"mb-4 flex items-center justify-between",children:[(0,t.jsx)("h3",{className:"text-lg font-semibold",children:"Settings"}),(0,t.jsx)("span",{className:"text-xs text-slate-500",children:"Stored locally"})]}),(0,t.jsxs)("div",{className:"grid gap-3",children:[(0,t.jsxs)("label",{className:"grid gap-1 text-sm text-slate-300",children:["Default password length",(0,t.jsx)("input",{type:"number",value:e.passwordLength,onChange:e=>p(t=>({...t,passwordLength:Number(e.target.value||16)})),className:"rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-slate-500"})]}),(0,t.jsxs)("label",{className:"grid gap-1 text-sm text-slate-300",children:["Default password mode",(0,t.jsxs)("select",{value:e.passwordMode,onChange:e=>p(t=>({...t,passwordMode:e.target.value})),className:"rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-slate-500",children:[(0,t.jsx)("option",{value:"weak",children:"weak"}),(0,t.jsx)("option",{value:"medium",children:"medium"}),(0,t.jsx)("option",{value:"strong",children:"strong"})]})]}),(0,t.jsxs)("div",{className:"text-sm text-slate-400",children:["Tip: use ",(0,t.jsx)("span",{className:"font-mono text-slate-200",children:"gen password"}),", ",(0,t.jsx)("span",{className:"font-mono text-slate-200",children:"qr ..."}),", ",(0,t.jsx)("span",{className:"font-mono text-slate-200",children:"100 usd to myr"}),", or plain math."]})]})]})]})]}),(0,t.jsxs)("aside",{className:"space-y-6",children:[(0,t.jsxs)("div",{className:"rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",children:[(0,t.jsx)("h3",{className:"text-lg font-semibold",children:"Examples"}),(0,t.jsx)("div",{className:"mt-4 space-y-2",children:["100 usd to myr","10 km to mi","16 * 24 + 10","gen password 16 strong","qr https://example.com","speed test"].map(e=>(0,t.jsxs)("button",{onClick:()=>D(e),className:"flex w-full items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-left text-sm text-slate-300 hover:bg-slate-800",children:[(0,t.jsx)("span",{className:"font-mono",children:e}),(0,t.jsx)("span",{className:"text-xs text-slate-500",children:"run"})]},e))})]}),(0,t.jsxs)("div",{className:"rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",children:[(0,t.jsxs)("div",{className:"mb-4 flex items-center justify-between",children:[(0,t.jsx)("h3",{className:"text-lg font-semibold",children:"Recent history"}),(0,t.jsx)("button",{onClick:()=>y([]),className:"rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-400 hover:bg-slate-800",children:"clear"})]}),0===v.length?(0,t.jsx)("div",{className:"rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400",children:"No commands yet."}):(0,t.jsx)("div",{className:"max-h-[520px] space-y-2 overflow-auto pr-1",children:v.map(e=>(0,t.jsxs)("button",{onClick:()=>f(e),className:"block w-full rounded-2xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-left hover:bg-slate-800",children:[(0,t.jsxs)("div",{className:"flex items-center justify-between gap-3",children:[(0,t.jsx)("div",{className:"text-sm font-medium text-slate-200",children:e.input}),(0,t.jsx)("div",{className:"text-xs text-slate-500",children:e.type})]}),(0,t.jsx)("div",{className:"mt-1 text-xs text-slate-500",children:new Date(e.createdAt).toLocaleString()})]},e.id))})]}),(0,t.jsxs)("div",{className:"rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",children:[(0,t.jsx)("h3",{className:"text-lg font-semibold",children:"Notes"}),(0,t.jsxs)("ul",{className:"mt-4 space-y-3 text-sm text-slate-400",children:[(0,t.jsx)("li",{children:"QR generation uses a public image endpoint for this prototype. Swap it for a local library before deploying."}),(0,t.jsx)("li",{children:"Currency conversion is manual/static here. Replace it with a real rate source if you need live FX."}),(0,t.jsx)("li",{children:"Speed test is scaffolded; the browser download test works only if the test URL is reachable and not blocked by CORS."})]})]})]})]})]})})}])}]);
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([
+  "object" == typeof document ? document.currentScript : void 0,
+  81694,
+  (e) => {
+    "use strict";
+    var t = e.i(43476),
+      s = e.i(71645);
+    let r = "ptc_history_v1",
+      l = "ptc_pins_v1",
+      a = "ptc_prefs_v1",
+      n = {
+        passwordLength: 16,
+        passwordMode: "strong",
+        defaultCurrencyFrom: "usd",
+        defaultCurrencyTo: "myr",
+      },
+      o = {
+        length: {
+          mm: 0.001,
+          cm: 0.01,
+          m: 1,
+          km: 1e3,
+          in: 0.0254,
+          ft: 0.3048,
+          yd: 0.9144,
+          mi: 1609.344,
+        },
+        mass: { mg: 1e-6, g: 0.001, kg: 1, oz: 0.028349523125, lb: 0.45359237 },
+        speed: {
+          "m/s": 1,
+          "km/h": 1e3 / 3600,
+          mph: 0.44704,
+          knot: 1852 / 3600,
+        },
+        area: { m2: 1, cm2: 1e-4, km2: 1e6, acre: 4046.8564224, ha: 1e4 },
+        volume: {
+          ml: 1e-6,
+          l: 0.001,
+          m3: 1,
+          tsp: 492892159375e-17,
+          tbsp: 1478676478125e-17,
+          cup: 2365882365e-13,
+          fl_oz: 295735295625e-16,
+          gal: 0.003785411784,
+        },
+      },
+      d = {
+        usd: "$",
+        myr: "RM",
+        eur: "€",
+        gbp: "£",
+        jpy: "¥",
+        sgd: "S$",
+        aud: "A$",
+        idr: "Rp",
+      };
+    function i(e, t) {
+      try {
+        let s = window.localStorage.getItem(e);
+        return s ? JSON.parse(s) : t;
+      } catch {
+        return t;
+      }
+    }
+    function c(e, t) {
+      try {
+        window.localStorage.setItem(e, JSON.stringify(t));
+      } catch {}
+    }
+    function u(e, t = 8) {
+      if (!Number.isFinite(e)) return "—";
+      let s = Math.abs(e);
+      return 0 !== s && (s >= 1e9 || s < 1e-6)
+        ? e.toExponential(6).replace(/\+/, "")
+        : Number.parseFloat(e.toFixed(t)).toString();
+    }
+    function m(e) {
+      return e.trim().replace(/\s+/g, " ").toLowerCase();
+    }
+    function x(e) {
+      for (let [t, s] of Object.entries(o))
+        if (Object.prototype.hasOwnProperty.call(s, e)) return t;
+      return null;
+    }
+    e.s([
+      "default",
+      0,
+      function () {
+        let [e, p] = (0, s.useState)(n),
+          [h, b] = (0, s.useState)(""),
+          [g, f] = (0, s.useState)(null),
+          [v, y] = (0, s.useState)([]),
+          [j, w] = (0, s.useState)([]),
+          [N, k] = (0, s.useState)("Ready"),
+          [C, S] = (0, s.useState)(null),
+          $ = (0, s.useRef)(null);
+        function E(e) {
+          y((t) => [e, ...t].slice(0, 80));
+        }
+        function R(e) {
+          navigator.clipboard?.writeText(e).catch(() => {});
+        }
+        function M(t, s = {}) {
+          let r = m(t);
+          if (!r) return;
+          let l = null,
+            a = null,
+            n = "unknown",
+            i = [];
+          try {
+            if ("speed test" === r || "speed" === r)
+              ((n = "speed"),
+                (a = {
+                  title: "Speed test is scaffolded",
+                  details:
+                    "This prototype includes the UI and history, but a true browser speed test needs a test file or backend endpoint you control.",
+                }),
+                S({ running: !1, dl: null, ul: null, ping: null }),
+                (i = ["configure speed endpoint"]));
+            else {
+              let t;
+              if (
+                (l = (t = r.match(
+                  /^(?:gen\s+)?password(?:\s+(\d{1,3}))?(?:\s+(weak|medium|strong))?$/i,
+                ))
+                  ? {
+                      type: "password",
+                      length: Math.max(
+                        4,
+                        Math.min(128, Number(t[1] || e.passwordLength || 16)),
+                      ),
+                      mode: (t[2] || e.passwordMode || "strong").toLowerCase(),
+                    }
+                  : null)
+              ) {
+                let e;
+                n = "password";
+                let t = (function (e, t) {
+                  let s = {
+                      weak: "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",
+                      medium:
+                        "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%?_-",
+                      strong:
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{};:,.<>/?",
+                    },
+                    r = s[t] || s.strong,
+                    l = new Uint32Array(e);
+                  window.crypto.getRandomValues(l);
+                  let a = "";
+                  for (let t = 0; t < e; t += 1) a += r[l[t] % r.length];
+                  return a;
+                })(l.length, l.mode);
+                ((a = {
+                  password: t,
+                  score:
+                    ((e = 0),
+                    t.length >= 12 && (e += 1),
+                    t.length >= 16 && (e += 1),
+                    /[a-z]/.test(t) && (e += 1),
+                    /[A-Z]/.test(t) && (e += 1),
+                    /\d/.test(t) && (e += 1),
+                    /[^A-Za-z0-9]/.test(t) && (e += 1),
+                    e),
+                  mode: l.mode,
+                  length: l.length,
+                }),
+                  (i = ["copy", "pin"]));
+              } else if (
+                (l = (function (e) {
+                  if (!e.startsWith("qr ")) return null;
+                  let t = e.slice(3).trim();
+                  return t ? { type: "qr", value: t } : null;
+                })(r))
+              )
+                ((n = "qr"),
+                  (a = {
+                    value: l.value,
+                    url: `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(l.value)}`,
+                  }),
+                  (i = ["copy", "pin"]));
+              else if (
+                (l = (function (e, t) {
+                  let s = e.match(
+                    /^(?:(\d+(?:\.\d+)?)\s+)?([a-z]{3})\s+to\s+([a-z]{3})$/i,
+                  );
+                  if (s)
+                    return {
+                      type: "currency",
+                      value: s[1] ? Number(s[1]) : 1,
+                      from: s[2].toLowerCase(),
+                      to: s[3].toLowerCase(),
+                      note: "Rates are local/manual in this prototype.",
+                      prefs: t,
+                    };
+                  let r = e.match(
+                    /^(\d+(?:\.\d+)?)\s+([a-z\/0-9_]+)\s+to\s+([a-z\/0-9_]+)$/i,
+                  );
+                  if (!r) return null;
+                  let l = Number(r[1]),
+                    a = r[2].toLowerCase();
+                  return {
+                    type: "unit",
+                    value: l,
+                    from: a,
+                    to: r[3].toLowerCase(),
+                  };
+                })(r, e))
+              )
+                if ("currency" === l.type) {
+                  n = "currency";
+                  let e = (function (e, t, s) {
+                    let r = {
+                      usd: 1,
+                      myr: 4.7,
+                      eur: 0.92,
+                      gbp: 0.78,
+                      jpy: 154,
+                      sgd: 1.35,
+                      aud: 1.51,
+                      idr: 15850,
+                    };
+                    if (!r[t] || !r[s]) throw Error("Unsupported currency");
+                    return (e / r[t]) * r[s];
+                  })(l.value, l.from, l.to);
+                  ((a = {
+                    value: e,
+                    formatted: `${d[l.to] || l.to.toUpperCase()} ${u(e, 6)}`,
+                    source: `${l.value} ${l.from.toUpperCase()}`,
+                    note: l.note,
+                  }),
+                    (i = ["copy", "pin"]));
+                } else {
+                  n = "unit";
+                  let e = (function (e, t, s) {
+                    let r = x(t);
+                    if (!r || x(s) !== r) throw Error("Unsupported unit pair");
+                    if ("speed" === r) return (e * o.speed[t]) / o.speed[s];
+                    if (
+                      "area" === r ||
+                      "volume" === r ||
+                      "length" === r ||
+                      "mass" === r
+                    )
+                      return (e * o[r][t]) / o[r][s];
+                    throw Error("Unsupported unit category");
+                  })(l.value, l.from, l.to);
+                  ((a = {
+                    value: e,
+                    formatted: `${u(e, 8)} ${l.to}`,
+                    source: `${l.value} ${l.from}`,
+                  }),
+                    (i = ["copy", "pin"]));
+                }
+              else if (/^[0-9+\-*/%^().,\s]+$/.test(r) && /\d/.test(r)) {
+                n = "math";
+                let e = (function (e) {
+                  let t = e.replace(/,/g, ".").replace(/\^/g, "**");
+                  if (!/^[0-9+\-*/%().*\s**]+$/.test(t.replace(/\*\*/g, "")))
+                    throw Error("Invalid expression");
+                  let s = Function(`"use strict"; return (${t});`)();
+                  if ("number" != typeof s || !Number.isFinite(s))
+                    throw Error("Invalid result");
+                  return s;
+                })(r);
+                ((a = { value: e, formatted: u(e, 10) }),
+                  (i = ["copy", "pin"]));
+              } else if (r.startsWith("pin ")) {
+                let e = r.slice(4).trim();
+                if (!e) throw Error("Nothing to pin");
+                (w((t) => [e, ...t.filter((t) => t !== e)].slice(0, 12)),
+                  k(`Pinned: ${e}`));
+                return;
+              } else if (r.startsWith("unpin ")) {
+                let e = r.slice(6).trim();
+                (w((t) => t.filter((t) => t !== e)), k(`Unpinned: ${e}`));
+                return;
+              } else throw Error("Unknown command");
+            }
+            let c = {
+              id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+              input: t,
+              normalized: r,
+              type: n,
+              label: (function (e) {
+                switch (e) {
+                  case "math":
+                    return "Calculator";
+                  case "unit":
+                    return "Unit converter";
+                  case "currency":
+                    return "Currency converter";
+                  case "password":
+                    return "Password generator";
+                  case "qr":
+                    return "QR generator";
+                  case "speed":
+                    return "Speed test";
+                  default:
+                    return "Command";
+                }
+              })(n),
+              output: a,
+              actions: i,
+              createdAt: new Date().toISOString(),
+            };
+            return (
+              f(c),
+              E(c),
+              k(`Ran ${c.label}`),
+              !1 !== s.clearInput && b(""),
+              c
+            );
+          } catch (s) {
+            let e = {
+              id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+              input: t,
+              normalized: r,
+              type: "error",
+              label: "Error",
+              output: { message: s.message || "Command failed" },
+              actions: [],
+              createdAt: new Date().toISOString(),
+            };
+            return (f(e), E(e), k(e.output.message), e);
+          }
+        }
+        function D(e) {
+          (b(e), $.current?.focus(), M(e));
+        }
+        function L() {
+          let e = performance.now();
+          (S({
+            running: !0,
+            dl: null,
+            ul: null,
+            ping: null,
+            message: "Downloading a test payload…",
+          }),
+            fetch("https://speed.hetzner.de/10MB.bin", { cache: "no-store" })
+              .then(async (t) => {
+                if (!t.ok) throw Error(`HTTP ${t.status}`);
+                let s = t.body?.getReader();
+                if (!s) throw Error("Streaming not available in this browser");
+                let r = 0,
+                  l = Number(t.headers.get("content-length")) || 0xa00000;
+                for (;;) {
+                  let { done: e, value: t } = await s.read();
+                  if (e) break;
+                  r += t.byteLength;
+                }
+                let a = (8 * r) / ((performance.now() - e) / 1e3) / 1e6;
+                S({
+                  running: !1,
+                  dl: a.toFixed(2),
+                  ul: "—",
+                  ping: "—",
+                  message: `${Math.round((r / l) * 100)}%`,
+                });
+                let n = {
+                  id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+                  input: "speed test",
+                  normalized: "speed test",
+                  type: "speed",
+                  label: "Speed test",
+                  output: {
+                    downloadMbps: a.toFixed(2),
+                    note: "Download estimate from a single download payload.",
+                  },
+                  actions: ["copy", "pin"],
+                  createdAt: new Date().toISOString(),
+                };
+                (f(n), E(n), k(`Speed test complete: ${a.toFixed(2)} Mbps`));
+              })
+              .catch((e) => {
+                (S({
+                  running: !1,
+                  dl: null,
+                  ul: null,
+                  ping: null,
+                  message: e.message,
+                }),
+                  k(`Speed test failed: ${e.message}`));
+              }));
+        }
+        ((0, s.useEffect)(() => {
+          let e = i(a, n),
+            t = i(r, []),
+            s = i(l, []);
+          (p({ ...n, ...e }),
+            y(Array.isArray(t) ? t : []),
+            w(Array.isArray(s) ? s : []));
+        }, []),
+          (0, s.useEffect)(() => c(a, e), [e]),
+          (0, s.useEffect)(() => c(r, v.slice(0, 80)), [v]),
+          (0, s.useEffect)(() => c(l, j), [j]));
+        let A = (0, s.useMemo)(() => {
+          let e, t;
+          return (
+            (e = m(h)),
+            (t = [
+              "100 usd to myr",
+              "10 km to mi",
+              "16 * 24 + 10",
+              "gen password 16 strong",
+              "qr https://example.com",
+              "speed test",
+            ]),
+            e ? t.filter((t) => t.includes(e)).slice(0, 6) : t
+          );
+        }, [h]);
+        return (
+          (0, s.useEffect)(() => {
+            let e = (e) => {
+              ("/" === e.key &&
+                document.activeElement !== $.current &&
+                (e.preventDefault(), $.current?.focus()),
+                "Enter" === e.key &&
+                  document.activeElement === $.current &&
+                  (e.preventDefault(),
+                  "speed test" === m(h) || "speed" === m(h) ? L() : M(h)));
+            };
+            return (
+              window.addEventListener("keydown", e),
+              () => window.removeEventListener("keydown", e)
+            );
+          }, [h, e]),
+          (0, t.jsx)("div", {
+            className: "min-h-screen bg-slate-950 text-slate-100",
+            children: (0, t.jsxs)("div", {
+              className: "mx-auto max-w-7xl px-4 py-6 lg:px-8",
+              children: [
+                (0, t.jsxs)("header", {
+                  className:
+                    "mb-6 flex flex-col gap-3 rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-2xl shadow-black/20 backdrop-blur",
+                  children: [
+                    (0, t.jsxs)("div", {
+                      className:
+                        "flex flex-wrap items-center justify-between gap-3",
+                      children: [
+                        (0, t.jsxs)("div", {
+                          children: [
+                            (0, t.jsx)("h1", {
+                              className:
+                                "text-2xl font-semibold tracking-tight",
+                              children: "Personal Tool Console",
+                            }),
+                            (0, t.jsx)("p", {
+                              className: "mt-1 text-sm text-slate-400",
+                              children:
+                                "Command-driven utilities with local history, saved shortcuts, and fast results.",
+                            }),
+                          ],
+                        }),
+                        (0, t.jsxs)("div", {
+                          className:
+                            "flex items-center gap-2 text-xs text-slate-400",
+                          children: [
+                            (0, t.jsx)("span", {
+                              className:
+                                "rounded-full border border-slate-700 px-3 py-1",
+                              children: "Press / to focus",
+                            }),
+                            (0, t.jsx)("span", {
+                              className:
+                                "rounded-full border border-slate-700 px-3 py-1",
+                              children: "Enter to run",
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                    (0, t.jsxs)("div", {
+                      className: "grid gap-3 lg:grid-cols-[1fr_auto]",
+                      children: [
+                        (0, t.jsxs)("div", {
+                          className: "relative",
+                          children: [
+                            (0, t.jsx)("input", {
+                              ref: $,
+                              value: h,
+                              onChange: (e) => b(e.target.value),
+                              onKeyDown: (e) => {
+                                "Enter" === e.key &&
+                                  (e.preventDefault(),
+                                  "speed test" === m(h) || "speed" === m(h)
+                                    ? L()
+                                    : M(h));
+                              },
+                              placeholder:
+                                "Type a command: 100 usd to myr, gen password 16 strong, qr https://..., 16*24+10",
+                              className:
+                                "w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-4 pr-24 text-base outline-none ring-0 placeholder:text-slate-500 focus:border-slate-500",
+                            }),
+                            (0, t.jsx)("div", {
+                              className:
+                                "pointer-events-none absolute inset-y-0 right-3 flex items-center gap-2 text-xs text-slate-500",
+                              children: (0, t.jsx)("span", {
+                                className:
+                                  "rounded-lg border border-slate-800 px-2 py-1",
+                                children: "Cmd",
+                              }),
+                            }),
+                          ],
+                        }),
+                        (0, t.jsxs)("div", {
+                          className: "flex gap-2",
+                          children: [
+                            (0, t.jsx)("button", {
+                              onClick: () =>
+                                "speed test" === m(h) || "speed" === m(h)
+                                  ? L()
+                                  : M(h),
+                              className:
+                                "rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white",
+                              children: "Run",
+                            }),
+                            (0, t.jsx)("button", {
+                              onClick: () => b(""),
+                              className:
+                                "rounded-2xl border border-slate-700 px-4 py-3 font-medium text-slate-200 transition hover:bg-slate-800",
+                              children: "Clear",
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                    (0, t.jsx)("div", {
+                      className: "flex flex-wrap gap-2",
+                      children: A.map((e) =>
+                        (0, t.jsx)(
+                          "button",
+                          {
+                            onClick: () => D(e),
+                            className:
+                              "rounded-full border border-slate-700 bg-slate-950/80 px-3 py-1.5 text-sm text-slate-300 transition hover:border-slate-500 hover:bg-slate-800",
+                            children: e,
+                          },
+                          e,
+                        ),
+                      ),
+                    }),
+                  ],
+                }),
+                (0, t.jsxs)("main", {
+                  className: "grid gap-6 lg:grid-cols-[1.25fr_0.75fr]",
+                  children: [
+                    (0, t.jsxs)("section", {
+                      className: "space-y-6",
+                      children: [
+                        (0, t.jsxs)("div", {
+                          className:
+                            "rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",
+                          children: [
+                            (0, t.jsxs)("div", {
+                              className:
+                                "mb-4 flex items-center justify-between gap-3",
+                              children: [
+                                (0, t.jsxs)("div", {
+                                  children: [
+                                    (0, t.jsx)("h2", {
+                                      className: "text-lg font-semibold",
+                                      children: "Result",
+                                    }),
+                                    (0, t.jsx)("p", {
+                                      className: "text-sm text-slate-400",
+                                      children: N,
+                                    }),
+                                  ],
+                                }),
+                                g &&
+                                  (0, t.jsx)("button", {
+                                    onClick: () =>
+                                      R(
+                                        "string" == typeof g.output
+                                          ? g.output
+                                          : JSON.stringify(g.output, null, 2),
+                                      ),
+                                    className:
+                                      "rounded-xl border border-slate-700 px-3 py-2 text-sm text-slate-200 hover:bg-slate-800",
+                                    children: "Copy output",
+                                  }),
+                              ],
+                            }),
+                            !g &&
+                              (0, t.jsx)("div", {
+                                className:
+                                  "rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-6 text-sm text-slate-400",
+                                children:
+                                  "Run a command to see a structured result here.",
+                              }),
+                            g &&
+                              (0, t.jsxs)("div", {
+                                className:
+                                  "space-y-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-5",
+                                children: [
+                                  (0, t.jsxs)("div", {
+                                    className:
+                                      "flex flex-wrap items-start justify-between gap-3",
+                                    children: [
+                                      (0, t.jsxs)("div", {
+                                        children: [
+                                          (0, t.jsx)("div", {
+                                            className:
+                                              "text-xs uppercase tracking-[0.2em] text-slate-500",
+                                            children: g.label,
+                                          }),
+                                          (0, t.jsx)("div", {
+                                            className:
+                                              "mt-1 text-xl font-semibold text-slate-100",
+                                            children: g.input,
+                                          }),
+                                        ],
+                                      }),
+                                      (0, t.jsx)("div", {
+                                        className:
+                                          "rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-300",
+                                        children: g.type,
+                                      }),
+                                    ],
+                                  }),
+                                  "math" === g.type &&
+                                    (0, t.jsxs)("div", {
+                                      children: [
+                                        (0, t.jsx)("div", {
+                                          className: "text-sm text-slate-400",
+                                          children: "Answer",
+                                        }),
+                                        (0, t.jsx)("div", {
+                                          className:
+                                            "mt-1 text-3xl font-semibold",
+                                          children: g.output.formatted,
+                                        }),
+                                      ],
+                                    }),
+                                  ("unit" === g.type ||
+                                    "currency" === g.type) &&
+                                    (0, t.jsxs)("div", {
+                                      children: [
+                                        (0, t.jsx)("div", {
+                                          className: "text-sm text-slate-400",
+                                          children: "Converted",
+                                        }),
+                                        (0, t.jsx)("div", {
+                                          className:
+                                            "mt-1 text-3xl font-semibold",
+                                          children: g.output.formatted,
+                                        }),
+                                        (0, t.jsxs)("div", {
+                                          className:
+                                            "mt-2 text-sm text-slate-400",
+                                          children: ["From ", g.output.source],
+                                        }),
+                                        g.output.note &&
+                                          (0, t.jsx)("div", {
+                                            className:
+                                              "mt-1 text-xs text-slate-500",
+                                            children: g.output.note,
+                                          }),
+                                      ],
+                                    }),
+                                  "password" === g.type &&
+                                    (0, t.jsxs)("div", {
+                                      className: "space-y-3",
+                                      children: [
+                                        (0, t.jsxs)("div", {
+                                          children: [
+                                            (0, t.jsx)("div", {
+                                              className:
+                                                "text-sm text-slate-400",
+                                              children: "Password",
+                                            }),
+                                            (0, t.jsx)("div", {
+                                              className:
+                                                "mt-1 break-all rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 font-mono text-base",
+                                              children: g.output.password,
+                                            }),
+                                          ],
+                                        }),
+                                        (0, t.jsxs)("div", {
+                                          className: "text-sm text-slate-400",
+                                          children: [
+                                            "Strength score: ",
+                                            g.output.score,
+                                            "/6 · Mode: ",
+                                            g.output.mode,
+                                            " · Length: ",
+                                            g.output.length,
+                                          ],
+                                        }),
+                                      ],
+                                    }),
+                                  "qr" === g.type &&
+                                    (0, t.jsxs)("div", {
+                                      className:
+                                        "grid gap-4 md:grid-cols-[auto_1fr] md:items-center",
+                                      children: [
+                                        (0, t.jsx)("img", {
+                                          src: g.output.url,
+                                          alt: "QR code",
+                                          className:
+                                            "h-44 w-44 rounded-2xl border border-slate-800 bg-white p-3",
+                                        }),
+                                        (0, t.jsxs)("div", {
+                                          children: [
+                                            (0, t.jsx)("div", {
+                                              className:
+                                                "text-sm text-slate-400",
+                                              children: "Encoded value",
+                                            }),
+                                            (0, t.jsx)("div", {
+                                              className:
+                                                "mt-1 break-all rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm",
+                                              children: g.output.value,
+                                            }),
+                                          ],
+                                        }),
+                                      ],
+                                    }),
+                                  "speed" === g.type &&
+                                    (0, t.jsxs)("div", {
+                                      className: "space-y-4",
+                                      children: [
+                                        (0, t.jsxs)("div", {
+                                          className:
+                                            "rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4",
+                                          children: [
+                                            (0, t.jsx)("div", {
+                                              className:
+                                                "text-sm text-slate-400",
+                                              children: "Speed test status",
+                                            }),
+                                            (0, t.jsx)("div", {
+                                              className:
+                                                "mt-1 text-lg text-slate-100",
+                                              children:
+                                                C?.message || g.output.title,
+                                            }),
+                                            (0, t.jsx)("div", {
+                                              className:
+                                                "mt-2 text-sm text-slate-400",
+                                              children:
+                                                "This prototype can run a basic download-based estimate, but a robust speed test should use your own test endpoint.",
+                                            }),
+                                          ],
+                                        }),
+                                        (0, t.jsxs)("div", {
+                                          className:
+                                            "grid gap-3 md:grid-cols-3",
+                                          children: [
+                                            (0, t.jsxs)("div", {
+                                              className:
+                                                "rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4",
+                                              children: [
+                                                (0, t.jsx)("div", {
+                                                  className:
+                                                    "text-xs uppercase tracking-[0.2em] text-slate-500",
+                                                  children: "Download",
+                                                }),
+                                                (0, t.jsxs)("div", {
+                                                  className:
+                                                    "mt-1 text-2xl font-semibold",
+                                                  children: [
+                                                    C?.dl ?? "—",
+                                                    " Mbps",
+                                                  ],
+                                                }),
+                                              ],
+                                            }),
+                                            (0, t.jsxs)("div", {
+                                              className:
+                                                "rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4",
+                                              children: [
+                                                (0, t.jsx)("div", {
+                                                  className:
+                                                    "text-xs uppercase tracking-[0.2em] text-slate-500",
+                                                  children: "Upload",
+                                                }),
+                                                (0, t.jsx)("div", {
+                                                  className:
+                                                    "mt-1 text-2xl font-semibold",
+                                                  children: C?.ul ?? "—",
+                                                }),
+                                              ],
+                                            }),
+                                            (0, t.jsxs)("div", {
+                                              className:
+                                                "rounded-2xl border border-slate-800 bg-slate-900 px-4 py-4",
+                                              children: [
+                                                (0, t.jsx)("div", {
+                                                  className:
+                                                    "text-xs uppercase tracking-[0.2em] text-slate-500",
+                                                  children: "Ping",
+                                                }),
+                                                (0, t.jsx)("div", {
+                                                  className:
+                                                    "mt-1 text-2xl font-semibold",
+                                                  children: C?.ping ?? "—",
+                                                }),
+                                              ],
+                                            }),
+                                          ],
+                                        }),
+                                        (0, t.jsx)("button", {
+                                          onClick: L,
+                                          className:
+                                            "rounded-2xl bg-slate-100 px-4 py-3 font-medium text-slate-950 transition hover:bg-white",
+                                          children: "Run download test",
+                                        }),
+                                      ],
+                                    }),
+                                  (0, t.jsx)("div", {
+                                    className: "flex flex-wrap gap-2 pt-2",
+                                    children: g.actions.map((e) =>
+                                      (0, t.jsx)(
+                                        "button",
+                                        {
+                                          onClick: () => {
+                                            ("copy" === e &&
+                                              (R(
+                                                "password" === g.type
+                                                  ? g.output.password
+                                                  : "qr" === g.type
+                                                    ? g.output.value
+                                                    : g.output.formatted ||
+                                                      JSON.stringify(
+                                                        g.output,
+                                                        null,
+                                                        2,
+                                                      ),
+                                              ),
+                                              k("Copied to clipboard")),
+                                              "pin" === e &&
+                                                (w((e) =>
+                                                  [
+                                                    g.input,
+                                                    ...e.filter(
+                                                      (e) => e !== g.input,
+                                                    ),
+                                                  ].slice(0, 12),
+                                                ),
+                                                k("Pinned command")));
+                                          },
+                                          className:
+                                            "rounded-full border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800",
+                                          children: e,
+                                        },
+                                        e,
+                                      ),
+                                    ),
+                                  }),
+                                ],
+                              }),
+                          ],
+                        }),
+                        (0, t.jsxs)("div", {
+                          className: "grid gap-6 md:grid-cols-2",
+                          children: [
+                            (0, t.jsxs)("div", {
+                              className:
+                                "rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",
+                              children: [
+                                (0, t.jsxs)("div", {
+                                  className:
+                                    "mb-4 flex items-center justify-between",
+                                  children: [
+                                    (0, t.jsx)("h3", {
+                                      className: "text-lg font-semibold",
+                                      children: "Pinned shortcuts",
+                                    }),
+                                    (0, t.jsxs)("span", {
+                                      className: "text-xs text-slate-500",
+                                      children: [j.length, "/12"],
+                                    }),
+                                  ],
+                                }),
+                                0 === j.length
+                                  ? (0, t.jsxs)("div", {
+                                      className:
+                                        "rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400",
+                                      children: [
+                                        "Pin commands from results or use ",
+                                        (0, t.jsx)("span", {
+                                          className: "font-mono text-slate-300",
+                                          children: "pin ...",
+                                        }),
+                                        ".",
+                                      ],
+                                    })
+                                  : (0, t.jsx)("div", {
+                                      className: "space-y-2",
+                                      children: j.map((e) =>
+                                        (0, t.jsxs)(
+                                          "div",
+                                          {
+                                            className:
+                                              "flex items-center justify-between gap-2 rounded-2xl border border-slate-800 bg-slate-950/50 px-4 py-3",
+                                            children: [
+                                              (0, t.jsx)("button", {
+                                                className:
+                                                  "text-left text-sm text-slate-200 hover:text-white",
+                                                onClick: () => D(e),
+                                                children: e,
+                                              }),
+                                              (0, t.jsx)("button", {
+                                                onClick: () =>
+                                                  w((t) =>
+                                                    t.filter((t) => t !== e),
+                                                  ),
+                                                className:
+                                                  "rounded-full border border-slate-700 px-2.5 py-1 text-xs text-slate-400 hover:bg-slate-800",
+                                                children: "remove",
+                                              }),
+                                            ],
+                                          },
+                                          e,
+                                        ),
+                                      ),
+                                    }),
+                              ],
+                            }),
+                            (0, t.jsxs)("div", {
+                              className:
+                                "rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",
+                              children: [
+                                (0, t.jsxs)("div", {
+                                  className:
+                                    "mb-4 flex items-center justify-between",
+                                  children: [
+                                    (0, t.jsx)("h3", {
+                                      className: "text-lg font-semibold",
+                                      children: "Settings",
+                                    }),
+                                    (0, t.jsx)("span", {
+                                      className: "text-xs text-slate-500",
+                                      children: "Stored locally",
+                                    }),
+                                  ],
+                                }),
+                                (0, t.jsxs)("div", {
+                                  className: "grid gap-3",
+                                  children: [
+                                    (0, t.jsxs)("label", {
+                                      className:
+                                        "grid gap-1 text-sm text-slate-300",
+                                      children: [
+                                        "Default password length",
+                                        (0, t.jsx)("input", {
+                                          type: "number",
+                                          value: e.passwordLength,
+                                          onChange: (e) =>
+                                            p((t) => ({
+                                              ...t,
+                                              passwordLength: Number(
+                                                e.target.value || 16,
+                                              ),
+                                            })),
+                                          className:
+                                            "rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-slate-500",
+                                        }),
+                                      ],
+                                    }),
+                                    (0, t.jsxs)("label", {
+                                      className:
+                                        "grid gap-1 text-sm text-slate-300",
+                                      children: [
+                                        "Default password mode",
+                                        (0, t.jsxs)("select", {
+                                          value: e.passwordMode,
+                                          onChange: (e) =>
+                                            p((t) => ({
+                                              ...t,
+                                              passwordMode: e.target.value,
+                                            })),
+                                          className:
+                                            "rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-slate-500",
+                                          children: [
+                                            (0, t.jsx)("option", {
+                                              value: "weak",
+                                              children: "weak",
+                                            }),
+                                            (0, t.jsx)("option", {
+                                              value: "medium",
+                                              children: "medium",
+                                            }),
+                                            (0, t.jsx)("option", {
+                                              value: "strong",
+                                              children: "strong",
+                                            }),
+                                          ],
+                                        }),
+                                      ],
+                                    }),
+                                    (0, t.jsxs)("div", {
+                                      className: "text-sm text-slate-400",
+                                      children: [
+                                        "Tip: use ",
+                                        (0, t.jsx)("span", {
+                                          className: "font-mono text-slate-200",
+                                          children: "gen password",
+                                        }),
+                                        ", ",
+                                        (0, t.jsx)("span", {
+                                          className: "font-mono text-slate-200",
+                                          children: "qr ...",
+                                        }),
+                                        ", ",
+                                        (0, t.jsx)("span", {
+                                          className: "font-mono text-slate-200",
+                                          children: "100 usd to myr",
+                                        }),
+                                        ", or plain math.",
+                                      ],
+                                    }),
+                                  ],
+                                }),
+                              ],
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                    (0, t.jsxs)("aside", {
+                      className: "space-y-6",
+                      children: [
+                        (0, t.jsxs)("div", {
+                          className:
+                            "rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",
+                          children: [
+                            (0, t.jsx)("h3", {
+                              className: "text-lg font-semibold",
+                              children: "Examples",
+                            }),
+                            (0, t.jsx)("div", {
+                              className: "mt-4 space-y-2",
+                              children: [
+                                "100 usd to myr",
+                                "10 km to mi",
+                                "16 * 24 + 10",
+                                "gen password 16 strong",
+                                "qr https://example.com",
+                                "speed test",
+                              ].map((e) =>
+                                (0, t.jsxs)(
+                                  "button",
+                                  {
+                                    onClick: () => D(e),
+                                    className:
+                                      "flex w-full items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-left text-sm text-slate-300 hover:bg-slate-800",
+                                    children: [
+                                      (0, t.jsx)("span", {
+                                        className: "font-mono",
+                                        children: e,
+                                      }),
+                                      (0, t.jsx)("span", {
+                                        className: "text-xs text-slate-500",
+                                        children: "run",
+                                      }),
+                                    ],
+                                  },
+                                  e,
+                                ),
+                              ),
+                            }),
+                          ],
+                        }),
+                        (0, t.jsxs)("div", {
+                          className:
+                            "rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",
+                          children: [
+                            (0, t.jsxs)("div", {
+                              className:
+                                "mb-4 flex items-center justify-between",
+                              children: [
+                                (0, t.jsx)("h3", {
+                                  className: "text-lg font-semibold",
+                                  children: "Recent history",
+                                }),
+                                (0, t.jsx)("button", {
+                                  onClick: () => y([]),
+                                  className:
+                                    "rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-400 hover:bg-slate-800",
+                                  children: "clear",
+                                }),
+                              ],
+                            }),
+                            0 === v.length
+                              ? (0, t.jsx)("div", {
+                                  className:
+                                    "rounded-2xl border border-dashed border-slate-700 bg-slate-950/50 p-4 text-sm text-slate-400",
+                                  children: "No commands yet.",
+                                })
+                              : (0, t.jsx)("div", {
+                                  className:
+                                    "max-h-[520px] space-y-2 overflow-auto pr-1",
+                                  children: v.map((e) =>
+                                    (0, t.jsxs)(
+                                      "button",
+                                      {
+                                        onClick: () => f(e),
+                                        className:
+                                          "block w-full rounded-2xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-left hover:bg-slate-800",
+                                        children: [
+                                          (0, t.jsxs)("div", {
+                                            className:
+                                              "flex items-center justify-between gap-3",
+                                            children: [
+                                              (0, t.jsx)("div", {
+                                                className:
+                                                  "text-sm font-medium text-slate-200",
+                                                children: e.input,
+                                              }),
+                                              (0, t.jsx)("div", {
+                                                className:
+                                                  "text-xs text-slate-500",
+                                                children: e.type,
+                                              }),
+                                            ],
+                                          }),
+                                          (0, t.jsx)("div", {
+                                            className:
+                                              "mt-1 text-xs text-slate-500",
+                                            children: new Date(
+                                              e.createdAt,
+                                            ).toLocaleString(),
+                                          }),
+                                        ],
+                                      },
+                                      e.id,
+                                    ),
+                                  ),
+                                }),
+                          ],
+                        }),
+                        (0, t.jsxs)("div", {
+                          className:
+                            "rounded-3xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/10",
+                          children: [
+                            (0, t.jsx)("h3", {
+                              className: "text-lg font-semibold",
+                              children: "Notes",
+                            }),
+                            (0, t.jsxs)("ul", {
+                              className:
+                                "mt-4 space-y-3 text-sm text-slate-400",
+                              children: [
+                                (0, t.jsx)("li", {
+                                  children:
+                                    "QR generation uses a public image endpoint for this prototype. Swap it for a local library before deploying.",
+                                }),
+                                (0, t.jsx)("li", {
+                                  children:
+                                    "Currency conversion is manual/static here. Replace it with a real rate source if you need live FX.",
+                                }),
+                                (0, t.jsx)("li", {
+                                  children:
+                                    "Speed test is scaffolded; the browser download test works only if the test URL is reachable and not blocked by CORS.",
+                                }),
+                              ],
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          })
+        );
+      },
+    ]);
+  },
+]);
