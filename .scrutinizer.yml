@@ -1,6 +1,11 @@
 checks:
     javascript: true
 
+before_commands:
+    - corepack enable
+    - corepack prepare pnpm@latest-11 --activate
+    - pnpm install --frozen-lockfile
+
 build:
     image: default-jammy
     nodes:
