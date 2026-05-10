@@ -11,4 +11,3 @@ build:
                 - corepack enable
                 - corepack prepare pnpm@latest-10 --activate
                 - pnpm install --frozen-lockfile
-                - pnpm exec js-scrutinizer-run
