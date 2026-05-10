@@ -4,13 +4,17 @@ checks:
 build:
     image: default-jammy
 
+    environment:
+        node: 20
+
     nodes:
         analysis:
-            environment:
-                node: 20
+            dependencies:
+                override:
+                    - npm install -g pnpm
 
             tests:
                 override:
-                    - corepack enable
+                    - export npm_config_user_agent="pnpm"
                     - pnpm install --frozen-lockfile
-                    - pnpm build
+                    - pnpm run build
