@@ -48,6 +48,8 @@ CodeScene: [![CodeScene Average Code Health](https://codescene.io/projects/79942
 
 DeepScan: [![DeepScan grade](https://deepscan.io/api/teams/29732/projects/31613/branches/1026410/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=29732&pid=31613&bid=1026410)
 
+pre-commit: [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/LCSOGthb/Tools/main.svg)](https://results.pre-commit.ci/latest/github/LCSOGthb/Tools/main)
+
 This project is licensed under AGPLv3.
 
 You may use, modify, and redistribute this software freely.
