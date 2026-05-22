@@ -61,7 +61,6 @@ SonarQube
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
 
-
 CodeFactor:
 [![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/tools/badge)](https://www.codefactor.io/repository/github/lcsogthb/tools)
 
