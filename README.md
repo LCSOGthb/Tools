@@ -18,9 +18,10 @@
 ![GitHub Created At](https://img.shields.io/github/created-at/LCSOGthb/Tools)
 ![GitHub repo size](https://img.shields.io/github/repo-size/LCSOGthb/Tools)
 
+CircleCI:
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/LCSOGthb/Tools/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LCSOGthb/Tools/tree/main)
 
-Codecov
+Codecov:
 [![codecov](https://codecov.io/github/LCSOGthb/Games/graph/badge.svg?token=YH1MJBD9W4)](https://codecov.io/github/LCSOGthb/Tools)
 
 CodeFactor:
@@ -31,7 +32,8 @@ DeepSource:
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=active+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=resolved+issues&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
 
-OSSF: [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/LCSOGthb/Tools/badge)](https://scorecard.dev/viewer/?uri=github.com/LCSOGthb/Tools)
+OSSF: 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/LCSOGthb/Tools/badge)](https://scorecard.dev/viewer/?uri=github.com/LCSOGthb/Tools)
 
 Qlty:
 [![Maintainability](https://qlty.sh/badges/e3c02970-6a80-4e74-b130-8cca7af27d06/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/Tools)
@@ -50,15 +52,20 @@ SonarQube Cloud:
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Tools&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Tools)
 
-Codacy: [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a37a51513fa34b95b4c06d48b24e36e1)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+Codacy: 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a37a51513fa34b95b4c06d48b24e36e1)](https://app.codacy.com/gh/LCSOGthb/Tools/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
-CodeRabbit: ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/Tools?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FTools&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+CodeRabbit: 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/Tools?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FTools&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
-CodeScene: [![CodeScene Average Code Health](https://codescene.io/projects/79942/status-badges/average-code-health)](https://codescene.io/projects/79942) [![CodeScene Hotspot Code Health](https://codescene.io/projects/79942/status-badges/hotspot-code-health)](https://codescene.io/projects/79942) [![CodeScene Missed Goals](https://codescene.io/projects/79942/status-badges/missed-goals)](https://codescene.io/projects/79942) [![CodeScene System Mastery](https://codescene.io/projects/79942/status-badges/system-mastery)](https://codescene.io/projects/79942)
+CodeScene: 
+[![CodeScene Average Code Health](https://codescene.io/projects/79942/status-badges/average-code-health)](https://codescene.io/projects/79942) [![CodeScene Hotspot Code Health](https://codescene.io/projects/79942/status-badges/hotspot-code-health)](https://codescene.io/projects/79942) [![CodeScene Missed Goals](https://codescene.io/projects/79942/status-badges/missed-goals)](https://codescene.io/projects/79942) [![CodeScene System Mastery](https://codescene.io/projects/79942/status-badges/system-mastery)](https://codescene.io/projects/79942)
 
-DeepScan: [![DeepScan grade](https://deepscan.io/api/teams/29732/projects/31613/branches/1026410/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=29732&pid=31613&bid=1026410)
+DeepScan: 
+[![DeepScan grade](https://deepscan.io/api/teams/29732/projects/31613/branches/1026410/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=29732&pid=31613&bid=1026410)
 
-pre-commit: [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/LCSOGthb/Tools/main.svg)](https://results.pre-commit.ci/latest/github/LCSOGthb/Tools/main)
+pre-commit: 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/LCSOGthb/Tools/main.svg)](https://results.pre-commit.ci/latest/github/LCSOGthb/Tools/main)
 
 This project is licensed under AGPLv3.
 
