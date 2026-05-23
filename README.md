@@ -18,6 +18,8 @@
 ![GitHub Created At](https://img.shields.io/github/created-at/LCSOGthb/Tools)
 ![GitHub repo size](https://img.shields.io/github/repo-size/LCSOGthb/Tools)
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/LCSOGthb/Tools/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LCSOGthb/Tools/tree/main)
+
 Codecov
 [![codecov](https://codecov.io/github/LCSOGthb/Games/graph/badge.svg?token=YH1MJBD9W4)](https://codecov.io/github/LCSOGthb/Tools)
 
