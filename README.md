@@ -18,54 +18,11 @@
 ![GitHub Created At](https://img.shields.io/github/created-at/LCSOGthb/Tools)
 ![GitHub repo size](https://img.shields.io/github/repo-size/LCSOGthb/Tools)
 
-CodeRabbit
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/LCSOGthb/Games?utm_source=oss&utm_medium=github&utm_campaign=LCSOGthb%2FGames&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
-
-CodeFactor
-[![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/games/badge)](https://www.codefactor.io/repository/github/lcsogthb/games)
-
 Codecov
-[![codecov](https://codecov.io/github/LCSOGthb/Games/graph/badge.svg?token=YH1MJBD9W4)](https://codecov.io/github/LCSOGthb/Games)
-
-CircleCI
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/LCSOGthb/Games/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LCSOGthb/Games/tree/main)
-
-DeepSource
-[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Games.svg/?label=code+coverage&show_trend=true&token=hwz7sl1scY_nigBpYJUL0l8N)](https://app.deepsource.com/gh/LCSOGthb/Games/)
-[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Games.svg/?label=active+issues&show_trend=true&token=hwz7sl1scY_nigBpYJUL0l8N)](https://app.deepsource.com/gh/LCSOGthb/Games/)
-[![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Games.svg/?label=resolved+issues&show_trend=true&token=hwz7sl1scY_nigBpYJUL0l8N)](https://app.deepsource.com/gh/LCSOGthb/Games/)
-
-OSSF
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/LCSOGthb/Games/badge)](https://scorecard.dev/viewer/?uri=github.com/LCSOGthb/Games)
-
-Qlty
-[![Maintainability](https://qlty.sh/badges/7f71c7d1-f72e-406c-9fac-b8a3d2852be6/maintainability.svg)](https://qlty.sh/gh/LCSOGthb/projects/Games)
-[![Code Coverage](https://qlty.sh/badges/7f71c7d1-f72e-406c-9fac-b8a3d2852be6/test_coverage.svg)](https://qlty.sh/gh/LCSOGthb/projects/Games)
-
-Scrutinizer
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/LCSOGthb/Games/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/Games/?branch=main)
-[![Code Coverage](https://scrutinizer-ci.com/g/LCSOGthb/Games/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/Games/?branch=main)
-[![Build Status](https://scrutinizer-ci.com/g/LCSOGthb/Games/badges/build.png?b=main)](https://scrutinizer-ci.com/g/LCSOGthb/Games/build-status/main)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/LCSOGthb/Games/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
-
-SonarQube
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=bugs)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=coverage)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=LCSOGthb_Clown&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=LCSOGthb_Clown)
+[![codecov](https://codecov.io/github/LCSOGthb/Games/graph/badge.svg?token=YH1MJBD9W4)](https://codecov.io/github/LCSOGthb/Tools)
 
 CodeFactor:
 [![CodeFactor](https://www.codefactor.io/repository/github/lcsogthb/tools/badge)](https://www.codefactor.io/repository/github/lcsogthb/tools)
-
-CircleCI:
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RHrNWGk2MzsmewtzbbFmPY/47MTVR37cb1YA4zD7R3G74/tree/main)
 
 DeepSource:
 [![DeepSource](https://app.deepsource.com/gh/LCSOGthb/Tools.svg/?label=code+coverage&show_trend=true&token=CFTcVJWTKLXxGWq_c2TRIo-r)](https://app.deepsource.com/gh/LCSOGthb/Tools/)
