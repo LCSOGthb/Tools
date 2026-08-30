@@ -1,0 +1,162 @@
+import type { ToolDefinition } from "@/lib/tool-registry";
+import { tf } from "@/lib/registry/lazy";
+import {
+  Crop, SlidersHorizontal, Droplets, MousePointer2, Shapes, Grip, ScanText,
+  FileText, Scissors, Download, Share2, SwitchCamera, MessageCircle, Globe,
+  WandSparkles, Quote, Star, Repeat, Volume2, Image, Shuffle, CreditCard,
+  ScanBarcode, Dices, User, ListOrdered,
+} from "lucide-react";
+
+export const MEDIA_TOOLS: ToolDefinition[] = [
+
+  // --- Image ---
+  {
+    slug: "image-resizer", name: "Image Resizer", description: "Resize and scale images by pixels or percentage in your browser.",
+    category: "image", icon: Crop, keywords: ["resize", "image", "scale", "dimension", "width", "height"],
+    commands: ["resize"], status: "ready", component: tf(() => import("@/components/tools/image/image-tools")),
+  },
+  {
+    slug: "image-filters", name: "Image Filters", description: "Apply brightness, contrast, blur, sepia and more.",
+    category: "image", icon: SlidersHorizontal, keywords: ["filter", "image", "effect", "brightness", "contrast", "sepia"],
+    commands: ["filters"], status: "ready", component: tf(() => import("@/components/tools/image/image-tools")),
+  },
+  {
+    slug: "image-avg-color", name: "Average Image Color", description: "Extract the dominant average color from an image.",
+    category: "image", icon: Droplets, keywords: ["average", "color", "dominant", "extract", "image", "palette"],
+    commands: ["avg color"], status: "ready", component: tf(() => import("@/components/tools/image/image-tools")),
+  },
+  {
+    slug: "image-color-picker", name: "Color Picker from Image", description: "Pick any pixel color from your own image.",
+    category: "image", icon: MousePointer2, keywords: ["picker", "eyedropper", "color", "pixel", "image"],
+    commands: ["pick color"], status: "ready", component: tf(() => import("@/components/tools/image/image-tools")),
+  },
+  {
+    slug: "svg-blob-generator", name: "SVG Blob Generator", description: "Organic blob shapes as SVG paths and CSS.",
+    category: "image", icon: Shapes, keywords: ["blob", "svg", "organic", "shape", "path", "fluid"],
+    commands: ["blob"], status: "ready", component: tf(() => import("@/components/tools/image/image-tools")),
+  },
+  {
+    slug: "svg-pattern-generator", name: "SVG Pattern Generator", description: "Tiled geometric SVG patterns with colors.",
+    category: "image", icon: Grip, keywords: ["pattern", "svg", "tile", "seamless", "texture"],
+    commands: ["svg pattern"], status: "ready", component: tf(() => import("@/components/tools/image/image-tools")),
+  },
+  {
+    slug: "image-to-base64", name: "Image to Base64", description: "Convert images to base64 data URIs to inline in HTML/CSS.",
+    category: "image", icon: ScanText, keywords: ["image", "base64", "data uri", "inline", "embed"],
+    commands: ["image base64"], status: "ready", component: tf(() => import("@/components/tools/image/image-tools")),
+  },
+  {
+    slug: "online-sentence-picker", name: "Sentence Picker", description: "Pick a random sentence from a block of text.",
+    category: "misc", icon: ListOrdered, keywords: ["sentence", "random", "pick", "choose", "randomizer"],
+    commands: ["pick sentence"], status: "ready", component: tf(() => import("@/components/tools/misc/misc-tools")),
+  },
+  {
+    slug: "pdf-merger", name: "PDF Merger", description: "Combine multiple PDF files into one document.",
+    category: "image", icon: FileText, keywords: ["pdf", "merge", "combine", "join", "documents"],
+    commands: ["pdf merge"], status: "coming-soon",
+  },
+  {
+    slug: "pdf-splitter", name: "PDF Splitter", description: "Split pages out of a PDF into separate files.",
+    category: "image", icon: Scissors, keywords: ["pdf", "split", "pages", "extract", "separate"],
+    commands: ["pdf split"], status: "coming-soon",
+  },
+  {
+    slug: "pdf-compressor", name: "PDF Compressor", description: "Reduce PDF file size by recompressing images.",
+    category: "image", icon: Download, keywords: ["pdf", "compress", "reduce", "size", "optimize"],
+    commands: ["pdf compress"], status: "coming-soon",
+  },
+
+  // --- Social ---
+  {
+    slug: "og-meta-generator", name: "Open Graph Meta Generator", description: "Generate OG and Twitter card meta tags for any URL.",
+    category: "social", tier: "standard", icon: Share2, keywords: ["og", "open graph", "meta", "twitter card", "seo", "preview"],
+    commands: ["og meta"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "instagram-filters", name: "Instagram Filter Preview", description: "Preview Instagram-style filters on your photos.",
+    category: "social", icon: SwitchCamera, keywords: ["instagram", "filter", "photo", "preset", "likes"],
+    commands: ["insta filter"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "youtube-thumbnail", name: "YouTube Thumbnail Size", description: "Get the correct YouTube thumbnail sizes and URLs.",
+    category: "social", icon: Volume2, keywords: ["youtube", "thumbnail", "size", "1280", "720", "maxres"],
+    commands: ["yt thumbnail"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "vimeo-thumbnail", name: "Vimeo Thumbnail Size", description: "Fetch Vimeo thumbnail URLs at every available size.",
+    category: "social", icon: Globe, keywords: ["vimeo", "thumbnail", "video", "size"],
+    commands: ["vimeo thumbnail"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "custom-twitter-card", name: "Twitter Card Generator", description: "Generate summary and summary_large_image card tags.",
+    category: "social", icon: MessageCircle, keywords: ["twitter", "card", "meta", "x", "summary", "snippet"],
+    commands: ["twitter card"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "og-image-generator", name: "OG Image Generator", description: "Design a shareable 1200×630 social image in-browser.",
+    category: "image", icon: Image, keywords: ["og", "image", "social", "1200", "630", "share"],
+    commands: ["og image"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "quote-generator", name: "Quote Card Generator", description: "Beautiful quote cards for Instagram and X.",
+    category: "social", icon: Quote, keywords: ["quote", "card", "instagram", "motivational", "poster"],
+    commands: ["quote"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "caption-generator", name: "Instagram Caption Generator", description: "Generate catchy captions and hashtags from your topic.",
+    category: "social", icon: Star, keywords: ["caption", "instagram", "hashtag", "copy", "post"],
+    commands: ["caption"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "bio-generator", name: "Social Bio Generator", description: "Craft short, punchy bios for any platform.",
+    category: "social", icon: Repeat, keywords: ["bio", "profile", "instagram", "twitter", "about"],
+    commands: ["bio"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "linkedin-header-generator", name: "LinkedIn Banner Generator", description: "Create a 1128×191 LinkedIn banner with a headline.",
+    category: "social", icon: WandSparkles, keywords: ["linkedin", "banner", "header", "1128", "cover"],
+    commands: ["linkedin"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "link-preview-generator", name: "Link Preview Mockup", description: "Preview how your link will look shared on social apps.",
+    category: "social", icon: Share2, keywords: ["preview", "link", "mockup", "og", "share"],
+    commands: ["link preview"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "social-mockup", name: "Social Post Mockup", description: "Frame text into a realistic social media post.",
+    category: "social", icon: MessageCircle, keywords: ["mockup", "post", "frame", "social", "screenshot"],
+    commands: ["mockup"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+  {
+    slug: "yt-title-generator", name: "YouTube Title Generator", description: "Generate clickable titles from keyword combos.",
+    category: "social", icon: Volume2, keywords: ["youtube", "title", "clickbait", "keyword", "video"],
+    commands: ["yt title"], status: "ready", component: tf(() => import("@/components/tools/social/social-tools")),
+  },
+
+  // --- Misc ---
+  {
+    slug: "list-randomizer", name: "List Randomizer", description: "Shuffle or randomize any newline-separated list.",
+    category: "misc", tier: "standard", icon: Shuffle, keywords: ["randomizer", "shuffle", "list", "raffle", "random order"],
+    commands: ["shuffle"], status: "ready", component: tf(() => import("@/components/tools/misc/misc-tools")),
+  },
+  {
+    slug: "fake-iban-generator", name: "Fake IBAN Generator", description: "Generate structural, checksum-valid IBANs for 13 countries.",
+    category: "misc", icon: CreditCard, keywords: ["iban", "bank", "account", "fake", "valid", "european"],
+    commands: ["iban"], status: "ready", component: tf(() => import("@/components/tools/misc/misc-tools")),
+  },
+  {
+    slug: "barcode-generator", name: "Barcode Generator", description: "Generate Code 39 and EAN-13 barcodes as SVG.",
+    category: "misc", icon: ScanBarcode, keywords: ["barcode", "code39", "ean13", "ean", "svg", "scan"],
+    commands: ["barcode"], status: "ready", component: tf(() => import("@/components/tools/misc/misc-tools")),
+  },
+  {
+    slug: "unicode-rain", name: "Unicode Rain", description: "A Matrix-style animated stream of any character set.",
+    category: "misc", icon: Dices, keywords: ["rain", "matrix", "unicode", "animation", "symbols"],
+    commands: ["rain"], status: "ready", component: tf(() => import("@/components/tools/misc/misc-tools")),
+  },
+  {
+    slug: "fake-user-generator", name: "Fake User Generator", description: "Bulk-generate fake names, emails, countries and phones.",
+    category: "misc", icon: User, keywords: ["fake", "user", "names", "email", "dummy", "test data"],
+    commands: ["fake user"], status: "ready", component: tf(() => import("@/components/tools/misc/misc-tools")),
+  },
+];
