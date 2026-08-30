@@ -1,7 +1,14 @@
 import { useMemo, useState } from "react";
 import type { ToolPageProps } from "@/lib/tool-registry";
 import { uuidBulk } from "@/lib/tools/coding";
-import { Field, SelectInput, NumInput, OutBox, PrimaryButton, ToggleInput } from "@/components/tools/shared/fields";
+import {
+  Field,
+  SelectInput,
+  NumInput,
+  OutBox,
+  PrimaryButton,
+  ToggleInput,
+} from "@/components/tools/shared/fields";
 
 type Version = "v4" | "v7";
 
@@ -41,15 +48,38 @@ export default function UuidGeneratorPage({ tool }: ToolPageProps) {
           <SelectInput
             options={["v4", "v1 (not client-side)", "v7"]}
             value={version === "v4" ? "v4" : "v7"}
-            onChange={(e) => setVersion(e.target.value === "v1 (not client-side)" ? version : e.target.value as Version)}
+            onChange={(e) =>
+              setVersion(
+                e.target.value === "v1 (not client-side)"
+                  ? version
+                  : (e.target.value as Version),
+              )
+            }
           />
         </Field>
         <Field label="Count">
-          <NumInput min={1} max={100} value={count} onChange={(e) => setCount(Math.min(100, Math.max(1, Number(e.target.value) || 1)))} />
+          <NumInput
+            min={1}
+            max={100}
+            value={count}
+            onChange={(e) =>
+              setCount(Math.min(100, Math.max(1, Number(e.target.value) || 1)))
+            }
+          />
         </Field>
-        <ToggleInput label="Uppercase" checked={uppercase} onChange={setUppercase} />
-        <ToggleInput label="Lowercase (inverse of uppercase)" checked={!uppercase} onChange={(v) => setUppercase(!v)} />
-        <p className="text-xs text-muted-foreground/60">v1 is not generated client-side (no MAC/timestamp source).</p>
+        <ToggleInput
+          label="Uppercase"
+          checked={uppercase}
+          onChange={setUppercase}
+        />
+        <ToggleInput
+          label="Lowercase (inverse of uppercase)"
+          checked={!uppercase}
+          onChange={(v) => setUppercase(!v)}
+        />
+        <p className="text-xs text-muted-foreground/60">
+          v1 is not generated client-side (no MAC/timestamp source).
+        </p>
       </div>
 
       <div className="space-y-3 rounded-2xl border border-border bg-card/60 p-4">
@@ -59,7 +89,12 @@ export default function UuidGeneratorPage({ tool }: ToolPageProps) {
           </span>
           <PrimaryButton onClick={copyAll}>Copy all</PrimaryButton>
         </div>
-        <OutBox value={output} className="min-h-64" downloadable filename={`uuids-${version}.txt`} />
+        <OutBox
+          value={output}
+          className="min-h-64"
+          downloadable
+          filename={`uuids-${version}.txt`}
+        />
       </div>
     </div>
   );

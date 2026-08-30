@@ -1,7 +1,11 @@
 import { Suspense, useEffect, useMemo } from "react";
 import { Link, useParams } from "wouter";
 import { toast } from "sonner";
-import { getToolDefinition, TOOL_CATEGORIES, getToolsByCategory } from "@/lib/tool-registry";
+import {
+  getToolDefinition,
+  TOOL_CATEGORIES,
+  getToolsByCategory,
+} from "@/lib/tool-registry";
 import { trackRecentTool } from "@/lib/storage";
 import { usePageTitle } from "@/hooks/use-page-title";
 import { ToolPageLayout } from "@/components/layout/tool-page-layout";
@@ -22,10 +26,15 @@ export default function ToolPage() {
   if (!tool) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-24 text-center lg:px-8">
-        <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">404</p>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight">Tool not found</h1>
+        <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+          404
+        </p>
+        <h1 className="mt-2 text-2xl font-bold tracking-tight">
+          Tool not found
+        </h1>
         <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-          “{slug}” isn’t in the toolbox. Check the URL, or browse the catalog to find what you need.
+          “{slug}” isn’t in the toolbox. Check the URL, or browse the catalog to
+          find what you need.
         </p>
         <Link
           href="/"

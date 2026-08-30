@@ -1,7 +1,13 @@
 import { useState } from "react";
 import type { ToolPageProps } from "@/lib/tool-registry";
 import { urlEncode, urlDecode } from "@/lib/tools/coding";
-import { Field, TextArea, SelectInput, OutBox, Chip } from "@/components/tools/shared/fields";
+import {
+  Field,
+  TextArea,
+  SelectInput,
+  OutBox,
+  Chip,
+} from "@/components/tools/shared/fields";
 
 export default function UrlEncoder({ tool }: ToolPageProps) {
   const [mode, setMode] = useState("Encode");
@@ -22,7 +28,15 @@ export default function UrlEncoder({ tool }: ToolPageProps) {
   return (
     <div className="grid gap-4">
       <div className="flex flex-wrap items-center gap-2">
-        <SelectInput value={mode} onChange={(e) => { setMode(e.target.value); setError(null); }} options={["Encode", "Decode"]} className="w-36" />
+        <SelectInput
+          value={mode}
+          onChange={(e) => {
+            setMode(e.target.value);
+            setError(null);
+          }}
+          options={["Encode", "Decode"]}
+          className="w-36"
+        />
         <Chip color="bg-ring/15 text-ring">{tool.slug}</Chip>
       </div>
 
@@ -32,7 +46,11 @@ export default function UrlEncoder({ tool }: ToolPageProps) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
-            placeholder={mode === "Encode" ? "https://example.com?q=hello world 🚀" : "https%3A%2F%2Fexample.com%3Fq%3Dhello%20world"}
+            placeholder={
+              mode === "Encode"
+                ? "https://example.com?q=hello world 🚀"
+                : "https%3A%2F%2Fexample.com%3Fq%3Dhello%20world"
+            }
           />
         </Field>
       </div>
@@ -40,7 +58,13 @@ export default function UrlEncoder({ tool }: ToolPageProps) {
       {error ? (
         <p className="text-red-400 text-sm">{error}</p>
       ) : (
-        transform() !== "" && <OutBox value={transform()} mono filename={mode === "Encode" ? "encoded.txt" : "decoded.txt"} />
+        transform() !== "" && (
+          <OutBox
+            value={transform()}
+            mono
+            filename={mode === "Encode" ? "encoded.txt" : "decoded.txt"}
+          />
+        )
       )}
     </div>
   );

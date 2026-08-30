@@ -2,14 +2,26 @@ import { useMemo, useState } from "react";
 import type { ToolPageProps } from "@/lib/tool-registry";
 import { TextArea, TextInput, Chip } from "@/components/tools/shared/fields";
 
-type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
+type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [k: string]: JsonValue };
 
 function countNodes(value: JsonValue): number {
   if (value === null || typeof value !== "object") return 1;
   const entries = Array.isArray(value)
     ? Object.keys(value as JsonValue[])
     : Object.keys(value as { [k: string]: JsonValue });
-  return 1 + entries.reduce((acc, k) => acc + countNodes((value as { [k: string]: JsonValue })[k]), 0);
+  return (
+    1 +
+    entries.reduce(
+      (acc, k) => acc + countNodes((value as { [k: string]: JsonValue })[k]),
+      0,
+    )
+  );
 }
 
 function entryMatches(key: string, value: JsonValue, q: string): boolean {
@@ -32,10 +44,19 @@ function labelFor(value: JsonValue): string {
   return String(value);
 }
 
-function TreeNode({ value, name, query }: { value: JsonValue; name?: string; query: string }) {
+function TreeNode({
+  value,
+  name,
+  query,
+}: {
+  value: JsonValue;
+  name?: string;
+  query: string;
+}) {
   const q = query.toLowerCase();
   const nameMatched = name != null && name.toLowerCase().includes(q);
-  const valueMatched = typeof value === "string" && value.toLowerCase().includes(q);
+  const valueMatched =
+    typeof value === "string" && value.toLowerCase().includes(q);
 
   if (value === null || typeof value !== "object") {
     return (
@@ -46,14 +67,20 @@ function TreeNode({ value, name, query }: { value: JsonValue; name?: string; que
             <span className="text-muted-foreground">: </span>
           </span>
         )}
-        <span className={`${valueMatched ? "bg-yellow-500/20" : ""} ${colorFor(value)}`}>{labelFor(value)}</span>
+        <span
+          className={`${valueMatched ? "bg-yellow-500/20" : ""} ${colorFor(value)}`}
+        >
+          {labelFor(value)}
+        </span>
       </div>
     );
   }
 
   const isArray = Array.isArray(value);
   const entries = isArray
-    ? (value as JsonValue[]).map((v, i) => [String(i), v] as [string, JsonValue])
+    ? (value as JsonValue[]).map(
+        (v, i) => [String(i), v] as [string, JsonValue],
+      )
     : Object.entries(value as { [k: string]: JsonValue });
   const anyChildMatch = entries.some(([k, v]) => entryMatches(k, v, q));
   const open = !query || nameMatched || anyChildMatch;
@@ -64,12 +91,19 @@ function TreeNode({ value, name, query }: { value: JsonValue; name?: string; que
         <span className="text-muted-foreground">{isArray ? "▸" : "▸"}</span>
         <span className={nameMatched ? "bg-yellow-500/20" : ""}>
           {name != null && <span className="mr-1">{name}: </span>}
-          <span className="text-muted-foreground">{isArray ? `Array(${entries.length})` : `Object(${entries.length})`}</span>
+          <span className="text-muted-foreground">
+            {isArray ? `Array(${entries.length})` : `Object(${entries.length})`}
+          </span>
         </span>
       </summary>
       <div className="ml-4 border-l border-border pl-2">
         {entries.map(([k, v]) => (
-          <TreeNode key={k} value={v} name={isArray ? undefined : k} query={query} />
+          <TreeNode
+            key={k}
+            value={v}
+            name={isArray ? undefined : k}
+            query={query}
+          />
         ))}
       </div>
     </details>
@@ -98,13 +132,27 @@ export default function JsonTreeViewer({ tool }: ToolPageProps) {
     <div className="grid gap-4">
       <div className="flex flex-wrap items-center gap-2">
         <Chip color="bg-ring/15 text-ring">{tool.slug}</Chip>
-        {parsed && <span className="text-xs text-muted-foreground">{nodeCount} nodes</span>}
+        {parsed && (
+          <span className="text-xs text-muted-foreground">
+            {nodeCount} nodes
+          </span>
+        )}
       </div>
 
       <div className="rounded-2xl border border-border bg-card/60 p-4">
         <div className="grid gap-3">
-          <TextArea value={input} onChange={(e) => setInput(e.target.value)} spellCheck={false} className="font-mono" placeholder='{"name": "Chris", "tags": ["a", "b"]}' />
-          <TextInput value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search keys or values…" />
+          <TextArea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            spellCheck={false}
+            className="font-mono"
+            placeholder='{"name": "Chris", "tags": ["a", "b"]}'
+          />
+          <TextInput
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search keys or values…"
+          />
         </div>
       </div>
 

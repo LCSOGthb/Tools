@@ -1,7 +1,9 @@
 // Linux / sysadmin helpers — pure calculators and parsers, no shell execution.
 
 const MODE_BITS: Array<[key: string, value: number]> = [
-  ["r", 4], ["w", 2], ["x", 1],
+  ["r", 4],
+  ["w", 2],
+  ["x", 1],
 ];
 
 function modeSymbolsForOct(oct: number): string {
@@ -27,14 +29,19 @@ function octForSymbols(symbols: string): number {
 }
 
 export function chmodSymbolicToOctal(symbolic: string): string {
-  const parts = symbolic.split(",").map((p) => p.trim()).filter(Boolean);
+  const parts = symbolic
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
   let result = 0;
   for (const part of parts) {
     const m = part.match(/^([ugoa]*)([+\-=])([rwx]*)$/);
     if (!m) throw new Error(`Invalid symbolic mode: "${part}"`);
     const [, targets, op, perms] = m;
     const targetSet = targets === "" ? ["u", "g", "o"] : targets.split("");
-    const value = perms.split("").reduce((acc, p) => acc + (p === "r" ? 4 : p === "w" ? 2 : 1), 0);
+    const value = perms
+      .split("")
+      .reduce((acc, p) => acc + (p === "r" ? 4 : p === "w" ? 2 : 1), 0);
     const masked = targetSet.reduce((acc, t) => {
       const shift = t === "u" ? 2 : t === "g" ? 1 : 0;
       return acc | (value << (shift * 3));
@@ -54,14 +61,17 @@ export function chmodSymbolicToOctal(symbolic: string): string {
 
 export function chmodOctalToSymbolic(oct: number | string): string {
   const n = typeof oct === "string" ? parseInt(oct, 8) : oct;
-  if (isNaN(n) || n < 0 || n > 777) throw new Error("Octal mode must be between 000 and 777");
+  if (isNaN(n) || n < 0 || n > 777)
+    throw new Error("Octal mode must be between 000 and 777");
   return modeSymbolsForOct(n);
 }
 
 export function chmodOctalToBits(oct: number | string) {
   const n = typeof oct === "string" ? parseInt(oct, 8) : oct;
   const digits = n.toString(8).padStart(3, "0").slice(-3).split("").map(Number);
-  return digits.map((d) => MODE_BITS.map(([ch]) => Boolean(d & (ch === "r" ? 4 : ch === "w" ? 2 : 1))));
+  return digits.map((d) =>
+    MODE_BITS.map(([ch]) => Boolean(d & (ch === "r" ? 4 : ch === "w" ? 2 : 1))),
+  );
 }
 
 export function chmodBitsToOctal(bits: boolean[][]) {
@@ -78,16 +88,33 @@ export interface PermissionBreakdown {
   type: string;
   symbolic: string;
   octal: string;
-  rows: Array<{ who: string; r: boolean; w: boolean; x: boolean; special: boolean }>;
+  rows: Array<{
+    who: string;
+    r: boolean;
+    w: boolean;
+    x: boolean;
+    special: boolean;
+  }>;
   special: { setuid: boolean; setgid: boolean; sticky: boolean };
   human: string;
 }
 
 export function decodePermissionLine(line: string): PermissionBreakdown {
   const m = line.match(/^([-dbclps])([rwxsStT-]{9})(?:\s|$)/);
-  if (!m) throw new Error("Not a valid `ls -l` permission line (expected e.g. drwxr-xr-x)");
+  if (!m)
+    throw new Error(
+      "Not a valid `ls -l` permission line (expected e.g. drwxr-xr-x)",
+    );
   const [, typeCh, perms] = m;
-  const typeMap: Record<string, string> = { d: "Directory", "-": "File", l: "Symbolic link", b: "Block device", c: "Character device", p: "Named pipe", s: "Socket" };
+  const typeMap: Record<string, string> = {
+    d: "Directory",
+    "-": "File",
+    l: "Symbolic link",
+    b: "Block device",
+    c: "Character device",
+    p: "Named pipe",
+    s: "Socket",
+  };
   const rows: PermissionBreakdown["rows"] = [];
   for (let i = 0; i < 3; i++) {
     const chunk = perms.slice(i * 3, i * 3 + 3);
@@ -96,7 +123,11 @@ export function decodePermissionLine(line: string): PermissionBreakdown {
       r: chunk[0] === "r",
       w: chunk[1] === "w",
       x: chunk[2] === "x" || chunk[2] === "s" || chunk[2] === "t",
-      special: chunk[2] === "s" || chunk[2] === "S" || chunk[2] === "t" || chunk[2] === "T",
+      special:
+        chunk[2] === "s" ||
+        chunk[2] === "S" ||
+        chunk[2] === "t" ||
+        chunk[2] === "T",
     });
   }
   let octal = 0;
@@ -111,8 +142,20 @@ export function decodePermissionLine(line: string): PermissionBreakdown {
   if (special.setuid) octal += 4000;
   if (special.setgid) octal += 2000;
   if (special.sticky) octal += 1000;
-  const human = rows.map((r) => `${r.who}: ${r.r ? "read" : "no read"} / ${r.w ? "write" : "no write"} / ${r.x ? "execute" : "no execute"}`).join("\n");
-  return { type: typeMap[typeCh] ?? typeCh, symbolic: perms, octal: String(octal).padStart(4, "0"), rows, special, human };
+  const human = rows
+    .map(
+      (r) =>
+        `${r.who}: ${r.r ? "read" : "no read"} / ${r.w ? "write" : "no write"} / ${r.x ? "execute" : "no execute"}`,
+    )
+    .join("\n");
+  return {
+    type: typeMap[typeCh] ?? typeCh,
+    symbolic: perms,
+    octal: String(octal).padStart(4, "0"),
+    rows,
+    special,
+    human,
+  };
 }
 
 export function chmodBinaryToOctal(checkboxes: Array<Array<boolean>>): string {
@@ -122,9 +165,27 @@ export function chmodBinaryToOctal(checkboxes: Array<Array<boolean>>): string {
 // ---- cron ----
 
 const DAY_NAMES = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-const MONTH_NAMES = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+const MONTH_NAMES = [
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "may",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "oct",
+  "nov",
+  "dec",
+];
 
-function expandCronField(field: string, min: number, max: number, names: string[] = []): number[] {
+function expandCronField(
+  field: string,
+  min: number,
+  max: number,
+  names: string[] = [],
+): number[] {
   const result = new Set<number>();
   const named = (v: string) => {
     const lower = v.toLowerCase();
@@ -143,7 +204,8 @@ function expandCronField(field: string, min: number, max: number, names: string[
     if (stepMatch) {
       const [, base, stepStr] = stepMatch;
       const step = Math.max(1, Number(stepStr));
-      const range = base === "*" ? [min, max] : base.split("-").map((v) => named(v));
+      const range =
+        base === "*" ? [min, max] : base.split("-").map((v) => named(v));
       for (let i = range[0]; i <= range[1]; i += step) result.add(i);
       continue;
     }
@@ -169,7 +231,10 @@ export interface CronSchedule {
 export function parseCronExpression(expression: string): CronSchedule {
   const parts = expression.trim().split(/\s+/);
   const n = parts.length;
-  if (n !== 5 && n !== 6) throw new Error("Cron must have 5 or 6 fields: minute hour day month weekday (or seconds minute hour day month weekday)");
+  if (n !== 5 && n !== 6)
+    throw new Error(
+      "Cron must have 5 or 6 fields: minute hour day month weekday (or seconds minute hour day month weekday)",
+    );
   const useSeconds = n === 6;
   const minuteField = useSeconds ? parts[2] : parts[0];
   const hourField = useSeconds ? parts[3] : parts[1];
@@ -186,7 +251,11 @@ export function parseCronExpression(expression: string): CronSchedule {
   };
 }
 
-export function cronNextTimes(expression: string, count = 5, from = new Date()): Date[] {
+export function cronNextTimes(
+  expression: string,
+  count = 5,
+  from = new Date(),
+): Date[] {
   const s = parseCronExpression(expression);
   const matches = (d: Date) => {
     const min = d.getMinutes();
@@ -194,7 +263,12 @@ export function cronNextTimes(expression: string, count = 5, from = new Date()):
     const day = d.getDate();
     const mon = d.getMonth() + 1;
     const wd = d.getDay();
-    return s.minute.includes(min) && s.hour.includes(hr) && s.month.includes(mon) && (s.day.includes(day) || s.weekday.includes(wd));
+    return (
+      s.minute.includes(min) &&
+      s.hour.includes(hr) &&
+      s.month.includes(mon) &&
+      (s.day.includes(day) || s.weekday.includes(wd))
+    );
   };
   const out: Date[] = [];
   const cur = new Date(from);
@@ -227,18 +301,20 @@ export function buildCronExpression(fields: CronFields): string {
 // ---- paths ----
 
 export function posixJoin(...parts: string[]): string {
-  return parts
-    .flatMap((p) => p.split("/"))
-    .reduce((acc, part) => {
-      if (!part || part === ".") return acc;
-      if (part === "..") {
-        const s = acc.split("/");
-        s.pop();
-        return s.join("/");
-      }
-      return acc ? `${acc}/${part}` : part;
-    }, "")
-    .replace(/\/{2,}/g, "/") || ".";
+  return (
+    parts
+      .flatMap((p) => p.split("/"))
+      .reduce((acc, part) => {
+        if (!part || part === ".") return acc;
+        if (part === "..") {
+          const s = acc.split("/");
+          s.pop();
+          return s.join("/");
+        }
+        return acc ? `${acc}/${part}` : part;
+      }, "")
+      .replace(/\/{2,}/g, "/") || "."
+  );
 }
 
 export function posixDirname(p: string): string {
@@ -281,11 +357,31 @@ export function posixNormalize(p: string): string {
 
 // ---- uid/gid reference ----
 
-export const UID_GID_TABLE: Array<{ name: string; uid: number; gid: number; description: string }> = [
-  { name: "root", uid: 0, gid: 0, description: "Superuser / system administrator" },
+export const UID_GID_TABLE: Array<{
+  name: string;
+  uid: number;
+  gid: number;
+  description: string;
+}> = [
+  {
+    name: "root",
+    uid: 0,
+    gid: 0,
+    description: "Superuser / system administrator",
+  },
   { name: "bin", uid: 1, gid: 1, description: "Executable binaries owner" },
-  { name: "daemon", uid: 2, gid: 2, description: "Background system processes" },
-  { name: "adm", uid: 3, gid: 4, description: "Administrative group / log files" },
+  {
+    name: "daemon",
+    uid: 2,
+    gid: 2,
+    description: "Background system processes",
+  },
+  {
+    name: "adm",
+    uid: 3,
+    gid: 4,
+    description: "Administrative group / log files",
+  },
   { name: "lp", uid: 4, gid: 7, description: "Printing subsystem" },
   { name: "sync", uid: 5, gid: 0, description: "Synchronize binaries" },
   { name: "shutdown", uid: 6, gid: 0, description: "Power off the system" },
@@ -297,20 +393,46 @@ export const UID_GID_TABLE: Array<{ name: string; uid: number; gid: number; desc
   { name: "games", uid: 12, gid: 100, description: "Games" },
   { name: "gopher", uid: 13, gid: 30, description: "Gopher server" },
   { name: "ftp", uid: 14, gid: 50, description: "FTP server" },
-  { name: "nobody", uid: 65534, gid: 65534, description: "Unprivileged process user" },
-  { name: "systemd-network", uid: 100, gid: 102, description: "systemd network management" },
-  { name: "systemd-resolve", uid: 101, gid: 103, description: "systemd resolver" },
+  {
+    name: "nobody",
+    uid: 65534,
+    gid: 65534,
+    description: "Unprivileged process user",
+  },
+  {
+    name: "systemd-network",
+    uid: 100,
+    gid: 102,
+    description: "systemd network management",
+  },
+  {
+    name: "systemd-resolve",
+    uid: 101,
+    gid: 103,
+    description: "systemd resolver",
+  },
   { name: "sshd", uid: 74, gid: 74, description: "SSH daemon" },
-  { name: "www-data", uid: 33, gid: 33, description: "Web server (Apache/Nginx)" },
+  {
+    name: "www-data",
+    uid: 33,
+    gid: 33,
+    description: "Web server (Apache/Nginx)",
+  },
   { name: "postgres", uid: 999, gid: 999, description: "PostgreSQL server" },
   { name: "mysql", uid: 27, gid: 27, description: "MySQL server" },
   { name: "redis", uid: 999, gid: 999, description: "Redis server" },
-  { name: "vboxadd", uid: 999, gid: 999, description: "VirtualBox guest additions" },
+  {
+    name: "vboxadd",
+    uid: 999,
+    gid: 999,
+    description: "VirtualBox guest additions",
+  },
 ];
 
 export function lookupUidGid(query: string) {
   const q = query.toLowerCase();
   return UID_GID_TABLE.filter(
-    (row) => row.name.includes(q) || String(row.uid) === q || String(row.gid) === q,
+    (row) =>
+      row.name.includes(q) || String(row.uid) === q || String(row.gid) === q,
   );
 }

@@ -1,7 +1,17 @@
 import { useMemo, useState } from "react";
 import type { ToolPageProps } from "@/lib/tool-registry";
-import { getAllUnitCategories, getUnitsForCategory, convertUnits } from "@/lib/tools/unit-converter";
-import { Field, SelectInput, NumInput, OutBox, GhostButton } from "@/components/tools/shared/fields";
+import {
+  getAllUnitCategories,
+  getUnitsForCategory,
+  convertUnits,
+} from "@/lib/tools/unit-converter";
+import {
+  Field,
+  SelectInput,
+  NumInput,
+  OutBox,
+  GhostButton,
+} from "@/components/tools/shared/fields";
 import { ArrowLeftRight } from "lucide-react";
 
 const FIRST_CATEGORY = getAllUnitCategories()[0];
@@ -13,7 +23,9 @@ function firstAndLast(cat: string): [string, string] {
 
 export default function UnitConverterPage({ tool }: ToolPageProps) {
   const [category, setCategory] = useState(FIRST_CATEGORY);
-  const [from, setFrom] = useState<string>(() => firstAndLast(FIRST_CATEGORY)[0]);
+  const [from, setFrom] = useState<string>(
+    () => firstAndLast(FIRST_CATEGORY)[0],
+  );
   const [to, setTo] = useState<string>(() => firstAndLast(FIRST_CATEGORY)[1]);
   const [value, setValue] = useState("1");
 
@@ -45,20 +57,32 @@ export default function UnitConverterPage({ tool }: ToolPageProps) {
     <div className="grid gap-4 lg:grid-cols-2">
       <div className="space-y-3 rounded-2xl border border-border bg-card/60 p-4">
         <Field label="Category">
-          <SelectInput options={getAllUnitCategories()} value={category} onChange={(e) => onCategory(e.target.value)} />
+          <SelectInput
+            options={getAllUnitCategories()}
+            value={category}
+            onChange={(e) => onCategory(e.target.value)}
+          />
         </Field>
         <Field label="Value">
           <NumInput value={value} onChange={(e) => setValue(e.target.value)} />
         </Field>
         <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2">
           <Field label="From">
-            <SelectInput options={units} value={from} onChange={(e) => setFrom(e.target.value)} />
+            <SelectInput
+              options={units}
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+            />
           </Field>
           <GhostButton className="px-3" onClick={swap} title="Swap">
             <ArrowLeftRight className="h-4 w-4" />
           </GhostButton>
           <Field label="To">
-            <SelectInput options={units} value={to} onChange={(e) => setTo(e.target.value)} />
+            <SelectInput
+              options={units}
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+            />
           </Field>
         </div>
       </div>

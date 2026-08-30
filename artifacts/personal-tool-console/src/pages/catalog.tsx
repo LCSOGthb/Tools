@@ -34,7 +34,9 @@ function ToolCard({ tool }: { tool: ToolDefinition }) {
         )}
       </div>
       <h3 className="mt-3 text-sm font-medium leading-snug">{tool.name}</h3>
-      <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{tool.description}</p>
+      <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+        {tool.description}
+      </p>
       {tool.commands && tool.commands[0] && (
         <code className="mt-3 hidden truncate rounded-md bg-black/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:block">
           {tool.commands[0]}
@@ -44,7 +46,13 @@ function ToolCard({ tool }: { tool: ToolDefinition }) {
   );
 }
 
-function SectionGrid({ meta, tools }: { meta: ToolCategoryMeta; tools: ToolDefinition[] }) {
+function SectionGrid({
+  meta,
+  tools,
+}: {
+  meta: ToolCategoryMeta;
+  tools: ToolDefinition[];
+}) {
   const Icon = meta.icon;
   const groups = useMemo(() => {
     const map = new Map<string | undefined, ToolDefinition[]>();
@@ -71,7 +79,9 @@ function SectionGrid({ meta, tools }: { meta: ToolCategoryMeta; tools: ToolDefin
       {groups.map(([group, items]) => (
         <div key={group ?? "__root"} className="mb-6">
           {group && (
-            <h3 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground/70">{group}</h3>
+            <h3 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
+              {group}
+            </h3>
           )}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((tool) => (
@@ -92,11 +102,15 @@ export default function Catalog() {
 
   useEffect(() => {
     if (!search) return;
-    const category = new URLSearchParams(search).get("category") as ToolCategoryId | null;
+    const category = new URLSearchParams(search).get(
+      "category",
+    ) as ToolCategoryId | null;
     if (category && focusedRef.current !== category) {
       focusedRef.current = category;
       requestAnimationFrame(() => {
-        document.getElementById(category)?.scrollIntoView({ behavior: "smooth" });
+        document
+          .getElementById(category)
+          ?.scrollIntoView({ behavior: "smooth" });
       });
     }
   }, [search]);
@@ -104,7 +118,10 @@ export default function Catalog() {
   const categories = useMemo(() => getCategoriesWithTools(), []);
   const recent = useMemo(() => getRecentTools(), []);
   const results = useMemo(() => searchTools(query, 40), [query]);
-  const totalReady = useMemo(() => categories.reduce((acc, c) => acc + c.ready, 0), [categories]);
+  const totalReady = useMemo(
+    () => categories.reduce((acc, c) => acc + c.ready, 0),
+    [categories],
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
@@ -117,8 +134,9 @@ export default function Catalog() {
           One toolbox for text, code, media and more
         </h1>
         <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground">
-          {totalReady} practical utilities across {categories.length} categories — no sign-up, no uploads. Find a tool,
-          or type a command into the console.
+          {totalReady} practical utilities across {categories.length} categories
+          — no sign-up, no uploads. Find a tool, or type a command into the
+          console.
         </p>
         <div className="relative mx-auto mt-8 max-w-xl">
           <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -153,7 +171,10 @@ export default function Catalog() {
               {recent.slice(0, 3).map((t, i) => (
                 <span key={t.slug}>
                   {i > 0 && " · "}
-                  <Link href={`/tools/${t.slug}`} className="underline decoration-border underline-offset-4 hover:text-foreground">
+                  <Link
+                    href={`/tools/${t.slug}`}
+                    className="underline decoration-border underline-offset-4 hover:text-foreground"
+                  >
                     {t.name}
                   </Link>
                 </span>
@@ -167,11 +188,13 @@ export default function Catalog() {
         <section className="pb-8">
           <h2 className="mb-4 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             <Layers className="h-4 w-4" />
-            {results.length} result{results.length === 1 ? "" : "s"} for “{query.trim()}”
+            {results.length} result{results.length === 1 ? "" : "s"} for “
+            {query.trim()}”
           </h2>
           {results.length === 0 ? (
             <p className="rounded-2xl border border-border bg-card/60 p-6 text-sm text-muted-foreground">
-              Nothing matched “{query.trim()}”. Try a broader term, or browse a category below.
+              Nothing matched “{query.trim()}”. Try a broader term, or browse a
+              category below.
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

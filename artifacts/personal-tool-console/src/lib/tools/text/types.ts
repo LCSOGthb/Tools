@@ -2,9 +2,29 @@
 // Pure logic only — no React imports.
 
 export type TextOpt =
-  | { kind: "text"; key: string; label: string; default?: string; placeholder?: string }
-  | { kind: "number"; key: string; label: string; default?: number; min?: number; max?: number; step?: number }
-  | { kind: "select"; key: string; label: string; options: string[]; default?: string }
+  | {
+      kind: "text";
+      key: string;
+      label: string;
+      default?: string;
+      placeholder?: string;
+    }
+  | {
+      kind: "number";
+      key: string;
+      label: string;
+      default?: number;
+      min?: number;
+      max?: number;
+      step?: number;
+    }
+  | {
+      kind: "select";
+      key: string;
+      label: string;
+      options: string[];
+      default?: string;
+    }
   | { kind: "toggle"; key: string; label: string; default?: boolean };
 
 export type TextOpts = Record<string, string | number | boolean | undefined>;

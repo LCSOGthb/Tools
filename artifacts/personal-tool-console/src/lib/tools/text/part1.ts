@@ -27,7 +27,21 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Split Text",
         description: "Break text into items by a chosen separator",
         options: [
-          { kind: "select", key: "separator", label: "Separator", options: ["Character", "Word", "Line", "Space", "Comma", "Custom", "CustomRegex"], default: "Character" },
+          {
+            kind: "select",
+            key: "separator",
+            label: "Separator",
+            options: [
+              "Character",
+              "Word",
+              "Line",
+              "Space",
+              "Comma",
+              "Custom",
+              "CustomRegex",
+            ],
+            default: "Character",
+          },
           { kind: "text", key: "custom", label: "Custom", default: "" },
         ],
         run: (input, o) => {
@@ -41,7 +55,8 @@ export const TEXT_PART1: TextToolGroup[] = [
           else if (sep === "Space") parts = input.split(" ");
           else if (sep === "Comma") parts = input.split(",");
           else if (sep === "Custom") parts = input.split(custom);
-          else if (sep === "CustomRegex") parts = input.split(new RegExp(custom));
+          else if (sep === "CustomRegex")
+            parts = input.split(new RegExp(custom));
           return parts.join("\n");
         },
       },
@@ -50,12 +65,21 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Join Text",
         description: "Join lines or words with a separator",
         options: [
-          { kind: "select", key: "parts", label: "Parts", options: ["Lines", "Words"], default: "Lines" },
+          {
+            kind: "select",
+            key: "parts",
+            label: "Parts",
+            options: ["Lines", "Words"],
+            default: "Lines",
+          },
           { kind: "text", key: "separator", label: "Separator", default: ", " },
         ],
         run: (input, o) => {
           const separator = String(o.separator ?? ", ");
-          const parts = String(o.parts ?? "Lines") === "Words" ? tokens(input) : toLines(input);
+          const parts =
+            String(o.parts ?? "Lines") === "Words"
+              ? tokens(input)
+              : toLines(input);
           return parts.join(separator);
         },
       },
@@ -63,7 +87,9 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "repeat-text",
         name: "Repeat Text",
         description: "Repeat the whole text a number of times",
-        options: [{ kind: "number", key: "count", label: "Count", default: 3, min: 1 }],
+        options: [
+          { kind: "number", key: "count", label: "Count", default: 3, min: 1 },
+        ],
         run: (input, o) => {
           if (input === "") return "";
           const count = Math.max(1, Number(o.count ?? 3) || 1);
@@ -129,7 +155,9 @@ export const TEXT_PART1: TextToolGroup[] = [
         run: (input, o) => {
           const width = Math.max(0, Number(o.width ?? 20) || 0);
           const fill = String(o.fill ?? " ");
-          return toLines(input).map((l) => l.padStart(width, fill)).join("\n");
+          return toLines(input)
+            .map((l) => l.padStart(width, fill))
+            .join("\n");
         },
       },
       {
@@ -143,14 +171,19 @@ export const TEXT_PART1: TextToolGroup[] = [
         run: (input, o) => {
           const width = Math.max(0, Number(o.width ?? 20) || 0);
           const fill = String(o.fill ?? " ");
-          return toLines(input).map((l) => l.padEnd(width, fill)).join("\n");
+          return toLines(input)
+            .map((l) => l.padEnd(width, fill))
+            .join("\n");
         },
       },
       {
         slug: "left-align-text",
         name: "Left-align Text",
         description: "Strip leading whitespace from each line",
-        run: (input) => toLines(input).map((l) => l.replace(/^\s+/, "")).join("\n"),
+        run: (input) =>
+          toLines(input)
+            .map((l) => l.replace(/^\s+/, ""))
+            .join("\n"),
       },
       {
         slug: "right-align-text",
@@ -188,15 +221,22 @@ export const TEXT_PART1: TextToolGroup[] = [
           { kind: "toggle", key: "tabs", label: "Use tabs", default: false },
         ],
         run: (input, o) => {
-          const pad = o.tabs === true ? "\t" : " ".repeat(Math.max(0, Number(o.spaces ?? 4) || 0));
-          return toLines(input).map((l) => (l === "" ? l : pad + l)).join("\n");
+          const pad =
+            o.tabs === true
+              ? "\t"
+              : " ".repeat(Math.max(0, Number(o.spaces ?? 4) || 0));
+          return toLines(input)
+            .map((l) => (l === "" ? l : pad + l))
+            .join("\n");
         },
       },
       {
         slug: "unindent-text",
         name: "Unindent Text",
         description: "Remove the common leading indentation from lines",
-        options: [{ kind: "number", key: "spaces", label: "Spaces", default: 0 }],
+        options: [
+          { kind: "number", key: "spaces", label: "Spaces", default: 0 },
+        ],
         run: (input, o) => {
           const lines = toLines(input);
           let amount = Number(o.spaces ?? 0) || 0;
@@ -242,7 +282,9 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "wrap-words",
         name: "Wrap Words",
         description: "Hard wrap the text at a column width",
-        options: [{ kind: "number", key: "width", label: "Width", default: 40 }],
+        options: [
+          { kind: "number", key: "width", label: "Width", default: 40 },
+        ],
         run: (input, o) => {
           const width = Math.max(1, Number(o.width ?? 40) || 1);
           const out: string[] = [];
@@ -295,7 +337,9 @@ export const TEXT_PART1: TextToolGroup[] = [
           const wordTokens = parts.filter((p) => /^[\p{L}\p{N}'-]+$/u.test(p));
           wordTokens.reverse();
           let i = 0;
-          return parts.map((p) => (/^[\p{L}\p{N}'-]+$/u.test(p) ? wordTokens[i++] : p)).join("");
+          return parts
+            .map((p) => (/^[\p{L}\p{N}'-]+$/u.test(p) ? wordTokens[i++] : p))
+            .join("");
         },
       },
       {
@@ -314,7 +358,8 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "swap-letters-in-words",
         name: "Swap Letters in Words",
         description: "Reverse the letters inside every word",
-        run: (input) => input.replace(/[\p{L}\p{N}'-]+/gu, (w) => [...w].reverse().join("")),
+        run: (input) =>
+          input.replace(/[\p{L}\p{N}'-]+/gu, (w) => [...w].reverse().join("")),
       },
       {
         slug: "swap-words",
@@ -332,9 +377,11 @@ export const TEXT_PART1: TextToolGroup[] = [
             [...b]
               .map((ch, k) => {
                 const ref = m[k] ?? m[m.length - 1];
-                return ref && ref === ref.toUpperCase() ? ch.toUpperCase() : ch.toLowerCase();
+                return ref && ref === ref.toUpperCase()
+                  ? ch.toUpperCase()
+                  : ch.toLowerCase();
               })
-              .join("")
+              .join(""),
           );
         },
       },
@@ -345,7 +392,9 @@ export const TEXT_PART1: TextToolGroup[] = [
         options: [{ kind: "number", key: "times", label: "Times", default: 2 }],
         run: (input, o) => {
           const times = Math.max(1, Number(o.times ?? 2) || 1);
-          return input.replace(/\S+/g, (w) => Array.from({ length: times }, () => w).join(" "));
+          return input.replace(/\S+/g, (w) =>
+            Array.from({ length: times }, () => w).join(" "),
+          );
         },
       },
       {
@@ -363,7 +412,9 @@ export const TEXT_PART1: TextToolGroup[] = [
             .map((s) => s.toLowerCase())
             .filter(Boolean);
           if (list.length) {
-            return words(input).filter((w) => !list.includes(w.toLowerCase())).join(" ");
+            return words(input)
+              .filter((w) => !list.includes(w.toLowerCase()))
+              .join(" ");
           }
           const ws = words(input);
           const from = Math.max(0, Number(o.from ?? 0) || 0);
@@ -379,14 +430,18 @@ export const TEXT_PART1: TextToolGroup[] = [
         options: [{ kind: "number", key: "times", label: "Times", default: 2 }],
         run: (input, o) => {
           const times = Math.max(1, Number(o.times ?? 2) || 1);
-          return sentences(input).flatMap((s) => Array.from({ length: times }, () => s)).join(" ");
+          return sentences(input)
+            .flatMap((s) => Array.from({ length: times }, () => s))
+            .join(" ");
         },
       },
       {
         slug: "remove-sentences",
         name: "Remove Sentences",
         description: "Remove sentences by their one-based positions",
-        options: [{ kind: "text", key: "indexes", label: "Indexes", default: "" }],
+        options: [
+          { kind: "text", key: "indexes", label: "Indexes", default: "" },
+        ],
         run: (input, o) => {
           const idx = String(o.indexes ?? "")
             .split(",")
@@ -404,13 +459,21 @@ export const TEXT_PART1: TextToolGroup[] = [
         options: [
           { kind: "text", key: "find", label: "Find", default: "foo" },
           { kind: "text", key: "replace", label: "Replace", default: "bar" },
-          { kind: "toggle", key: "caseInsensitive", label: "Case-insensitive", default: true },
+          {
+            kind: "toggle",
+            key: "caseInsensitive",
+            label: "Case-insensitive",
+            default: true,
+          },
         ],
         run: (input, o) => {
           const find = String(o.find ?? "foo");
           const replace = String(o.replace ?? "bar");
           if (!find) return input;
-          return input.replace(new RegExp(esc(find), o.caseInsensitive === true ? "gi" : "g"), replace);
+          return input.replace(
+            new RegExp(esc(find), o.caseInsensitive === true ? "gi" : "g"),
+            replace,
+          );
         },
       },
     ],
@@ -428,12 +491,21 @@ export const TEXT_PART1: TextToolGroup[] = [
         run: (input, o) => {
           if (input === "") return "";
           const count = Math.max(1, Number(o.count ?? 3) || 1);
-          const pool = ["um", "actually", "basically", "literally", "very", "really", "sort of"];
+          const pool = [
+            "um",
+            "actually",
+            "basically",
+            "literally",
+            "very",
+            "really",
+            "sort of",
+          ];
           const toks = input.match(/\S+|\s+/g) ?? [];
           for (let i = 0; i < count; i++) {
             const pos = randInt(0, toks.length);
             const before = pos > 0 && toks[pos - 1]?.trim() !== "" ? " " : "";
-            const after = pos < toks.length && toks[pos]?.trim() !== "" ? " " : "";
+            const after =
+              pos < toks.length && toks[pos]?.trim() !== "" ? " " : "";
             toks.splice(pos, 0, before + pick(pool) + after);
           }
           return toks.join("");
@@ -448,12 +520,17 @@ export const TEXT_PART1: TextToolGroup[] = [
           if (input === "") return "";
           const count = Math.max(1, Number(o.count ?? 1) || 1);
           const parts = input.match(/\S+|\s+/g) ?? [];
-          const wordIdx = parts.map((p, i) => (p.trim() ? i : -1)).filter((i) => i >= 0);
+          const wordIdx = parts
+            .map((p, i) => (p.trim() ? i : -1))
+            .filter((i) => i >= 0);
           for (let i = 0; i < count && wordIdx.length; i++) {
             const ti = pick(wordIdx);
             const w = parts[ti];
             const at = randInt(0, w.length);
-            parts[ti] = w.slice(0, at) + ALPHABET[randInt(0, ALPHABET.length - 1)] + w.slice(at);
+            parts[ti] =
+              w.slice(0, at) +
+              ALPHABET[randInt(0, ALPHABET.length - 1)] +
+              w.slice(at);
           }
           return parts.join("");
         },
@@ -464,7 +541,12 @@ export const TEXT_PART1: TextToolGroup[] = [
         description: "Randomly replace characters or swap adjacent ones",
         options: [
           { kind: "number", key: "rate", label: "Rate (%)", default: 5 },
-          { kind: "toggle", key: "swap", label: "Swap adjacent letters", default: false },
+          {
+            kind: "toggle",
+            key: "swap",
+            label: "Swap adjacent letters",
+            default: false,
+          },
         ],
         run: (input, o) => {
           const rate = Math.max(0, Number(o.rate ?? 5) || 0);
@@ -487,17 +569,46 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "generate-fake-text",
         name: "Generate Fake Text",
         description: "Produce plausible dummy prose paragraphs",
-        options: [{ kind: "number", key: "paragraphs", label: "Paragraphs", default: 3 }],
+        options: [
+          {
+            kind: "number",
+            key: "paragraphs",
+            label: "Paragraphs",
+            default: 3,
+          },
+        ],
         run: (input, o) => {
           const n = Math.max(1, Number(o.paragraphs ?? 3) || 1);
-          const pool = ["the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "stream", "light", "data", "cloud", "value", "system", "user", "table", "signal", "token", "query"];
+          const pool = [
+            "the",
+            "quick",
+            "brown",
+            "fox",
+            "jumps",
+            "over",
+            "lazy",
+            "dog",
+            "stream",
+            "light",
+            "data",
+            "cloud",
+            "value",
+            "system",
+            "user",
+            "table",
+            "signal",
+            "token",
+            "query",
+          ];
           const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
           const sentence = () =>
-            Array.from({ length: randInt(7, 12) }, () => pick(pool)).join(" ") + ".";
+            Array.from({ length: randInt(7, 12) }, () => pick(pool)).join(" ") +
+            ".";
           const out: string[] = [];
           for (let i = 0; i < n; i++) {
             const sents: string[] = [];
-            for (let j = 0, m = randInt(3, 6); j < m; j++) sents.push(cap(sentence()));
+            for (let j = 0, m = randInt(3, 6); j < m; j++)
+              sents.push(cap(sentence()));
             out.push(sents.join(" "));
           }
           return out.join("\n\n");
@@ -508,9 +619,23 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Unfake Text",
         description: "Strip common lorem ipsum filler words",
         run: (input) => {
-          const filler = ["lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit"];
+          const filler = [
+            "lorem",
+            "ipsum",
+            "dolor",
+            "sit",
+            "amet",
+            "consectetur",
+            "adipiscing",
+            "elit",
+          ];
           return tokens(input)
-            .filter((w) => !filler.includes(w.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase()))
+            .filter(
+              (w) =>
+                !filler.includes(
+                  w.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase(),
+                ),
+            )
             .join(" ");
         },
       },
@@ -519,13 +644,28 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Check If Text Is Fake",
         description: "Heuristically score how dummy the text looks",
         run: (input) => {
-          const filler = ["lorem", "ipsum", "blah", "test", "foo", "bar", "asd", "qwerty", "placeholder", "sample"];
+          const filler = [
+            "lorem",
+            "ipsum",
+            "blah",
+            "test",
+            "foo",
+            "bar",
+            "asd",
+            "qwerty",
+            "placeholder",
+            "sample",
+          ];
           const counts = new Map<string, number>();
           for (const w of tokens(input)) {
             const base = w.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase();
-            if (filler.includes(base)) counts.set(base, (counts.get(base) ?? 0) + 1);
+            if (filler.includes(base))
+              counts.set(base, (counts.get(base) ?? 0) + 1);
           }
-          let score = Math.min(40, [...counts.values()].reduce((a, b) => a + b, 0) * 10);
+          let score = Math.min(
+            40,
+            [...counts.values()].reduce((a, b) => a + b, 0) * 10,
+          );
           const wds = words(input);
           const avgLen = wds.length ? wds.join("").length / wds.length : 0;
           if (avgLen < 3.5) score += 20;
@@ -553,10 +693,16 @@ export const TEXT_PART1: TextToolGroup[] = [
           const byTok = new Map<number, number[]>();
           parts.forEach((p, ti) => {
             if (!p.trim()) return;
-            byTok.set(ti, [...p].map((c, ci) => (/\p{L}/u.test(c) ? ci : -1)).filter((i) => i >= 0));
+            byTok.set(
+              ti,
+              [...p]
+                .map((c, ci) => (/\p{L}/u.test(c) ? ci : -1))
+                .filter((i) => i >= 0),
+            );
           });
           const all: Array<[number, number]> = [];
-          for (const [ti, arr] of byTok) for (const ci of arr) all.push([ti, ci]);
+          for (const [ti, arr] of byTok)
+            for (const ci of arr) all.push([ti, ci]);
           const chosen = new Map<number, number[]>();
           for (const [ti, ci] of shuffle(all).slice(0, count)) {
             const arr = chosen.get(ti) ?? [];
@@ -565,7 +711,8 @@ export const TEXT_PART1: TextToolGroup[] = [
           }
           for (const [ti, indices] of chosen) {
             indices.sort((a, b) => b - a);
-            for (const ci of indices) parts[ti] = parts[ti].slice(0, ci) + parts[ti].slice(ci + 1);
+            for (const ci of indices)
+              parts[ti] = parts[ti].slice(0, ci) + parts[ti].slice(ci + 1);
           }
           return parts.join("");
         },
@@ -579,8 +726,13 @@ export const TEXT_PART1: TextToolGroup[] = [
           const count = Math.max(0, Number(o.count ?? 5) || 0);
           if (count <= 0) return input;
           const chars = [...input];
-          const symIdx = chars.map((c, i) => (!/[\p{L}\p{N}\s]/u.test(c) ? i : -1)).filter((i) => i >= 0);
-          for (const i of shuffle(symIdx).slice(0, count).sort((a, b) => b - a)) chars[i] = "";
+          const symIdx = chars
+            .map((c, i) => (!/[\p{L}\p{N}\s]/u.test(c) ? i : -1))
+            .filter((i) => i >= 0);
+          for (const i of shuffle(symIdx)
+            .slice(0, count)
+            .sort((a, b) => b - a))
+            chars[i] = "";
           return chars.join("");
         },
       },
@@ -588,7 +740,8 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "scramble-words",
         name: "Scramble Words",
         description: "Shuffle the letters inside every word",
-        run: (input) => input.replace(/[\p{L}\p{N}'-]+/gu, (w) => shuffle([...w]).join("")),
+        run: (input) =>
+          input.replace(/[\p{L}\p{N}'-]+/gu, (w) => shuffle([...w]).join("")),
       },
     ],
   },
@@ -623,7 +776,9 @@ export const TEXT_PART1: TextToolGroup[] = [
           const left = String(o.left ?? "[");
           const right = String(o.right ?? "]");
           return input.replace(/\S+/g, (w) =>
-            w.replace(new RegExp(`^${esc(left)}`), "").replace(new RegExp(`${esc(right)}$`), "")
+            w
+              .replace(new RegExp(`^${esc(left)}`), "")
+              .replace(new RegExp(`${esc(right)}$`), ""),
           );
         },
       },
@@ -631,47 +786,67 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "add-prefix-lines",
         name: "Add a Prefix to Text Lines",
         description: "Prefix every line with a marker string",
-        options: [{ kind: "text", key: "prefix", label: "Prefix", default: "> " }],
+        options: [
+          { kind: "text", key: "prefix", label: "Prefix", default: "> " },
+        ],
         run: (input, o) => {
           const prefix = String(o.prefix ?? "> ");
-          return toLines(input).map((l) => prefix + l).join("\n");
+          return toLines(input)
+            .map((l) => prefix + l)
+            .join("\n");
         },
       },
       {
         slug: "add-suffix-lines",
         name: "Add a Suffix to Text Lines",
         description: "Append a suffix to every line",
-        options: [{ kind: "text", key: "suffix", label: "Suffix", default: " <" }],
+        options: [
+          { kind: "text", key: "suffix", label: "Suffix", default: " <" },
+        ],
         run: (input, o) => {
           const suffix = String(o.suffix ?? " <");
-          return toLines(input).map((l) => l + suffix).join("\n");
+          return toLines(input)
+            .map((l) => l + suffix)
+            .join("\n");
         },
       },
       {
         slug: "remove-prefix",
         name: "Remove a Prefix from Text",
         description: "Strip a prefix from the start of each line",
-        options: [{ kind: "text", key: "prefix", label: "Prefix", default: "> " }],
+        options: [
+          { kind: "text", key: "prefix", label: "Prefix", default: "> " },
+        ],
         run: (input, o) => {
           const prefix = String(o.prefix ?? "> ");
-          return toLines(input).map((l) => (l.startsWith(prefix) ? l.slice(prefix.length) : l)).join("\n");
+          return toLines(input)
+            .map((l) => (l.startsWith(prefix) ? l.slice(prefix.length) : l))
+            .join("\n");
         },
       },
       {
         slug: "remove-suffix-lines",
         name: "Remove a Suffix from Text Lines",
         description: "Strip a suffix from the end of each line",
-        options: [{ kind: "text", key: "suffix", label: "Suffix", default: " <" }],
+        options: [
+          { kind: "text", key: "suffix", label: "Suffix", default: " <" },
+        ],
         run: (input, o) => {
           const suffix = String(o.suffix ?? " <");
-          return toLines(input).map((l) => (l.endsWith(suffix) ? l.slice(0, l.length - suffix.length) : l)).join("\n");
+          return toLines(input)
+            .map((l) =>
+              l.endsWith(suffix) ? l.slice(0, l.length - suffix.length) : l,
+            )
+            .join("\n");
         },
       },
       {
         slug: "add-prefix-words",
         name: "Add a Prefix to Words",
         description: "Prefix every word with a marker string",
-        options: [{ kind: "text", key: "prefix", label: "Prefix", default: "#" }],
+        options: [
+          { kind: "text", key: "prefix", label: "Prefix", default: "#" },
+        ],
         run: (input, o) => {
           const prefix = String(o.prefix ?? "#");
           return input.replace(/[\p{L}\p{N}'-]+/gu, (w) => prefix + w);
@@ -681,7 +856,9 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "add-suffix-words",
         name: "Add a Suffix to Words",
         description: "Append a suffix to every word",
-        options: [{ kind: "text", key: "suffix", label: "Suffix", default: "!" }],
+        options: [
+          { kind: "text", key: "suffix", label: "Suffix", default: "!" },
+        ],
         run: (input, o) => {
           const suffix = String(o.suffix ?? "!");
           return input.replace(/[\p{L}\p{N}'-]+/gu, (w) => w + suffix);
@@ -691,27 +868,37 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "remove-prefix-words",
         name: "Remove a Prefix from Words",
         description: "Strip a prefix from every word that has it",
-        options: [{ kind: "text", key: "prefix", label: "Prefix", default: "#" }],
+        options: [
+          { kind: "text", key: "prefix", label: "Prefix", default: "#" },
+        ],
         run: (input, o) => {
           const prefix = String(o.prefix ?? "#");
-          return input.replace(/\S+/g, (w) => (w.startsWith(prefix) ? w.slice(prefix.length) : w));
+          return input.replace(/\S+/g, (w) =>
+            w.startsWith(prefix) ? w.slice(prefix.length) : w,
+          );
         },
       },
       {
         slug: "remove-suffix-words",
         name: "Remove a Suffix from Words",
         description: "Strip a suffix from every word that has it",
-        options: [{ kind: "text", key: "suffix", label: "Suffix", default: "!" }],
+        options: [
+          { kind: "text", key: "suffix", label: "Suffix", default: "!" },
+        ],
         run: (input, o) => {
           const suffix = String(o.suffix ?? "!");
-          return input.replace(/\S+/g, (w) => (w.endsWith(suffix) ? w.slice(0, w.length - suffix.length) : w));
+          return input.replace(/\S+/g, (w) =>
+            w.endsWith(suffix) ? w.slice(0, w.length - suffix.length) : w,
+          );
         },
       },
       {
         slug: "insert-symbols-between-letters",
         name: "Insert Symbols Between Letters",
         description: "Insert a symbol between every character",
-        options: [{ kind: "text", key: "symbol", label: "Symbol", default: "-" }],
+        options: [
+          { kind: "text", key: "symbol", label: "Symbol", default: "-" },
+        ],
         run: (input, o) => {
           const symbol = String(o.symbol ?? "-");
           return [...input].join(symbol);
@@ -742,7 +929,10 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "remove-empty-lines",
         name: "Remove All Empty Lines",
         description: "Drop every blank line from the text",
-        run: (input) => toLines(input).filter((l) => l.trim() !== "").join("\n"),
+        run: (input) =>
+          toLines(input)
+            .filter((l) => l.trim() !== "")
+            .join("\n"),
       },
       {
         slug: "remove-duplicate-lines",
@@ -765,7 +955,13 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Filter Text Lines",
         description: "Keep or remove lines by a match string",
         options: [
-          { kind: "select", key: "mode", label: "Mode", options: ["keep", "remove"], default: "keep" },
+          {
+            kind: "select",
+            key: "mode",
+            label: "Mode",
+            options: ["keep", "remove"],
+            default: "keep",
+          },
           { kind: "text", key: "match", label: "Match", default: "" },
           { kind: "toggle", key: "regex", label: "Regex", default: false },
         ],
@@ -773,10 +969,15 @@ export const TEXT_PART1: TextToolGroup[] = [
           const mode = String(o.mode ?? "keep");
           const match = String(o.match ?? "");
           const keep = mode !== "remove";
-          if (match === "") return toLines(input).filter((l) => l.trim() !== "").join("\n");
+          if (match === "")
+            return toLines(input)
+              .filter((l) => l.trim() !== "")
+              .join("\n");
           const re = o.regex === true ? new RegExp(match, "u") : null;
           const hit = (l: string) => (re ? re.test(l) : l.includes(match));
-          return toLines(input).filter((l) => (keep ? hit(l) : !hit(l))).join("\n");
+          return toLines(input)
+            .filter((l) => (keep ? hit(l) : !hit(l)))
+            .join("\n");
         },
       },
       {
@@ -784,7 +985,13 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Filter Words in Text",
         description: "Keep or drop words equal to a match",
         options: [
-          { kind: "select", key: "mode", label: "Mode", options: ["keep", "remove"], default: "keep" },
+          {
+            kind: "select",
+            key: "mode",
+            label: "Mode",
+            options: ["keep", "remove"],
+            default: "keep",
+          },
           { kind: "text", key: "match", label: "Match", default: "" },
         ],
         run: (input, o) => {
@@ -792,7 +999,9 @@ export const TEXT_PART1: TextToolGroup[] = [
           const match = String(o.match ?? "").toLowerCase();
           const keep = mode !== "remove";
           return words(input)
-            .filter((w) => (keep ? w.toLowerCase() === match : w.toLowerCase() !== match))
+            .filter((w) =>
+              keep ? w.toLowerCase() === match : w.toLowerCase() !== match,
+            )
             .join(" ");
         },
       },
@@ -801,7 +1010,13 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Filter Sentences",
         description: "Keep or drop sentences containing a match",
         options: [
-          { kind: "select", key: "mode", label: "Mode", options: ["keep", "remove"], default: "keep" },
+          {
+            kind: "select",
+            key: "mode",
+            label: "Mode",
+            options: ["keep", "remove"],
+            default: "keep",
+          },
           { kind: "text", key: "match", label: "Match", default: "" },
         ],
         run: (input, o) => {
@@ -818,7 +1033,13 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Filter Paragraphs",
         description: "Keep or drop paragraphs containing a match",
         options: [
-          { kind: "select", key: "mode", label: "Mode", options: ["keep", "remove"], default: "keep" },
+          {
+            kind: "select",
+            key: "mode",
+            label: "Mode",
+            options: ["keep", "remove"],
+            default: "keep",
+          },
           { kind: "text", key: "match", label: "Match", default: "" },
         ],
         run: (input, o) => {
@@ -842,16 +1063,34 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Sort Text Lines",
         description: "Sort lines alphabetically or naturally",
         options: [
-          { kind: "select", key: "dir", label: "Direction", options: ["asc", "desc", "natural", "natural-desc"], default: "asc" },
-          { kind: "toggle", key: "trim", label: "Trim before sorting", default: false },
+          {
+            kind: "select",
+            key: "dir",
+            label: "Direction",
+            options: ["asc", "desc", "natural", "natural-desc"],
+            default: "asc",
+          },
+          {
+            kind: "toggle",
+            key: "trim",
+            label: "Trim before sorting",
+            default: false,
+          },
         ],
         run: (input, o) => {
           const dir = String(o.dir ?? "asc");
-          const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-          const lines = toLines(input).map((l) => (o.trim === true ? l.trim() : l));
+          const collator = new Intl.Collator(undefined, {
+            numeric: true,
+            sensitivity: "base",
+          });
+          const lines = toLines(input).map((l) =>
+            o.trim === true ? l.trim() : l,
+          );
           if (dir === "desc") lines.sort((a, b) => b.localeCompare(a));
-          else if (dir === "natural") lines.sort((a, b) => collator.compare(a, b));
-          else if (dir === "natural-desc") lines.sort((a, b) => collator.compare(b, a));
+          else if (dir === "natural")
+            lines.sort((a, b) => collator.compare(a, b));
+          else if (dir === "natural-desc")
+            lines.sort((a, b) => collator.compare(b, a));
           else lines.sort((a, b) => a.localeCompare(b));
           return lines.join("\n");
         },
@@ -860,19 +1099,32 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "sort-sentences",
         name: "Sort Sentences in Text",
         description: "Sort the sentences alphabetically and rejoin",
-        run: (input) => sentences(input).sort((a, b) => a.localeCompare(b)).join(" "),
+        run: (input) =>
+          sentences(input)
+            .sort((a, b) => a.localeCompare(b))
+            .join(" "),
       },
       {
         slug: "sort-paragraphs",
         name: "Sort Paragraphs",
         description: "Sort the paragraphs alphabetically and rejoin",
-        run: (input) => paragraphs(input).sort((a, b) => a.localeCompare(b)).join("\n\n"),
+        run: (input) =>
+          paragraphs(input)
+            .sort((a, b) => a.localeCompare(b))
+            .join("\n\n"),
       },
       {
         slug: "sort-words",
         name: "Sort Words",
         description: "Sort every word in the text alphabetically",
-        options: [{ kind: "toggle", key: "dedupe", label: "Deduplicate", default: true }],
+        options: [
+          {
+            kind: "toggle",
+            key: "dedupe",
+            label: "Deduplicate",
+            default: true,
+          },
+        ],
         run: (input, o) => {
           const ws = words(input).sort((a, b) => a.localeCompare(b));
           return (o.dedupe === true ? unique(ws) : ws).join(" ");
@@ -883,7 +1135,9 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Sort Letters in Words",
         description: "Sort the letters inside every word",
         run: (input) =>
-          input.replace(/[\p{L}\p{N}'-]+/gu, (w) => [...w].sort((a, b) => a.localeCompare(b)).join("")),
+          input.replace(/[\p{L}\p{N}'-]+/gu, (w) =>
+            [...w].sort((a, b) => a.localeCompare(b)).join(""),
+          ),
       },
       {
         slug: "sort-symbols",
@@ -911,7 +1165,9 @@ export const TEXT_PART1: TextToolGroup[] = [
           const letters = chars.filter((c) => /[\p{L}]/u.test(c));
           const mixed = shuffle(letters);
           let k = 0;
-          return chars.map((c) => (/[\p{L}]/u.test(c) ? mixed[k++] : c)).join("");
+          return chars
+            .map((c) => (/[\p{L}]/u.test(c) ? mixed[k++] : c))
+            .join("");
         },
       },
       {
@@ -950,8 +1206,19 @@ export const TEXT_PART1: TextToolGroup[] = [
         name: "Calculate Letter Sum",
         description: "Sum letter values using a chosen scheme",
         options: [
-          { kind: "select", key: "mode", label: "Mode", options: ["a1", "a0", "ascii"], default: "a1" },
-          { kind: "toggle", key: "caseInsensitive", label: "Case-insensitive", default: true },
+          {
+            kind: "select",
+            key: "mode",
+            label: "Mode",
+            options: ["a1", "a0", "ascii"],
+            default: "a1",
+          },
+          {
+            kind: "toggle",
+            key: "caseInsensitive",
+            label: "Case-insensitive",
+            default: true,
+          },
         ],
         run: (input, o) => {
           const mode = String(o.mode ?? "a1");
@@ -1002,7 +1269,9 @@ export const TEXT_PART1: TextToolGroup[] = [
           const find = String(o.find ?? "");
           const replace = String(o.replace ?? "");
           if (find === "") return input;
-          return o.regex === true ? input.replace(new RegExp(find, "g"), replace) : input.replaceAll(find, replace);
+          return o.regex === true
+            ? input.replace(new RegExp(find, "g"), replace)
+            : input.replaceAll(find, replace);
         },
       },
       {
@@ -1026,7 +1295,12 @@ export const TEXT_PART1: TextToolGroup[] = [
         description: "Rank the most frequent letters in the text",
         options: [
           { kind: "number", key: "count", label: "Count", default: 5 },
-          { kind: "toggle", key: "caseInsensitive", label: "Case-insensitive", default: true },
+          {
+            kind: "toggle",
+            key: "caseInsensitive",
+            label: "Case-insensitive",
+            default: true,
+          },
         ],
         run: (input, o) => {
           const count = Math.max(1, Number(o.count ?? 5) || 1);
@@ -1152,7 +1426,10 @@ export const TEXT_PART1: TextToolGroup[] = [
         slug: "remove-line-numbers",
         name: "Remove Line Numbers",
         description: "Strip leading number markers from all lines",
-        run: (input) => toLines(input).map((l) => l.replace(/^\s*\d+[.:]\s?/, "")).join("\n"),
+        run: (input) =>
+          toLines(input)
+            .map((l) => l.replace(/^\s*\d+[.:]\s?/, ""))
+            .join("\n"),
       },
     ],
   },

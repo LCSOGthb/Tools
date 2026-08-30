@@ -3,11 +3,36 @@ import type { ToolPageProps } from "@/lib/tool-registry";
 import { isMathExpression, safeMathEval } from "@/lib/tools/calculator";
 import { OutBox, GhostButton } from "@/components/tools/shared/fields";
 
-const KEYS = ["7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", "0", ".", "%", "+", "(", ")", "^", "C", "⌫", "="];
+const KEYS = [
+  "7",
+  "8",
+  "9",
+  "/",
+  "4",
+  "5",
+  "6",
+  "*",
+  "1",
+  "2",
+  "3",
+  "-",
+  "0",
+  ".",
+  "%",
+  "+",
+  "(",
+  ")",
+  "^",
+  "C",
+  "⌫",
+  "=",
+];
 
 export default function CalculatorPage({ tool }: ToolPageProps) {
   const [expr, setExpr] = useState("");
-  const [result, setResult] = useState<{ value: string; error?: string }>({ value: "" });
+  const [result, setResult] = useState<{ value: string; error?: string }>({
+    value: "",
+  });
 
   const append = (k: string) => {
     setResult({ value: "" });
@@ -57,9 +82,13 @@ export default function CalculatorPage({ tool }: ToolPageProps) {
           spellCheck={false}
           className="w-full rounded-xl border border-border bg-black/40 px-4 py-3 font-mono text-right text-2xl text-foreground outline-none focus:border-ring"
         />
-        {result.error && <p className="text-right text-sm text-red-400">{result.error}</p>}
+        {result.error && (
+          <p className="text-right text-sm text-red-400">{result.error}</p>
+        )}
         {!result.error && expr && (
-          <div className="w-full rounded-xl bg-black/20 px-4 py-2 text-right font-mono text-lg text-muted-foreground">= {current}</div>
+          <div className="w-full rounded-xl bg-black/20 px-4 py-2 text-right font-mono text-lg text-muted-foreground">
+            = {current}
+          </div>
         )}
       </div>
 
@@ -68,25 +97,41 @@ export default function CalculatorPage({ tool }: ToolPageProps) {
           {KEYS.map((k) => {
             if (k === "C")
               return (
-                <button key={k} onClick={clear} className="rounded-xl bg-slate-700/60 py-3 font-mono text-sm text-foreground transition hover:bg-slate-600/60">
+                <button
+                  key={k}
+                  onClick={clear}
+                  className="rounded-xl bg-slate-700/60 py-3 font-mono text-sm text-foreground transition hover:bg-slate-600/60"
+                >
                   {k}
                 </button>
               );
             if (k === "⌫")
               return (
-                <button key={k} onClick={backspace} className="rounded-xl bg-slate-700/60 py-3 font-mono text-sm text-foreground transition hover:bg-slate-600/60">
+                <button
+                  key={k}
+                  onClick={backspace}
+                  className="rounded-xl bg-slate-700/60 py-3 font-mono text-sm text-foreground transition hover:bg-slate-600/60"
+                >
                   {k}
                 </button>
               );
             if (k === "=")
               return (
-                <button key={k} onClick={evaluate} className="col-span-2 rounded-xl bg-primary py-3 font-mono text-sm text-primary-foreground transition hover:opacity-90">
+                <button
+                  key={k}
+                  onClick={evaluate}
+                  className="col-span-2 rounded-xl bg-primary py-3 font-mono text-sm text-primary-foreground transition hover:opacity-90"
+                >
                   {k}
                 </button>
               );
-            if (k === "("  || k === ")" || k === "^")
+            if (k === "(" || k === ")" || k === "^")
               return (
-                <button key={k} onClick={() => append(k)} className="rounded-xl bg-slate-800/60 py-3 font-mono text-sm text-cyan-300 transition hover:bg-slate-700/60">
+                <button
+                  key={k}
+                  onClick={() => append(k)}
+                  className="rounded-xl bg-slate-800/60 py-3 font-mono text-sm text-cyan-300 transition hover:bg-slate-700/60"
+                >
                   {k}
                 </button>
               );
@@ -102,7 +147,12 @@ export default function CalculatorPage({ tool }: ToolPageProps) {
             );
           })}
         </div>
-        <GhostButton className="w-full" onClick={() => navigator.clipboard?.writeText(result.value || expr).catch(() => {})}>
+        <GhostButton
+          className="w-full"
+          onClick={() =>
+            navigator.clipboard?.writeText(result.value || expr).catch(() => {})
+          }
+        >
           Copy
         </GhostButton>
       </div>

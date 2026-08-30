@@ -18,7 +18,9 @@ function RelatedCard({ tool }: { tool: ToolDefinition }) {
         </span>
         <div className="min-w-0">
           <p className="truncate text-sm font-medium">{tool.name}</p>
-          <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{tool.description}</p>
+          <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+            {tool.description}
+          </p>
         </div>
       </div>
     </Link>
@@ -41,12 +43,18 @@ export function ToolPageLayout({
   const CatIcon = category.icon as LucideIcon;
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-      <nav className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground" aria-label="Breadcrumb">
+      <nav
+        className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground"
+        aria-label="Breadcrumb"
+      >
         <Link href="/" className="transition-colors hover:text-foreground">
           Catalog
         </Link>
         <ChevronRight className="h-3.5 w-3.5" />
-        <Link href={`/?category=${category.id}`} className="flex items-center gap-1 transition-colors hover:text-foreground">
+        <Link
+          href={`/?category=${category.id}`}
+          className="flex items-center gap-1 transition-colors hover:text-foreground"
+        >
           <CatIcon className="h-3.5 w-3.5" />
           {category.label}
         </Link>
@@ -68,10 +76,14 @@ export function ToolPageLayout({
                 </Badge>
               )}
             </div>
-            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{tool.description}</p>
+            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+              {tool.description}
+            </p>
             {tool.commands && tool.commands.length > 0 && (
               <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                <span className="text-xs text-muted-foreground/70">Console:</span>
+                <span className="text-xs text-muted-foreground/70">
+                  Console:
+                </span>
                 {tool.commands.slice(0, 3).map((c) => (
                   <button
                     key={c}

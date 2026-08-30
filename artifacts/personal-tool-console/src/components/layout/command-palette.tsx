@@ -30,8 +30,14 @@ export function CommandPalette() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const results = useMemo(() => (value.trim() ? searchTools(value, 10) : []), [value]);
-  const recents = useMemo(() => (value.trim() ? [] : getRecentTools().slice(0, 5)), [value, open]);
+  const results = useMemo(
+    () => (value.trim() ? searchTools(value, 10) : []),
+    [value],
+  );
+  const recents = useMemo(
+    () => (value.trim() ? [] : getRecentTools().slice(0, 5)),
+    [value, open],
+  );
 
   const run = (url: string) => {
     setOpen(false);
@@ -50,7 +56,9 @@ export function CommandPalette() {
         <Icon className="mr-2 h-4 w-4" />
         <span className="flex-1 truncate">{tool.name}</span>
         {tool.status === "coming-soon" && (
-          <span className="text-[10px] uppercase tracking-wide text-muted-foreground/70">Soon</span>
+          <span className="text-[10px] uppercase tracking-wide text-muted-foreground/70">
+            Soon
+          </span>
         )}
       </CommandItem>
     );
@@ -79,7 +87,11 @@ export function CommandPalette() {
       </div>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search tools, categories…" value={value} onValueChange={setValue} />
+        <CommandInput
+          placeholder="Search tools, categories…"
+          value={value}
+          onValueChange={setValue}
+        />
         <CommandList>
           <CommandEmpty>No tools found for “{value}”.</CommandEmpty>
           {value.trim() ? (

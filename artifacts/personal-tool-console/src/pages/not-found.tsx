@@ -9,10 +9,15 @@ export default function NotFound() {
       <span className="grid h-14 w-14 place-items-center rounded-2xl bg-destructive/10 text-destructive">
         <AlertCircle className="h-7 w-7" />
       </span>
-      <p className="mt-6 text-xs font-medium uppercase tracking-widest text-muted-foreground">Error 404</p>
-      <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">That page doesn’t exist</h1>
+      <p className="mt-6 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+        Error 404
+      </p>
+      <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+        That page doesn’t exist
+      </h1>
       <p className="mt-3 max-w-md text-sm text-muted-foreground">
-        The link may be broken, or the page may have moved. Start from the catalog, or run a command in the console.
+        The link may be broken, or the page may have moved. Start from the
+        catalog, or run a command in the console.
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link

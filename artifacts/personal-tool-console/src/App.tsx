@@ -13,8 +13,20 @@ const queryClient = new QueryClient();
 function Router() {
   return (
     <Switch>
-      <Route path="/">{() => <AppShell><Catalog /></AppShell>}</Route>
-      <Route path="/console">{() => <AppShell><Console /></AppShell>}</Route>
+      <Route path="/">
+        {() => (
+          <AppShell>
+            <Catalog />
+          </AppShell>
+        )}
+      </Route>
+      <Route path="/console">
+        {() => (
+          <AppShell>
+            <Console />
+          </AppShell>
+        )}
+      </Route>
       <Route path="/tools/:slug">
         {({ slug }) => (
           <AppShell key={slug}>
@@ -22,7 +34,13 @@ function Router() {
           </AppShell>
         )}
       </Route>
-      <Route>{() => <AppShell><NotFound /></AppShell>}</Route>
+      <Route>
+        {() => (
+          <AppShell>
+            <NotFound />
+          </AppShell>
+        )}
+      </Route>
     </Switch>
   );
 }

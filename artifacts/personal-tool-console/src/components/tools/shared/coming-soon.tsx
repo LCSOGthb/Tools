@@ -10,9 +10,12 @@ export default function ComingSoon({ tool }: ToolPageProps) {
         </div>
         <h3 className="mt-4 text-base font-semibold">Coming soon</h3>
         <p className="mx-auto mt-1 max-w-xs text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{tool.name}</span> is on the roadmap and will be available in a future release.
+          <span className="font-medium text-foreground">{tool.name}</span> is on
+          the roadmap and will be available in a future release.
         </p>
-        <p className="mx-auto mt-3 max-w-xs text-xs text-muted-foreground/70">{tool.description}</p>
+        <p className="mx-auto mt-3 max-w-xs text-xs text-muted-foreground/70">
+          {tool.description}
+        </p>
       </div>
 
       <div className="rounded-2xl border border-border bg-card/60 p-6">
@@ -21,7 +24,8 @@ export default function ComingSoon({ tool }: ToolPageProps) {
           While you wait
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          Try another tool in the same category, or head back to the catalog to explore the rest of the toolbox.
+          Try another tool in the same category, or head back to the catalog to
+          explore the rest of the toolbox.
         </p>
       </div>
     </div>

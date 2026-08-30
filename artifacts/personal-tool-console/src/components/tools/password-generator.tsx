@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import type { ToolPageProps } from "@/lib/tool-registry";
 import { randomPassword, strengthScore } from "@/lib/tools/password";
-import { Field, NumInput, SelectInput, TextInput, OutBox, PrimaryButton } from "@/components/tools/shared/fields";
+import {
+  Field,
+  NumInput,
+  SelectInput,
+  TextInput,
+  OutBox,
+  PrimaryButton,
+} from "@/components/tools/shared/fields";
 import { RefreshCcw } from "lucide-react";
 
 export default function PasswordGeneratorPage({ tool }: ToolPageProps) {
@@ -33,10 +40,19 @@ export default function PasswordGeneratorPage({ tool }: ToolPageProps) {
           </Field>
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Length">
-              <NumInput min={6} max={64} value={length} onChange={(e) => setLength(Number(e.target.value))} />
+              <NumInput
+                min={6}
+                max={64}
+                value={length}
+                onChange={(e) => setLength(Number(e.target.value))}
+              />
             </Field>
             <Field label="Mode">
-              <SelectInput options={["weak", "medium", "strong"]} value={mode} onChange={(e) => setMode(e.target.value)} />
+              <SelectInput
+                options={["weak", "medium", "strong"]}
+                value={mode}
+                onChange={(e) => setMode(e.target.value)}
+              />
             </Field>
           </div>
         </div>
@@ -47,7 +63,10 @@ export default function PasswordGeneratorPage({ tool }: ToolPageProps) {
           </div>
           <div className="flex gap-1">
             {Array.from({ length: 6 }, (_, i) => (
-              <div key={i} className={`h-2 flex-1 rounded-full transition ${i < score ? (score >= 4 ? "bg-green-400" : score >= 2 ? "bg-amber-400" : "bg-red-400") : "bg-border"}`} />
+              <div
+                key={i}
+                className={`h-2 flex-1 rounded-full transition ${i < score ? (score >= 4 ? "bg-green-400" : score >= 2 ? "bg-amber-400" : "bg-red-400") : "bg-border"}`}
+              />
             ))}
           </div>
         </div>
@@ -58,11 +77,20 @@ export default function PasswordGeneratorPage({ tool }: ToolPageProps) {
 
       <div className="space-y-4">
         <div className="rounded-2xl border border-border bg-card/60 p-4">
-          <OutBox value={password} className="min-h-28" downloadable filename="password.txt" />
+          <OutBox
+            value={password}
+            className="min-h-28"
+            downloadable
+            filename="password.txt"
+          />
         </div>
         <div className="space-y-3 rounded-2xl border border-border bg-card/60 p-4">
           <Field label="Strength checker" hint="Live-scoring any password">
-            <TextInput value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Type any password…" />
+            <TextInput
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Type any password…"
+            />
           </Field>
         </div>
       </div>

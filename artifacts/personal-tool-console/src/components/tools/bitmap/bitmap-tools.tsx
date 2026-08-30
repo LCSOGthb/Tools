@@ -1,14 +1,30 @@
 import { useState, useMemo } from "react";
 import type { ToolPageProps } from "@/lib/tool-registry";
-import { convertRadix, bitwiseOp, inspectBits, binaryDump } from "@/lib/tools/bitmap";
-import { Field, TextInput, NumInput, SelectInput, TextArea } from "@/components/tools/shared/fields";
+import {
+  convertRadix,
+  bitwiseOp,
+  inspectBits,
+  binaryDump,
+} from "@/lib/tools/bitmap";
+import {
+  Field,
+  TextInput,
+  NumInput,
+  SelectInput,
+  TextArea,
+} from "@/components/tools/shared/fields";
 
 const BASES = [2, 8, 10, 16, 36];
 
 function group8(bits: boolean[]) {
   const chunks: string[] = [];
   for (let i = 0; i < bits.length; i += 8) {
-    chunks.push(bits.slice(i, i + 8).map((b) => (b ? "1" : "0")).join(""));
+    chunks.push(
+      bits
+        .slice(i, i + 8)
+        .map((b) => (b ? "1" : "0"))
+        .join(""),
+    );
   }
   return chunks.join(" ");
 }
@@ -20,11 +36,20 @@ function RadixPanel() {
   const computed = useMemo(() => {
     try {
       const parsed = parseInt(value.trim() || "0", Number(fromBase));
-      if (Number.isNaN(parsed)) throw new Error(`"${value}" is not valid in base ${fromBase}`);
-      if (!Number.isFinite(parsed)) throw new Error("Value is too large for a JS number");
+      if (Number.isNaN(parsed))
+        throw new Error(`"${value}" is not valid in base ${fromBase}`);
+      if (!Number.isFinite(parsed))
+        throw new Error("Value is too large for a JS number");
       return {
-        result: convertRadix(value.trim() || "0", Number(fromBase), Number(toBase)),
-        rows: BASES.map((b) => ({ base: b, out: convertRadix(value.trim() || "0", Number(fromBase), b) })),
+        result: convertRadix(
+          value.trim() || "0",
+          Number(fromBase),
+          Number(toBase),
+        ),
+        rows: BASES.map((b) => ({
+          base: b,
+          out: convertRadix(value.trim() || "0", Number(fromBase), b),
+        })),
         error: null as string | null,
       };
     } catch (e) {
@@ -36,13 +61,26 @@ function RadixPanel() {
     <div className="grid gap-4">
       <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Value">
-          <TextInput value={value} onChange={(e) => setValue(e.target.value)} spellCheck={false} placeholder="e.g. FF or 1010" />
+          <TextInput
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            spellCheck={false}
+            placeholder="e.g. FF or 1010"
+          />
         </Field>
         <Field label="From base">
-          <SelectInput value={fromBase} onChange={(e) => setFromBase(e.target.value)} options={BASES.map(String)} />
+          <SelectInput
+            value={fromBase}
+            onChange={(e) => setFromBase(e.target.value)}
+            options={BASES.map(String)}
+          />
         </Field>
         <Field label="To base">
-          <SelectInput value={toBase} onChange={(e) => setToBase(e.target.value)} options={BASES.map(String)} />
+          <SelectInput
+            value={toBase}
+            onChange={(e) => setToBase(e.target.value)}
+            options={BASES.map(String)}
+          />
         </Field>
       </div>
       {computed.error ? (
@@ -50,15 +88,25 @@ function RadixPanel() {
       ) : (
         <>
           <div className="rounded-2xl border border-border bg-black/40 p-4">
-            <p className="break-all font-mono text-3xl tracking-wider text-foreground">{computed.result}</p>
+            <p className="break-all font-mono text-3xl tracking-wider text-foreground">
+              {computed.result}
+            </p>
             <p className="text-xs text-muted-foreground/70">base {toBase}</p>
           </div>
           <div className="rounded-2xl border border-border bg-card/60 p-4">
             <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-5">
               {computed.rows.map((r) => (
-                <div key={r.base} className="rounded-xl border border-border bg-background/60 p-2.5">
+                <div
+                  key={r.base}
+                  className="rounded-xl border border-border bg-background/60 p-2.5"
+                >
                   <p className="text-xs text-muted-foreground">base {r.base}</p>
-                  <p className="truncate font-mono text-sm text-foreground" title={r.out}>{r.out}</p>
+                  <p
+                    className="truncate font-mono text-sm text-foreground"
+                    title={r.out}
+                  >
+                    {r.out}
+                  </p>
                 </div>
               ))}
             </div>
@@ -84,8 +132,12 @@ function BitwisePanel() {
   })();
   const row = (label: string, n: number) => (
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</span>
-      <span className="truncate font-mono text-sm text-foreground">{group8(inspectBits(n, 32))}</span>
+      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        {label}
+      </span>
+      <span className="truncate font-mono text-sm text-foreground">
+        {group8(inspectBits(n, 32))}
+      </span>
     </div>
   );
 
@@ -99,20 +151,31 @@ function BitwisePanel() {
           <NumInput value={b} onChange={(e) => setB(e.target.value)} />
         </Field>
         <Field label="Operation">
-          <SelectInput value={op} onChange={(e) => setOp(e.target.value)} options={["AND", "OR", "XOR", "NOT", "<<", ">>", ">>>"]} />
+          <SelectInput
+            value={op}
+            onChange={(e) => setOp(e.target.value)}
+            options={["AND", "OR", "XOR", "NOT", "<<", ">>", ">>>"]}
+          />
         </Field>
       </div>
-      <p className="text-xs text-muted-foreground/70">Operands are treated as 32-bit two's complement integers. NOT ignores operand B.</p>
+      <p className="text-xs text-muted-foreground/70">
+        Operands are treated as 32-bit two's complement integers. NOT ignores
+        operand B.
+      </p>
       <div className="rounded-2xl border border-border bg-card/60 p-4">
         <div className="grid gap-3">
           {row("A", aNum)}
           {op !== "NOT" && row("B", bNum)}
           <div className="my-1 border-t border-border" />
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-xs font-medium uppercase tracking-wide text-ring">Result ({op})</span>
+            <span className="text-xs font-medium uppercase tracking-wide text-ring">
+              Result ({op})
+            </span>
             <span className="text-xl font-mono text-foreground">{result}</span>
           </div>
-          <span className="truncate font-mono text-sm text-foreground">{group8(inspectBits(result, 32))}</span>
+          <span className="truncate font-mono text-sm text-foreground">
+            {group8(inspectBits(result, 32))}
+          </span>
         </div>
       </div>
     </div>
@@ -144,10 +207,20 @@ function FlagsPanel() {
     <div className="grid gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Width">
-          <SelectInput value={bits} onChange={(e) => setBits(e.target.value)} options={["8", "16", "32"]} />
+          <SelectInput
+            value={bits}
+            onChange={(e) => setBits(e.target.value)}
+            options={["8", "16", "32"]}
+          />
         </Field>
         <Field label="Decode value (decimal)">
-          <TextInput value={text} onChange={(e) => changeText(e.target.value)} spellCheck={false} inputMode="numeric" placeholder="0" />
+          <TextInput
+            value={text}
+            onChange={(e) => changeText(e.target.value)}
+            spellCheck={false}
+            inputMode="numeric"
+            placeholder="0"
+          />
         </Field>
       </div>
       <div className="rounded-2xl border border-border bg-card/60 p-4">
@@ -159,7 +232,9 @@ function FlagsPanel() {
               onClick={() => toggle(i)}
               title={`bit ${n - 1 - i}`}
               className={`h-8 w-8 rounded-lg border font-mono text-xs transition ${
-                on ? "border-ring bg-ring/25 text-foreground" : "border-border bg-background/60 text-muted-foreground"
+                on
+                  ? "border-ring bg-ring/25 text-foreground"
+                  : "border-border bg-background/60 text-muted-foreground"
               }`}
             >
               {on ? "1" : "0"}
@@ -172,7 +247,13 @@ function FlagsPanel() {
         <span className="font-mono text-foreground">{shown}</span>
         <span className="mx-1 text-muted-foreground">·</span>
         <span className="text-muted-foreground">hex</span>
-        <span className="font-mono text-foreground">0x{shown.toString(16).toUpperCase().padStart(Math.ceil(n / 4), "0")}</span>
+        <span className="font-mono text-foreground">
+          0x
+          {shown
+            .toString(16)
+            .toUpperCase()
+            .padStart(Math.ceil(n / 4), "0")}
+        </span>
       </div>
     </div>
   );
@@ -181,12 +262,18 @@ function FlagsPanel() {
 function BinaryViewerPanel() {
   const [text, setText] = useState("Hello, world!");
   const rows = useMemo(() => binaryDump(text), [text]);
-  const charOf = (d: number) => (d >= 32 && d <= 126 ? String.fromCharCode(d) : "·");
+  const charOf = (d: number) =>
+    d >= 32 && d <= 126 ? String.fromCharCode(d) : "·";
 
   return (
     <div className="grid gap-4">
       <Field label="Input text">
-        <TextArea value={text} onChange={(e) => setText(e.target.value)} spellCheck={false} placeholder="Text to inspect byte by byte" />
+        <TextArea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          spellCheck={false}
+          placeholder="Text to inspect byte by byte"
+        />
       </Field>
       <p className="text-sm text-muted-foreground">{rows.length} bytes</p>
       <div className="overflow-x-auto rounded-2xl border border-border bg-card/60 p-2">

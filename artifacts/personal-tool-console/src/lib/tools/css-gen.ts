@@ -6,22 +6,38 @@ export interface CssGenResult {
   html?: string;
 }
 
-export function cssGradient(kind: "linear" | "radial" | "conic", angle: number, stops: string[], position: string): CssGenResult {
+export function cssGradient(
+  kind: "linear" | "radial" | "conic",
+  angle: number,
+  stops: string[],
+  position: string,
+): CssGenResult {
   const stopStr = stops.join(", ");
   let value = "";
   if (kind === "linear") value = `${kind}-gradient(${angle}deg, ${stopStr})`;
-  else if (kind === "radial") value = `radial-gradient(circle at ${position}, ${stopStr})`;
+  else if (kind === "radial")
+    value = `radial-gradient(circle at ${position}, ${stopStr})`;
   else value = `conic-gradient(from ${angle}deg at ${position}, ${stopStr})`;
   return { css: `.gradient {\n  background: ${value};\n}` };
 }
 
-export function cssGlassmorphism(blur: number, opacity: number, border: string, radius: number, color: string): CssGenResult {
+export function cssGlassmorphism(
+  blur: number,
+  opacity: number,
+  border: string,
+  radius: number,
+  color: string,
+): CssGenResult {
   return {
     css: `.glass {\n  background: ${color};\n  backdrop-filter: blur(${blur}px);\n  -webkit-backdrop-filter: blur(${blur}px);\n  border: ${border} solid rgba(255,255,255,0.6);\n  border-radius: ${radius}px;\n  opacity: 0.${Math.round(opacity * 10)};\n}`,
   };
 }
 
-export function cssTriangle(direction: "up" | "down" | "left" | "right", size: number, color: string): CssGenResult {
+export function cssTriangle(
+  direction: "up" | "down" | "left" | "right",
+  size: number,
+  color: string,
+): CssGenResult {
   const borders: Record<string, string> = {
     up: `border-left: ${size}px solid transparent;\n  border-right: ${size}px solid transparent;\n  border-bottom: ${size}px solid ${color};`,
     down: `border-left: ${size}px solid transparent;\n  border-right: ${size}px solid transparent;\n  border-top: ${size}px solid ${color};`,
@@ -34,21 +50,48 @@ export function cssTriangle(direction: "up" | "down" | "left" | "right", size: n
   };
 }
 
-export function cssBoxShadow(spreads: Array<{ x: number; y: number; blur: number; grow: number; color: string; inset: boolean }>): CssGenResult {
-  const parts = spreads.map((s) => `${s.inset ? "inset " : ""}${s.x}px ${s.y}px ${s.blur}px ${s.grow}px ${s.color}`).join(", ");
+export function cssBoxShadow(
+  spreads: Array<{
+    x: number;
+    y: number;
+    blur: number;
+    grow: number;
+    color: string;
+    inset: boolean;
+  }>,
+): CssGenResult {
+  const parts = spreads
+    .map(
+      (s) =>
+        `${s.inset ? "inset " : ""}${s.x}px ${s.y}px ${s.blur}px ${s.grow}px ${s.color}`,
+    )
+    .join(", ");
   return { css: `.box {\n  box-shadow: ${parts};\n}` };
 }
 
-export function cssBorderRadius(topLeft: number, topRight: number, bottomRight: number, bottomLeft: number, squircle: boolean): CssGenResult {
+export function cssBorderRadius(
+  topLeft: number,
+  topRight: number,
+  bottomRight: number,
+  bottomLeft: number,
+  squircle: boolean,
+): CssGenResult {
   if (squircle) {
-    return { css: `.squircle {\n  border-radius: 40% 40% 40% 40% / 30% 30% 30% 30%;\n}` };
+    return {
+      css: `.squircle {\n  border-radius: 40% 40% 40% 40% / 30% 30% 30% 30%;\n}`,
+    };
   }
   return {
     css: `.rounded {\n  border-radius: ${topLeft}px ${topRight}px ${bottomRight}px ${bottomLeft}px;\n}`,
   };
 }
 
-export function cssRgbBackgroundPattern(kind: "dots" | "stripes" | "grid" | "checker" | "crosshatch", size: number, color: string, bg: string): CssGenResult {
+export function cssRgbBackgroundPattern(
+  kind: "dots" | "stripes" | "grid" | "checker" | "crosshatch",
+  size: number,
+  color: string,
+  bg: string,
+): CssGenResult {
   const c = color;
   const transparent = "rgba(0,0,0,0)";
   let gradient = "";
@@ -68,10 +111,15 @@ export function cssRgbBackgroundPattern(kind: "dots" | "stripes" | "grid" | "che
     default:
       gradient = `repeating-linear-gradient(45deg, ${c} 0 1px, ${transparent} 1px ${size}px), repeating-linear-gradient(-45deg, ${c} 0 1px, ${transparent} 1px ${size}px);`;
   }
-  return { css: `.pattern {\n  background: ${bg};\n  background-image: ${gradient}\n}` };
+  return {
+    css: `.pattern {\n  background: ${bg};\n  background-image: ${gradient}\n}`,
+  };
 }
 
-export function cssClipPath(slug: "circle" | "ellipse" | "triangle" | "hexagon" | "star" | "custom", points: Array<[number, number]>): CssGenResult {
+export function cssClipPath(
+  slug: "circle" | "ellipse" | "triangle" | "hexagon" | "star" | "custom",
+  points: Array<[number, number]>,
+): CssGenResult {
   const shapes: Record<string, string> = {
     circle: "circle(50% at 50% 50%)",
     ellipse: "ellipse(25% 40% at 50% 50%)",
@@ -79,15 +127,30 @@ export function cssClipPath(slug: "circle" | "ellipse" | "triangle" | "hexagon" 
     hexagon: "polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)",
     star: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
   };
-  const value = slug === "custom" ? `polygon(${points.map(([x, y]) => `${x}% ${y}%`).join(", ")})` : shapes[slug];
+  const value =
+    slug === "custom"
+      ? `polygon(${points.map(([x, y]) => `${x}% ${y}%`).join(", ")})`
+      : shapes[slug];
   return { css: `.clipped {\n  clip-path: ${value};\n}` };
 }
 
-export function cssCubicBezier(p1x: number, p1y: number, p2x: number, p2y: number): CssGenResult {
-  return { css: `.ease {\n  transition: all 0.4s cubic-bezier(${p1x}, ${p1y}, ${p2x}, ${p2y});\n}` };
+export function cssCubicBezier(
+  p1x: number,
+  p1y: number,
+  p2x: number,
+  p2y: number,
+): CssGenResult {
+  return {
+    css: `.ease {\n  transition: all 0.4s cubic-bezier(${p1x}, ${p1y}, ${p2x}, ${p2y});\n}`,
+  };
 }
 
-export function cssLoader(kind: "ring" | "dual" | "bar" | "dots", color: string, size: number, speed: number): CssGenResult {
+export function cssLoader(
+  kind: "ring" | "dual" | "bar" | "dots",
+  color: string,
+  size: number,
+  speed: number,
+): CssGenResult {
   const base = `@keyframes spin { to { transform: rotate(360deg); } }\n@keyframes pulse { 0%,100% { opacity: 0.2 } 50% { opacity: 1 } }`;
   let css = "";
   switch (kind) {
@@ -106,7 +169,11 @@ export function cssLoader(kind: "ring" | "dual" | "bar" | "dots", color: string,
   return { css: `${base}\n\n${css}` };
 }
 
-export function cssSwitch(color: string, size: number, checked: boolean): CssGenResult {
+export function cssSwitch(
+  color: string,
+  size: number,
+  checked: boolean,
+): CssGenResult {
   return {
     css: `.switch {\n  position: relative;\n  display: inline-block;\n  width: ${Math.round(size * 1.7)}px;\n  height: ${size}px;\n  border-radius: ${size}px;\n  background: ${checked ? color : "#ccc"};\n  transition: 0.2s;\n}\n.switch::after {\n  content: "";\n  position: absolute;\n  top: 3px;\n  left: 3px;\n  width: ${size - 6}px;\n  height: ${size - 6}px;\n  border-radius: 50%;\n  background: #fff;\n  transition: 0.2s;\n  transform: ${checked ? `translateX(${Math.round(size * 0.7)}px)` : "none"};\n}`,
   };
@@ -118,7 +185,11 @@ export function cssCheckbox(color: string, size: number): CssGenResult {
   };
 }
 
-export function cssTextGlitch(colorA: string, colorB: string, intensity: number): CssGenResult {
+export function cssTextGlitch(
+  colorA: string,
+  colorB: string,
+  intensity: number,
+): CssGenResult {
   const offset = Math.max(1, intensity);
   return {
     css: `.glitch {\n  position: relative;\n}\n.glitch::before, .glitch::after {\n  content: attr(data-text);\n  position: absolute;\n  inset: 0;\n}\n.glitch::before {\n  color: ${colorA};\n  animation: glitch-a ${0.6 * (2 - intensity / 10)}s infinite linear alternate-reverse;\n  transform: translate(${offset}px, 0);\n}\n.glitch::after {\n  color: ${colorB};\n  animation: glitch-b ${0.4 * (2 - intensity / 10)}s infinite linear alternate-reverse;\n  transform: translate(-${offset}px, 0);\n}\n@keyframes glitch-a {\n  0% { clip-path: inset(0 0 85% 0) }\n  25% { clip-path: inset(15% 0 60% 0) }\n  50% { clip-path: inset(40% 0 40% 0) }\n  75% { clip-path: inset(60% 0 15% 0) }\n  100% { clip-path: inset(85% 0 0 0) }\n}\n@keyframes glitch-b {\n  0% { clip-path: inset(85% 0 0 0) }\n  25% { clip-path: inset(60% 0 15% 0) }\n  50% { clip-path: inset(40% 0 40% 0) }\n  75% { clip-path: inset(15% 0 60% 0) }\n  100% { clip-path: inset(0 0 85% 0) }\n}`,

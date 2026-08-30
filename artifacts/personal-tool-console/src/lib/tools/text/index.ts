@@ -5,7 +5,11 @@ import { texts } from "./existing";
 
 export type { TextToolSpec, TextToolGroup, TextOpt, TextOpts } from "./types";
 
-export const TEXT_GROUPS: TextToolGroup[] = [...TEXT_PART1, ...TEXT_PART2, ...texts];
+export const TEXT_GROUPS: TextToolGroup[] = [
+  ...TEXT_PART1,
+  ...TEXT_PART2,
+  ...texts,
+];
 
 export const TEXT_TOOLS = TEXT_GROUPS.flatMap((g) => g.tools);
 

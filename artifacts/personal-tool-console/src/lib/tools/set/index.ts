@@ -1,5 +1,8 @@
 export function parseLines(text: string) {
-  return text.split('\n').map((l) => l.trim()).filter(Boolean);
+  return text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
 }
 
 export function setUnion(a: string[], b: string[]) {
@@ -19,7 +22,10 @@ export function setDifference(a: string[], b: string[]) {
 export function setSymmetricDiff(a: string[], b: string[]) {
   const setA = new Set(a);
   const setB = new Set(b);
-  return [...a.filter((x) => !setB.has(x)), ...b.filter((x) => !setA.has(x))].sort();
+  return [
+    ...a.filter((x) => !setB.has(x)),
+    ...b.filter((x) => !setA.has(x)),
+  ].sort();
 }
 
 export function setMembership(item: string, set: string[]) {

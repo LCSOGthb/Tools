@@ -17,7 +17,10 @@ export function SiteFooter() {
             <Link href="/" className="transition-colors hover:text-foreground">
               Catalog
             </Link>
-            <Link href="/console" className="transition-colors hover:text-foreground">
+            <Link
+              href="/console"
+              className="transition-colors hover:text-foreground"
+            >
               Command console
             </Link>
             <span className="text-muted-foreground/60">

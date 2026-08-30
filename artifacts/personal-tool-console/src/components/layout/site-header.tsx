@@ -14,7 +14,10 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 text-sm font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-sm font-semibold tracking-tight"
+        >
           <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary text-primary-foreground">
             <Wrench className="h-4 w-4" />
           </span>

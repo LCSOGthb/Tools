@@ -1,7 +1,20 @@
 import { useState, useMemo } from "react";
 import type { ToolPageProps } from "@/lib/tool-registry";
-import { formatXml, minifyXml, validateXml, xmlToJson, jsonToXml } from "@/lib/tools/xml";
-import { Field, TextInput, TextArea, SelectInput, ToggleInput, OutBox } from "@/components/tools/shared/fields";
+import {
+  formatXml,
+  minifyXml,
+  validateXml,
+  xmlToJson,
+  jsonToXml,
+} from "@/lib/tools/xml";
+import {
+  Field,
+  TextInput,
+  TextArea,
+  SelectInput,
+  ToggleInput,
+  OutBox,
+} from "@/components/tools/shared/fields";
 
 const SAMPLE = `<root>
   <person id="1"><name>Ada</name></person>
@@ -13,7 +26,10 @@ function FormatterPanel() {
   const [indent, setIndent] = useState("2");
   const computed = useMemo(() => {
     try {
-      return { value: formatXml(input, Number(indent)), error: null as string | null };
+      return {
+        value: formatXml(input, Number(indent)),
+        error: null as string | null,
+      };
     } catch (e) {
       return { value: "", error: (e as Error).message };
     }
@@ -22,12 +38,31 @@ function FormatterPanel() {
   return (
     <div className="grid gap-4">
       <Field label="XML">
-        <TextArea value={input} onChange={(e) => setInput(e.target.value)} spellCheck={false} className="font-mono" />
+        <TextArea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          spellCheck={false}
+          className="font-mono"
+        />
       </Field>
       <Field label="Indent size">
-        <SelectInput value={indent} onChange={(e) => setIndent(e.target.value)} options={["2", "4"]} className="w-24" />
+        <SelectInput
+          value={indent}
+          onChange={(e) => setIndent(e.target.value)}
+          options={["2", "4"]}
+          className="w-24"
+        />
       </Field>
-      {computed.error ? <p className="text-red-400 text-sm">{computed.error}</p> : <OutBox value={computed.value} mono downloadable filename="formatted.xml" />}
+      {computed.error ? (
+        <p className="text-red-400 text-sm">{computed.error}</p>
+      ) : (
+        <OutBox
+          value={computed.value}
+          mono
+          downloadable
+          filename="formatted.xml"
+        />
+      )}
     </div>
   );
 }
@@ -37,7 +72,10 @@ function MinifierPanel() {
   const [keepComments, setKeepComments] = useState(false);
   const computed = useMemo(() => {
     try {
-      return { value: minifyXml(input, keepComments), error: null as string | null };
+      return {
+        value: minifyXml(input, keepComments),
+        error: null as string | null,
+      };
     } catch (e) {
       return { value: "", error: (e as Error).message };
     }
@@ -46,10 +84,28 @@ function MinifierPanel() {
   return (
     <div className="grid gap-4">
       <Field label="XML">
-        <TextArea value={input} onChange={(e) => setInput(e.target.value)} spellCheck={false} className="font-mono" />
+        <TextArea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          spellCheck={false}
+          className="font-mono"
+        />
       </Field>
-      <ToggleInput label="Keep comments" checked={keepComments} onChange={setKeepComments} />
-      {computed.error ? <p className="text-red-400 text-sm">{computed.error}</p> : <OutBox value={computed.value} mono downloadable filename="minified.xml" />}
+      <ToggleInput
+        label="Keep comments"
+        checked={keepComments}
+        onChange={setKeepComments}
+      />
+      {computed.error ? (
+        <p className="text-red-400 text-sm">{computed.error}</p>
+      ) : (
+        <OutBox
+          value={computed.value}
+          mono
+          downloadable
+          filename="minified.xml"
+        />
+      )}
     </div>
   );
 }
@@ -61,10 +117,17 @@ function ValidatorPanel() {
   return (
     <div className="grid gap-4">
       <Field label="XML to validate">
-        <TextArea value={input} onChange={(e) => setInput(e.target.value)} spellCheck={false} className="font-mono" />
+        <TextArea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          spellCheck={false}
+          className="font-mono"
+        />
       </Field>
       {result.valid ? (
-        <div className="rounded-2xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-400">Valid XML</div>
+        <div className="rounded-2xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-400">
+          Valid XML
+        </div>
       ) : (
         <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           Invalid XML
@@ -87,7 +150,10 @@ function ConverterPanel() {
   const computed = useMemo(() => {
     try {
       return {
-        value: mode === "XML → JSON" ? xmlToJson(input) : jsonToXml(input, root.trim() || "root"),
+        value:
+          mode === "XML → JSON"
+            ? xmlToJson(input)
+            : jsonToXml(input, root.trim() || "root"),
         error: null as string | null,
       };
     } catch (e) {
@@ -99,19 +165,45 @@ function ConverterPanel() {
     <div className="grid gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Direction">
-          <SelectInput value={mode} onChange={(e) => setMode(e.target.value)} options={["XML → JSON", "JSON → XML"]} />
+          <SelectInput
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+            options={["XML → JSON", "JSON → XML"]}
+          />
         </Field>
         {mode === "JSON → XML" && (
           <Field label="Root element name">
-            <TextInput value={root} onChange={(e) => setRoot(e.target.value)} spellCheck={false} placeholder="root" />
+            <TextInput
+              value={root}
+              onChange={(e) => setRoot(e.target.value)}
+              spellCheck={false}
+              placeholder="root"
+            />
           </Field>
         )}
       </div>
       <Field label={mode === "XML → JSON" ? "XML" : "JSON"}>
-        <TextArea value={input} onChange={(e) => setInput(e.target.value)} spellCheck={false} className="font-mono" />
+        <TextArea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          spellCheck={false}
+          className="font-mono"
+        />
       </Field>
-      {computed.error ? <p className="text-red-400 text-sm">{computed.error}</p> : <OutBox value={computed.value} mono downloadable filename={mode === "XML → JSON" ? "output.json" : "output.xml"} />}
-      <p className="text-xs text-muted-foreground/70">Works for simple XML without mixed content or namespaces. Errors from either direction are shown inline.</p>
+      {computed.error ? (
+        <p className="text-red-400 text-sm">{computed.error}</p>
+      ) : (
+        <OutBox
+          value={computed.value}
+          mono
+          downloadable
+          filename={mode === "XML → JSON" ? "output.json" : "output.xml"}
+        />
+      )}
+      <p className="text-xs text-muted-foreground/70">
+        Works for simple XML without mixed content or namespaces. Errors from
+        either direction are shown inline.
+      </p>
     </div>
   );
 }

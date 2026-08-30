@@ -24,12 +24,15 @@ export function formatXml(xml: string, indentSize = 2): string {
       const el = child as Element;
       const indent = " ".repeat(depth);
       out += indent + `<${el.tagName}`;
-      for (const attr of Array.from(el.attributes)) out += ` ${attr.name}="${attr.value}"`;
+      for (const attr of Array.from(el.attributes))
+        out += ` ${attr.name}="${attr.value}"`;
       if (el.childNodes.length === 0) {
         out += " />\n";
         continue;
       }
-      const hasText = Array.from(el.childNodes).some((n) => n.nodeType === Node.TEXT_NODE && (n.textContent ?? "").trim());
+      const hasText = Array.from(el.childNodes).some(
+        (n) => n.nodeType === Node.TEXT_NODE && (n.textContent ?? "").trim(),
+      );
       if (hasText && el.childNodes.length === 1) {
         out += `>${(el.textContent ?? "").trim()}</${el.tagName}>\n`;
       } else {
@@ -86,11 +89,13 @@ interface XmlNode {
 
 function elementToObject(el: Element): XmlNode {
   const attributes: Record<string, string> = {};
-  for (const attr of Array.from(el.attributes)) attributes[attr.name] = attr.value;
+  for (const attr of Array.from(el.attributes))
+    attributes[attr.name] = attr.value;
   const children: XmlNode[] = [];
   let text = "";
   for (const n of Array.from(el.childNodes)) {
-    if (n.nodeType === Node.ELEMENT_NODE) children.push(elementToObject(n as Element));
+    if (n.nodeType === Node.ELEMENT_NODE)
+      children.push(elementToObject(n as Element));
     else if (n.nodeType === Node.TEXT_NODE) text += n.textContent ?? "";
   }
   return { tag: el.tagName, attributes, children, text: text.trim() };
@@ -103,14 +108,16 @@ export function xmlToJson(xml: string): string {
     if (n.children.length === 0) {
       return Object.keys(n.attributes).length > 0
         ? { "#text": n.text, ...makeAttrs(n) }
-        : (n.text || null);
+        : n.text || null;
     }
     const obj: Record<string, unknown> = {};
     if (Object.keys(n.attributes).length > 0) Object.assign(obj, makeAttrs(n));
     for (const child of n.children) {
       const value = serialize(child);
       if (obj[child.tag]) {
-        obj[child.tag] = Array.isArray(obj[child.tag]) ? [...(obj[child.tag] as unknown[]), value] : [obj[child.tag], value];
+        obj[child.tag] = Array.isArray(obj[child.tag])
+          ? [...(obj[child.tag] as unknown[]), value]
+          : [obj[child.tag], value];
       } else {
         obj[child.tag] = value;
       }
@@ -118,14 +125,21 @@ export function xmlToJson(xml: string): string {
     if (n.text) obj["#text"] = n.text;
     return obj;
   };
-  const makeAttrs = (n: XmlNode) => Object.fromEntries(Object.entries(n.attributes).map(([k, v]) => [`@${k}`, v]));
+  const makeAttrs = (n: XmlNode) =>
+    Object.fromEntries(
+      Object.entries(n.attributes).map(([k, v]) => [`@${k}`, v]),
+    );
   return JSON.stringify(serialize(node), null, 2);
 }
 
 export function jsonToXml(input: string, rootName = "root"): string {
   const parsed: unknown = JSON.parse(input);
   const escape = (s: string) =>
-    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    s
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
 
   const build = (key: string, value: unknown): string => {
     if (value === null || value === undefined) return "";
@@ -133,14 +147,22 @@ export function jsonToXml(input: string, rootName = "root"): string {
       const entries = Object.entries(value as Record<string, unknown>);
       const attrKeys = entries.filter(([k]) => k.startsWith("@"));
       const textKey = entries.find(([k]) => k === "#text");
-      const childKeys = entries.filter(([k]) => !k.startsWith("@") && k !== "#text");
-      const attrs = attrKeys.map(([k, v]) => ` ${k.slice(1)}="${escape(String(v))}"`).join("");
+      const childKeys = entries.filter(
+        ([k]) => !k.startsWith("@") && k !== "#text",
+      );
+      const attrs = attrKeys
+        .map(([k, v]) => ` ${k.slice(1)}="${escape(String(v))}"`)
+        .join("");
       if (childKeys.length === 0) {
         return `<${key}${attrs}>${textKey ? escape(String(textKey[1])) : ""}</${key}>`;
       }
-      const body = childKeys.map(([k, v]) =>
-        Array.isArray(v) ? v.map((item) => build(k, item)).join("") : build(k, v),
-      ).join("");
+      const body = childKeys
+        .map(([k, v]) =>
+          Array.isArray(v)
+            ? v.map((item) => build(k, item)).join("")
+            : build(k, v),
+        )
+        .join("");
       return `<${key}${attrs}>${textKey ? escape(String(textKey[1])) : ""}${body}</${key}>`;
     }
     return `<${key}>${escape(String(value))}</${key}>`;

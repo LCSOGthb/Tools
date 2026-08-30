@@ -26,7 +26,12 @@ export function utf8Encode(text: string): Uint8Array {
 }
 
 function toBuf(u8: Uint8Array): Uint8Array<ArrayBuffer> {
-  return new Uint8Array(u8.buffer.slice(u8.byteOffset, u8.byteOffset + u8.byteLength) as ArrayBuffer);
+  return new Uint8Array(
+    u8.buffer.slice(
+      u8.byteOffset,
+      u8.byteOffset + u8.byteLength,
+    ) as ArrayBuffer,
+  );
 }
 
 export function utf8Decode(bytes: Uint8Array): string {
@@ -55,32 +60,58 @@ async function aesImportKey(keyB64: string, mode: AesMode) {
   );
 }
 
-export async function aesEncrypt(text: string, keyB64: string, ivInput: string, mode: AesMode) {
+export async function aesEncrypt(
+  text: string,
+  keyB64: string,
+  ivInput: string,
+  mode: AesMode,
+) {
   const key = await aesImportKey(keyB64, mode);
   const iv = deriveIv(mode, ivInput);
-  const buf = await crypto.subtle.encrypt({ name: mode, iv }, key, toBuf(utf8Encode(text)));
+  const buf = await crypto.subtle.encrypt(
+    { name: mode, iv },
+    key,
+    toBuf(utf8Encode(text)),
+  );
   return bytesToBase64(new Uint8Array(buf));
 }
 
-export async function aesDecrypt(b64: string, keyB64: string, ivInput: string, mode: AesMode) {
+export async function aesDecrypt(
+  b64: string,
+  keyB64: string,
+  ivInput: string,
+  mode: AesMode,
+) {
   try {
     const key = await aesImportKey(keyB64, mode);
     const iv = deriveIv(mode, ivInput);
-    const buf = await crypto.subtle.decrypt({ name: mode, iv }, key, toBuf(base64ToBytes(b64)));
+    const buf = await crypto.subtle.decrypt(
+      { name: mode, iv },
+      key,
+      toBuf(base64ToBytes(b64)),
+    );
     return utf8Decode(new Uint8Array(buf));
   } catch {
-    throw new Error("Decryption failed — wrong key, IV, or corrupted ciphertext");
+    throw new Error(
+      "Decryption failed — wrong key, IV, or corrupted ciphertext",
+    );
   }
 }
 
 export function generateAesKey(bits: number, format: "base64" | "hex") {
   const bytes = randomBytes(bits / 8);
   return format === "hex"
-    ? Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("")
+    ? Array.from(bytes)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
     : bytesToBase64(bytes);
 }
 
-export async function hmacHash(message: string, secret: string, algo: "SHA-256" | "SHA-384" | "SHA-512") {
+export async function hmacHash(
+  message: string,
+  secret: string,
+  algo: "SHA-256" | "SHA-384" | "SHA-512",
+) {
   const key = await crypto.subtle.importKey(
     "raw",
     toBuf(utf8Encode(secret)),
@@ -91,7 +122,9 @@ export async function hmacHash(message: string, secret: string, algo: "SHA-256" 
   const sig = await crypto.subtle.sign("HMAC", key, toBuf(utf8Encode(message)));
   const bytes = new Uint8Array(sig);
   return {
-    hex: Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join(""),
+    hex: Array.from(bytes)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join(""),
     base64: bytesToBase64(bytes),
   };
 }
@@ -108,12 +141,18 @@ export interface DecodedJwt {
 
 export function decodeJwt(token: string): DecodedJwt {
   const parts = token.trim().split(".");
-  if (parts.length !== 3) throw new Error("A JWT has exactly 3 dot-separated segments: header.payload.signature");
+  if (parts.length !== 3)
+    throw new Error(
+      "A JWT has exactly 3 dot-separated segments: header.payload.signature",
+    );
   const b64urlToObj = (seg: string) => {
     const normalized = seg.replace(/-/g, "+").replace(/_/g, "/");
     const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=");
     try {
-      return JSON.parse(decodeURIComponent(escape(atob(padded)))) as Record<string, unknown>;
+      return JSON.parse(decodeURIComponent(escape(atob(padded)))) as Record<
+        string,
+        unknown
+      >;
     } catch {
       throw new Error("Invalid base64url JSON segment");
     }
@@ -122,7 +161,9 @@ export function decodeJwt(token: string): DecodedJwt {
   const payload = b64urlToObj(parts[1]);
   const exp = typeof payload.exp === "number" ? payload.exp * 1000 : undefined;
   const iat = typeof payload.iat === "number" ? payload.iat * 1000 : undefined;
-  const secondsToExpiry = exp ? Math.floor((exp - Date.now()) / 1000) : undefined;
+  const secondsToExpiry = exp
+    ? Math.floor((exp - Date.now()) / 1000)
+    : undefined;
   return {
     header,
     payload,
@@ -134,10 +175,16 @@ export function decodeJwt(token: string): DecodedJwt {
   };
 }
 
-export function generateRandomKey(bits: 128 | 192 | 256 | 512, format: "hex" | "base64") {
-  if (![128, 192, 256, 512].includes(bits)) throw new Error("Supported sizes: 128/192/256/512 bits");
+export function generateRandomKey(
+  bits: 128 | 192 | 256 | 512,
+  format: "hex" | "base64",
+) {
+  if (![128, 192, 256, 512].includes(bits))
+    throw new Error("Supported sizes: 128/192/256/512 bits");
   const bytes = randomBytes(bits / 8);
   return format === "hex"
-    ? Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("")
+    ? Array.from(bytes)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
     : bytesToBase64(bytes);
 }
