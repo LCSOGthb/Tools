@@ -265,7 +265,7 @@ export function formatCss(css: string): string {
   const tokens = noComments.replace(/([{};])/g, "$1\n").split("\n");
   let indent = 0;
   const lines: string[] = [];
-  for (let raw of tokens) {
+  for (const raw of tokens) {
     const line = raw.trim();
     if (!line) continue;
     if (line.startsWith("}")) indent = Math.max(0, indent - 1);

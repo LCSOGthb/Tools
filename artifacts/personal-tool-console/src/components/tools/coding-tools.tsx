@@ -79,7 +79,7 @@ function formatJsCode(code: string): string {
   const out: string[] = [];
   let i = 0;
   let lineStart = true;
-  let pending = "";
+  const pending = "";
 
   const push = (s: string) => {
     for (const ch of s) {
@@ -309,7 +309,7 @@ function HtmlFormatter() {
         transform={(s) =>
           formatHtml(s)
             .split("\n")
-            .map((l) => (indent === "4" ? l.replace(/^(  )/g, "    ") : l))
+            .map((l) => (indent === "4" ? l.replace(/^( {2})/g, "    ") : l))
             .join("\n")
         }
       />
